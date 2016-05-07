@@ -13,27 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.mobile.agrestis.imputare.container;
 
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
+package io.varietas.mobile.agrestis.imputare;
 
 /**
- * <h1>SingletonBeanDefinition</h1>
+ * <h1>TestApplication</h1>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016
  */
-public class SingletonBeanDefinition extends AbstractBeanDefinition implements BeanDefinition{
+public class TestApplication {
 
-    private final Object instance;
-    
-    public SingletonBeanDefinition(final String beanIdentifier, final BeanScopes beanScope, final Class beanClazz, final Object instance) {
-        super(beanIdentifier, beanScope, beanClazz);
-        this.instance = instance;
-    }
-
-    @Override
-    public Object getInstance() {
-        return this.instance;
-    }
 }

@@ -29,7 +29,7 @@ public class AbstractBeanDefinition {
     protected final BeanScopes beanScope;
     protected final Class beanClazz;
 
-    public AbstractBeanDefinition(String beanIdentifier, BeanScopes beanScope, Class beanClazz) {
+    public AbstractBeanDefinition(final String beanIdentifier, final BeanScopes beanScope, final Class beanClazz) {
         this.beanIdentifier = beanIdentifier;
         this.beanScope = beanScope;
         this.beanClazz = beanClazz;

@@ -16,6 +16,7 @@
 package io.varietas.mobile.agrestis.imputare.container;
 
 import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * <h1>BeanDefinition</h1>
@@ -27,25 +28,34 @@ public interface BeanDefinition {
 
     /**
      * Returns the identifier of the bean. This is required for the iteration of the bean lists at runtime by identifier.
-     * @return 
+     *
+     * @return
      */
     public String getIdentifier();
 
     /**
      * Returns the class of the bean. This is required for the iteration of the bean lists at runtime by class.
-     * @return 
+     *
+     * @return
      */
     public Class getBeanClass();
-    
+
     /**
      * Returns the scope of the bean. This is required to know how the instance of the bean have to be created.
-     * @return 
+     *
+     * @return
      */
     public BeanScopes getBeanScope();
 
     /**
-     * This creates and returns an instance of the bean. If the bean has the scope {@link BeanScopes}.PROTOTYPE a new instance will created.
-     * @return 
+     * his creates and returns an instance of the bean. If the bean has the scope {@link BeanScopes}.PROTOTYPE a new instance will created.
+     *
+     * @return
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
      */
-    public Object getInstance();
+    public Object getInstance() throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException;
 }

@@ -16,6 +16,9 @@
 package io.varietas.mobile.agrestis.imputare.container;
 
 import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <h1>PrototypeBeanDefinition</h1>
@@ -25,12 +28,30 @@ import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
  */
 public class PrototypeBeanDefinition extends AbstractBeanDefinition implements BeanDefinition {
 
-    public PrototypeBeanDefinition(String beanIdentifier, BeanScopes beanScope, Class beanClazz) {
+    private static final Logger LOGGER = Logger.getLogger(PrototypeBeanDefinition.class.getName());
+
+    private final Object[] parameters;
+
+    public PrototypeBeanDefinition(final String beanIdentifier, final BeanScopes beanScope, final Class beanClazz, final Object... parameters) {
         super(beanIdentifier, beanScope, beanClazz);
+        this.parameters = parameters;
     }
 
     @Override
-    public Object getInstance() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object getInstance() throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        int parameterCount = this.parameters.length;
+
+        LOGGER.log(Level.FINER, String.format("Constructor for identifier %s with %d parameters called.", this.beanIdentifier, parameterCount));
+        
+        if (parameterCount == 0) {
+            return this.beanClazz.getConstructor();
+        }
+
+        Class[] parameterTypes = new Class[this.parameters.length];
+        for (int index = 0; index < parameterCount; ++index) {
+            parameterTypes[parameterCount] = this.parameters[index].getClass();
+        }
+
+        return this.beanClazz.getConstructor(parameterTypes).newInstance(this.parameters);
     }
 }
