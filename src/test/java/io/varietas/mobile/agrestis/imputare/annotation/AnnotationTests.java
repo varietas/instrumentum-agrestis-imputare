@@ -15,7 +15,8 @@
  */
 package io.varietas.mobile.agrestis.imputare.annotation;
 
-import io.varietas.mobile.agrestis.imputare.environments.model.SingletonBeanWithoutDependencies;
+import io.varietas.mobile.agrestis.imputare.environments.model.PrototypeBeanWithoutDependencies;
+import io.varietas.mobile.agrestis.imputare.environments.model.ComponentBeanWithoutDependencies;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.assertj.core.api.Assertions;
@@ -35,13 +36,24 @@ public class AnnotationTests {
     private static final Logger LOGGER = Logger.getLogger(AnnotationTests.class.getName());
     
     @Test
-    public void findAnnotatedClasses(){
+    public void findServiceAnnotationPresent(){
         
-        Object singletonObject = new SingletonBeanWithoutDependencies();
+        Object singletonObject = new ComponentBeanWithoutDependencies();
         
-        Assertions.assertThat(singletonObject.getClass()).isEqualTo(SingletonBeanWithoutDependencies.class);
-        LOGGER.log(Level.INFO, String.format("Object type '%s' is equals to '%s'.", singletonObject.getClass().getName(), SingletonBeanWithoutDependencies.class.getName()));
+        Assertions.assertThat(singletonObject.getClass()).isEqualTo(ComponentBeanWithoutDependencies.class);
+        LOGGER.log(Level.INFO, String.format("Object type '%s' is equals to '%s'.", singletonObject.getClass().getName(), ComponentBeanWithoutDependencies.class.getName()));
         Assertions.assertThat(singletonObject.getClass().isAnnotationPresent(Service.class)).isTrue();
         LOGGER.log(Level.INFO, String.format("Annotation '%s' is present.", Service.class.getName()));
+    }
+    
+    @Test
+    public void findComponentAnnotationPresent(){
+        
+        Object componentObject = new PrototypeBeanWithoutDependencies();
+        
+        Assertions.assertThat(componentObject.getClass()).isEqualTo(ComponentBeanWithoutDependencies.class);
+        LOGGER.log(Level.INFO, String.format("Object type '%s' is equals to '%s'.", componentObject.getClass().getName(), ComponentBeanWithoutDependencies.class.getName()));
+        Assertions.assertThat(componentObject.getClass().isAnnotationPresent(Component.class)).isTrue();
+        LOGGER.log(Level.INFO, String.format("Annotation '%s' is present.", Component.class.getName()));
     }
 }

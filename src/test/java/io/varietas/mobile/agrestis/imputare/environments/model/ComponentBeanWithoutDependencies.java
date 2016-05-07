@@ -19,21 +19,21 @@ import io.varietas.mobile.agrestis.imputare.annotation.Service;
 import java.util.Random;
 
 /**
- * <h1>SingletonBeanWithoutDependencies</h1>
+ * <h1>ComponentBeanWithoutDependencies</h1>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016
  */
 @Service
-public class SingletonBeanWithoutDependencies {
+public class ComponentBeanWithoutDependencies {
 
     private String stringValue;
 
-    public SingletonBeanWithoutDependencies() {
+    public ComponentBeanWithoutDependencies() {
         this("generated string " + new Random().ints(100));
     }
 
-    public SingletonBeanWithoutDependencies(String stringValue) {
+    public ComponentBeanWithoutDependencies(String stringValue) {
         this.stringValue = stringValue;
     }
 
