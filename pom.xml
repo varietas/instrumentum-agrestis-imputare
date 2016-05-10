@@ -11,6 +11,28 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     
+    <name>Agrestis Imputare - The smart Dependency Injection</name>
+    <description>The Agrestis Imputare - DI is a smart library to get dependency injection to android or multiple applications (means gnenerated multiple platform applications for example build by gluon).</description>
+    
+    <developers>
+        <developer>
+            <name>Michael Rhöse</name>
+            <email>michael.rhoese@fh-erfurt.de</email>
+            <roles>
+                <role>Project owner</role>
+                <role>Developer</role>
+                <role>Student</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+    
     <dependencies>
         <dependency>
             <groupId>com.squareup.retrofit</groupId>
