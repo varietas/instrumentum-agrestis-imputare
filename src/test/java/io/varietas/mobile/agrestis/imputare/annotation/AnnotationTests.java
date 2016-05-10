@@ -17,6 +17,7 @@ package io.varietas.mobile.agrestis.imputare.annotation;
 
 import io.varietas.mobile.agrestis.imputare.environments.model.PrototypeBeanWithoutDependencies;
 import io.varietas.mobile.agrestis.imputare.environments.model.ComponentBeanWithoutDependencies;
+import io.varietas.mobile.agrestis.imputare.environments.model.ConfigurationBeanWithoutDependency;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.assertj.core.api.Assertions;
@@ -51,9 +52,20 @@ public class AnnotationTests {
         
         Object componentObject = new PrototypeBeanWithoutDependencies();
         
-        Assertions.assertThat(componentObject.getClass()).isEqualTo(ComponentBeanWithoutDependencies.class);
-        LOGGER.log(Level.INFO, String.format("Object type '%s' is equals to '%s'.", componentObject.getClass().getName(), ComponentBeanWithoutDependencies.class.getName()));
+        Assertions.assertThat(componentObject.getClass()).isEqualTo(PrototypeBeanWithoutDependencies.class);
+        LOGGER.log(Level.INFO, String.format("Object type '%s' is equals to '%s'.", componentObject.getClass().getName(), PrototypeBeanWithoutDependencies.class.getName()));
         Assertions.assertThat(componentObject.getClass().isAnnotationPresent(Component.class)).isTrue();
         LOGGER.log(Level.INFO, String.format("Annotation '%s' is present.", Component.class.getName()));
+    }
+    
+    @Test
+    public void findConfigurationAnnotationPresent(){
+        
+        Object configurationObject = new ConfigurationBeanWithoutDependency();
+        
+        Assertions.assertThat(configurationObject.getClass()).isEqualTo(ConfigurationBeanWithoutDependency.class);
+        LOGGER.log(Level.INFO, String.format("Object type '%s' is equals to '%s'.", configurationObject.getClass().getName(), ConfigurationBeanWithoutDependency.class.getName()));
+        Assertions.assertThat(configurationObject.getClass().isAnnotationPresent(Configuration.class)).isTrue();
+        LOGGER.log(Level.INFO, String.format("Annotation '%s' is present.", Configuration.class.getName()));
     }
 }
