@@ -11,8 +11,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     
-    <name>Agrestis Imputare - The smart Dependency Injection</name>
-    <description>The Agrestis Imputare - DI is a smart library to get dependency injection to android or multiple applications (means gnenerated multiple platform applications for example build by gluon).</description>
+    <name>agrestis imputare - The smart Dependency Injection</name>
+    <description>The agrestis imputare - DI is a smart library to get dependency injection to android or multiple applications (means gnenerated multiple platform applications for example build by gluon).</description>
     
     <developers>
         <developer>
