@@ -4,7 +4,7 @@ Agrestis Imputare - The smart Dependency Injection is developed to provide depen
 
 At this time there is a number of annotations available:
 1. Annotations used to define beans
-  * \@Component
+  * \-@Component\-
   * \@Service
   * \@Configuration
   * \@Bean
