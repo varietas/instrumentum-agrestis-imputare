@@ -44,7 +44,7 @@ public class PrototypeBeanDefinition extends AbstractBeanDefinition implements B
         LOGGER.log(Level.FINER, String.format("Constructor for identifier %s with %d parameters called.", this.beanIdentifier, parameterCount));
         
         if (parameterCount == 0) {
-            return this.beanClazz.getConstructor();
+            return this.beanClazz.getConstructor().newInstance();
         }
 
         Class[] parameterTypes = new Class[this.parameters.length];

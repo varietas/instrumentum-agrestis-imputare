@@ -107,9 +107,8 @@ public class BeanDefinitionUtils {
      */
     public static String formatIdentifier(String identifier, final String defaultName) {
         if (!identifier.equals(AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT)) {
-            return identifier.substring(0, 0).toLowerCase() + identifier.substring(1);
+            return identifier.substring(0, 1).toLowerCase() + identifier.substring(1);
         }
-        return defaultName.substring(0, 0).toLowerCase() + defaultName.substring(1);
+        return defaultName.substring(0, 1).toLowerCase() + defaultName.substring(1);
     }
-
 }

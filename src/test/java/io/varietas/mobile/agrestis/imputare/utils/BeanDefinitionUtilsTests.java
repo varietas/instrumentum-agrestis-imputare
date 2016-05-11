@@ -15,10 +15,12 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
+import io.varietas.mobile.agrestis.imputare.AbstractTestConfiguration;
 import io.varietas.mobile.agrestis.imputare.annotation.Component;
 import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
 import io.varietas.mobile.agrestis.imputare.annotation.Service;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
+import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
 import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
 import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleComponentBean1;
 import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleComponentBean2;
@@ -36,6 +38,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 /**
  * <h1>BeanDefinitionUtilsTests</h1>
@@ -43,9 +47,10 @@ import org.junit.Test;
  * @author Michael Rhöse
  * @since Di, Mai 10, 2016
  */
-public class BeanDefinitionUtilsTests {
+@RunWith(JUnit4.class)
+public class BeanDefinitionUtilsTests extends AbstractTestConfiguration {
 
-    private static final Logger LOGGER = Logger.getLogger(BeanDefinitionUtilsTests.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BeanDefinitionUtilsTests.class.getSimpleName());
 
     @Test
     public void createBeanInformationServiceSimple() {
@@ -58,35 +63,35 @@ public class BeanDefinitionUtilsTests {
             }
         };
         List<BeanDefinition> beanDefinitions = BeanDefinitionUtils.createBeanInformationSimple(clazzList, Service.class);
-        
+
         Assertions.assertThat(beanDefinitions).hasSize(clazzList.size());
         LOGGER.log(Level.INFO, String.format("%d bean definitions creatded, %d expected.", beanDefinitions.size(), clazzList.size()));
         Assertions.assertThat(clazzList).contains(beanDefinitions.get(0).getBeanClass(), beanDefinitions.get(1).getBeanClass(), beanDefinitions.get(2).getBeanClass());
         LOGGER.log(Level.INFO, "Bean definitions for all classes created.");
-        
+
         beanDefinitions.forEach(beanDefinition -> {
             Assertions.assertThat(clazzList).contains(beanDefinition.getBeanClass());
             LOGGER.log(Level.INFO, String.format("Bean definition class '%s' contains in class list.", beanDefinition.getBeanClass().getSimpleName()));
-            
+
             Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScopes.SINGELTON);
             LOGGER.log(Level.INFO, String.format("BeanScopes.%s of bean definition is equals to configured BeanScopes.%s", beanDefinition.getBeanScope().name(), BeanScopes.SINGELTON.name()));
-            
+
             try {
                 Assertions.assertThat(beanDefinition.getInstance()).isNotNull();
                 LOGGER.log(Level.INFO, "Is not null.");
-                
+
                 int firstIntValue = (int) beanDefinition.getBeanClass().getMethod("getIntValue").invoke(beanDefinition.getInstance());
                 int secondIntValue = (int) beanDefinition.getBeanClass().getMethod("getIntValue").invoke(beanDefinition.getInstance());
-                
+
                 Assertions.assertThat(firstIntValue).isEqualTo(secondIntValue);
                 LOGGER.log(Level.INFO, String.format("Bean is a singleton. Saved value %d == %d", firstIntValue, secondIntValue));
-                
+
             } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
         });
     }
-    
+
     @Test
     public void createBeanInformationConfigurationSimple() {
 
@@ -98,35 +103,35 @@ public class BeanDefinitionUtilsTests {
             }
         };
         List<BeanDefinition> beanDefinitions = BeanDefinitionUtils.createBeanInformationSimple(clazzList, Configuration.class);
-        
+
         Assertions.assertThat(beanDefinitions).hasSize(clazzList.size());
         LOGGER.log(Level.INFO, String.format("%d bean definitions creatded, %d expected.", beanDefinitions.size(), clazzList.size()));
         Assertions.assertThat(clazzList).contains(beanDefinitions.get(0).getBeanClass(), beanDefinitions.get(1).getBeanClass(), beanDefinitions.get(2).getBeanClass());
         LOGGER.log(Level.INFO, "Bean definitions for all classes created.");
-        
+
         beanDefinitions.forEach(beanDefinition -> {
             Assertions.assertThat(clazzList).contains(beanDefinition.getBeanClass());
             LOGGER.log(Level.INFO, String.format("Bean definition class '%s' contains in class list.", beanDefinition.getBeanClass().getSimpleName()));
-            
+
             Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScopes.SINGELTON);
             LOGGER.log(Level.INFO, String.format("BeanScopes.%s of bean definition is equals to configured BeanScopes.%s", beanDefinition.getBeanScope().name(), BeanScopes.SINGELTON.name()));
-            
+
             try {
                 Assertions.assertThat(beanDefinition.getInstance()).isNotNull();
                 LOGGER.log(Level.INFO, "Is not null.");
-                
+
                 int firstIntValue = (int) beanDefinition.getBeanClass().getMethod("getIntValue").invoke(beanDefinition.getInstance());
                 int secondIntValue = (int) beanDefinition.getBeanClass().getMethod("getIntValue").invoke(beanDefinition.getInstance());
-                
+
                 Assertions.assertThat(firstIntValue).isEqualTo(secondIntValue);
                 LOGGER.log(Level.INFO, String.format("Bean is a singleton. Saved value %d == %d", firstIntValue, secondIntValue));
-                
+
             } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
         });
     }
-    
+
     @Test
     public void createBeanInformationComponentSimple() {
 
@@ -138,29 +143,32 @@ public class BeanDefinitionUtilsTests {
             }
         };
         List<BeanDefinition> beanDefinitions = BeanDefinitionUtils.createBeanInformationSimple(clazzList, Component.class);
-        
+
         Assertions.assertThat(beanDefinitions).hasSize(clazzList.size());
         LOGGER.log(Level.INFO, String.format("%d bean definitions creatded, %d expected.", beanDefinitions.size(), clazzList.size()));
         Assertions.assertThat(clazzList).contains(beanDefinitions.get(0).getBeanClass(), beanDefinitions.get(1).getBeanClass(), beanDefinitions.get(2).getBeanClass());
         LOGGER.log(Level.INFO, "Bean definitions for all classes created.");
-        
+
         beanDefinitions.forEach(beanDefinition -> {
             Assertions.assertThat(clazzList).contains(beanDefinition.getBeanClass());
             LOGGER.log(Level.INFO, String.format("Bean definition class '%s' contains in class list.", beanDefinition.getBeanClass().getSimpleName()));
-            
-            Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScopes.SINGELTON);
-            LOGGER.log(Level.INFO, String.format("BeanScopes.%s of bean definition is equals to configured BeanScopes.%s", beanDefinition.getBeanScope().name(), BeanScopes.SINGELTON.name()));
-            
+
+            Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScopes.PROTOTYPE);
+            LOGGER.log(Level.INFO, String.format("BeanScopes.%s of bean definition is equals to configured BeanScopes.%s", beanDefinition.getBeanScope().name(), BeanScopes.PROTOTYPE.name()));
+
             try {
                 Assertions.assertThat(beanDefinition.getInstance()).isNotNull();
                 LOGGER.log(Level.INFO, "Is not null.");
-                
+
                 int firstIntValue = (int) beanDefinition.getBeanClass().getMethod("getIntValue").invoke(beanDefinition.getInstance());
-                int secondIntValue = (int) beanDefinition.getBeanClass().getMethod("getIntValue").invoke(beanDefinition.getInstance());
-                
-                Assertions.assertThat(firstIntValue).isEqualTo(secondIntValue);
+                int secondIntValue = firstIntValue;
+                while (firstIntValue == secondIntValue) {
+                    secondIntValue = (int) beanDefinition.getBeanClass().getMethod("getIntValue").invoke(beanDefinition.getInstance());
+                }
+
+                Assertions.assertThat(firstIntValue).isNotEqualTo(secondIntValue);
                 LOGGER.log(Level.INFO, String.format("Bean is a singleton. Saved value %d == %d", firstIntValue, secondIntValue));
-                
+
             } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
@@ -168,22 +176,110 @@ public class BeanDefinitionUtilsTests {
     }
 
     @Test
-    public void createBeanDefinitionServiceSimple() {
+    public void createBeanDefinitionServiceSimple() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
+        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(SimpleServiceBean1.class, BeanScopes.SINGELTON, BeanDefinitionUtils.formatIdentifier(SimpleServiceBean1.class.getSimpleName(), AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT), 0);
+
+        Assertions.assertThat(SimpleServiceBean1.class).isEqualTo(beanDefinition.getBeanClass());
+        LOGGER.log(Level.INFO, String.format("Bean definition class '%s' contains in class list.", beanDefinition.getBeanClass().getSimpleName()));
+
+        Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScopes.SINGELTON);
+        LOGGER.log(Level.INFO, String.format("BeanScopes.%s of bean definition is equals to configured BeanScopes.%s", beanDefinition.getBeanScope().name(), BeanScopes.SINGELTON.name()));
+
+        try {
+            Assertions.assertThat(beanDefinition.getInstance()).isNotNull();
+            LOGGER.log(Level.INFO, "Is not null.");
+
+            int firstIntValue = (int) beanDefinition.getBeanClass().getMethod("getIntValue").invoke(beanDefinition.getInstance());
+            int secondIntValue = (int) beanDefinition.getBeanClass().getMethod("getIntValue").invoke(beanDefinition.getInstance());
+
+            Assertions.assertThat(firstIntValue).isEqualTo(secondIntValue);
+            LOGGER.log(Level.INFO, String.format("Bean is a singleton. Saved value %d == %d", firstIntValue, secondIntValue));
+
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
     }
-    
-    @Test
-    public void createBeanDefinitionConfigurationSimple() {
 
+    @Test
+    public void createBeanDefinitionConfigurationSimple() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(SimpleConfigurationBean1.class, BeanScopes.SINGELTON, BeanDefinitionUtils.formatIdentifier(SimpleServiceBean1.class.getSimpleName(), AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT), 0);
+
+        Assertions.assertThat(SimpleConfigurationBean1.class).isEqualTo(beanDefinition.getBeanClass());
+        LOGGER.log(Level.INFO, String.format("Bean definition class '%s' contains in class list.", beanDefinition.getBeanClass().getSimpleName()));
+
+        Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScopes.SINGELTON);
+        LOGGER.log(Level.INFO, String.format("BeanScopes.%s of bean definition is equals to configured BeanScopes.%s", beanDefinition.getBeanScope().name(), BeanScopes.SINGELTON.name()));
+
+        try {
+            Assertions.assertThat(beanDefinition.getInstance()).isNotNull();
+            LOGGER.log(Level.INFO, "Is not null.");
+
+            int firstIntValue = (int) beanDefinition.getBeanClass().getMethod("getIntValue").invoke(beanDefinition.getInstance());
+            int secondIntValue = (int) beanDefinition.getBeanClass().getMethod("getIntValue").invoke(beanDefinition.getInstance());
+
+            Assertions.assertThat(firstIntValue).isEqualTo(secondIntValue);
+            LOGGER.log(Level.INFO, String.format("Bean is a singleton. Saved value %d == %d", firstIntValue, secondIntValue));
+
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
     }
-    
-    @Test
-    public void createBeanDefinitionComponentSimple() {
 
+    @Test
+    public void createBeanDefinitionComponentSimple() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(SimpleComponentBean1.class, BeanScopes.PROTOTYPE, BeanDefinitionUtils.formatIdentifier(SimpleServiceBean1.class.getSimpleName(), AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT), 0);
+
+        Assertions.assertThat(SimpleComponentBean1.class).isEqualTo(beanDefinition.getBeanClass());
+        LOGGER.log(Level.INFO, String.format("Bean definition class '%s' contains in class list.", beanDefinition.getBeanClass().getSimpleName()));
+
+        Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScopes.PROTOTYPE);
+        LOGGER.log(Level.INFO, String.format("BeanScopes.%s of bean definition is equals to configured BeanScopes.%s", beanDefinition.getBeanScope().name(), BeanScopes.PROTOTYPE.name()));
+
+        try {
+            Assertions.assertThat(beanDefinition.getInstance()).isNotNull();
+            LOGGER.log(Level.INFO, "Is not null.");
+
+            int firstIntValue = (int) beanDefinition.getBeanClass().getMethod("getIntValue").invoke(beanDefinition.getInstance());
+            int secondIntValue = firstIntValue;
+            while (firstIntValue == secondIntValue) {
+                secondIntValue = (int) beanDefinition.getBeanClass().getMethod("getIntValue").invoke(beanDefinition.getInstance());
+            }
+
+            Assertions.assertThat(firstIntValue).isNotEqualTo(secondIntValue);
+            LOGGER.log(Level.INFO, String.format("Bean is a singleton. Saved value %d == %d", firstIntValue, secondIntValue));
+
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
     }
 
     @Test
-    public void formatIdentifier() {
+    public void formatIdentifierForCustomIdentifier() {
+        String customTestIdentifier = "ThisIsACustomTestIdentifier";
+        Class<?> simpleServiceBean1Clazz = SimpleServiceBean1.class;
 
+        String expectedFormatedTestIdentifier = "thisIsACustomTestIdentifier";
+
+        LOGGER.log(Level.INFO, String.format("Custom identifier '%s' | Class name '%s'", customTestIdentifier, simpleServiceBean1Clazz.getSimpleName()));
+
+        String formatedIdentifier = BeanDefinitionUtils.formatIdentifier(customTestIdentifier, simpleServiceBean1Clazz.getSimpleName());
+        Assertions.assertThat(formatedIdentifier).isEqualTo(expectedFormatedTestIdentifier);
+        LOGGER.log(Level.INFO, String.format("Formated identifier '%s' | Expected identifier '%s'", formatedIdentifier, expectedFormatedTestIdentifier));
+    }
+
+    @Test
+    public void formatIdentifierForAutomaticIdentifier() {
+        String customTestIdentifier = "ThisIsACustomTestIdentifier";
+        Class<?> simpleServiceBean1Clazz = SimpleServiceBean1.class;
+
+        String expectedFormatedTestIdentifier = "simpleServiceBean1";
+
+        LOGGER.log(Level.INFO, String.format("Custom identifier '%s' | Class name '%s'", customTestIdentifier, simpleServiceBean1Clazz.getSimpleName()));
+
+        String formatedIdentifier = BeanDefinitionUtils.formatIdentifier(AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT, simpleServiceBean1Clazz.getSimpleName());
+        Assertions.assertThat(formatedIdentifier).isEqualTo(expectedFormatedTestIdentifier);
+        LOGGER.log(Level.INFO, String.format("Formated identifier '%s' | Expected identifier '%s'", formatedIdentifier, expectedFormatedTestIdentifier));
     }
 }
