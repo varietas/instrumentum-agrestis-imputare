@@ -16,6 +16,12 @@
 
 package io.varietas.mobile.agrestis.imputare.utils;
 
+import io.varietas.mobile.agrestis.imputare.TestApplication;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -27,4 +33,11 @@ import java.util.logging.Logger;
 public class DIUtilsTests {
 
     private static final Logger LOGGER = Logger.getLogger(DIUtilsTests.class.getName());
+    
+    public void searchClassesFromPackage() throws URISyntaxException, IOException{
+        
+        Path packagePath = Paths.get(Thread.currentThread().getContextClassLoader().getResource(TestApplication.class.getPackage().toString()).toURI());
+        List<Class<?>> locatedClazzes = DIUtils.searchClassesFromPackage(packagePath);
+        
+    }
 }
