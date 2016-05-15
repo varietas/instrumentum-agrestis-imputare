@@ -59,12 +59,18 @@ public class AgrestisImputareContextInitializer {
     ///< List of bean classes
     private final List<Class<?>> beanClazzes;
 
-    private final Object application;
+    private final Class<?> applicationClazz;
 
     private static final String BAD_PACKAGE_ERROR = "Unable to get resources from path '%s'. Be sure the package '%s' exists?";
+    private static final String BAD_APPLICATION_ERROR = "Unable to scan package. Be sure that a package/application is configured";
 
     public AgrestisImputareContextInitializer(final Object application) {
 
+        this(application.getClass());
+    }
+    
+    public AgrestisImputareContextInitializer(final Class<?> applicationClazz){
+        
         this.nestedRequiredDependenciesClazzes = new ArrayList<>(0);
         this.constructorWithAutowireAnnotationClazzes = new ArrayList<>(0);
 
@@ -72,8 +78,8 @@ public class AgrestisImputareContextInitializer {
         this.serviceClazzes = new ArrayList<>(0);
         this.componentClazzes = new ArrayList<>(0);
         this.beanClazzes = new ArrayList<>(0);
-
-        this.application = application;
+        
+        this.applicationClazz = applicationClazz;
     }
 
     public AgrestisImputareContext initializeContext() throws IllegalArgumentException, URISyntaxException, IOException {
@@ -86,18 +92,11 @@ public class AgrestisImputareContextInitializer {
 
     private void init() throws IllegalArgumentException, URISyntaxException, IOException {
 
-        String packageToScan = this.application.getClass().getName().replace(".class", "").replace(".", File.separator);
-        packageToScan = packageToScan.substring(0, packageToScan.lastIndexOf(File.separator));
-
-        Optional<URL> urlToScan = Optional.ofNullable(Thread.currentThread().getContextClassLoader().getResource(packageToScan));
-
-        if (!urlToScan.isPresent()) {
-            throw new IllegalArgumentException(String.format(BAD_PACKAGE_ERROR, packageToScan, packageToScan));
+        if (this.applicationClazz == null) {
+            throw new IllegalArgumentException(BAD_APPLICATION_ERROR);
         }
 
-        Path packagePath = Paths.get(urlToScan.get().toURI());
-
-        List<Class<?>> locatedClasses = DIUtils.searchClassesFromPackage(packagePath);
+        List<Class<?>> locatedClasses = DIUtils.searchClassesFromPackage(this.applicationClazz.getPackage());
 
         ///< Filter classes for type
         this.configurationClazzes.addAll(locatedClasses.stream().filter(clazz -> clazz.isAnnotationPresent(Configuration.class)).collect(Collectors.toList()));

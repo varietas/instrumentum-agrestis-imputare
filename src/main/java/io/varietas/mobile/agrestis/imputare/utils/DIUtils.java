@@ -16,12 +16,16 @@
 package io.varietas.mobile.agrestis.imputare.utils;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,14 +41,32 @@ public class DIUtils {
     private static final Logger LOGGER = Logger.getLogger(DIUtils.class.getName());
 
     /**
-     * Is searching all classes from a given package. This method walks the complete file tree down and collects all classes.
+     * It is searching all classes from a given package. This method walks the complete file tree down and collects all classes.
      *
      * @param packagePath
      * @return
      * @throws IOException
      */
-    public static List<Class<?>> searchClassesFromPackage(final Path packagePath) throws IOException {
+    public static List<Class<?>> searchClassesFromPackage(final Package packagePath) throws IOException, URISyntaxException {
         final List<Class<?>> clazzList = new ArrayList<>(0);
+
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        String path = DIUtils.fullModifyPackageName(packagePath.toString());
+
+        Enumeration<URL> resources = classLoader.getResources(path);
+
+        while (resources.hasMoreElements()) {
+            URL res = resources.nextElement();
+
+            clazzList.addAll(DIUtils.walkFileTree(DIUtils.modifyPackageName(packagePath.toString()), Paths.get(res.toURI())));
+        }
+
+        return clazzList;
+    }
+
+    private static List<Class<?>> walkFileTree(final String scannedPackage, final Path packagePath) throws IOException {
+        final List<Class<?>> clazzList = new ArrayList<>();
+
         Files.walkFileTree(packagePath, new FileVisitor<Path>() {
             ///< Called before a directory visit.
             @Override
@@ -62,7 +84,7 @@ public class DIUtils {
                 }
                 try {
                     LOGGER.log(Level.FINEST, String.format("  -> [ACCEPTED] %s", file.getFileName().toString()));
-                    clazzList.add(Class.forName(file.toFile().getName()));
+                    clazzList.add(Class.forName(scannedPackage + '.' + DIUtils.removeFileExtention(file.toFile().getName())));
                 } catch (ClassNotFoundException ex) {
                     LOGGER.log(Level.SEVERE, null, ex);
                     return FileVisitResult.CONTINUE;
@@ -83,6 +105,30 @@ public class DIUtils {
                 return FileVisitResult.CONTINUE;
             }
         });
+
         return clazzList;
+    }
+
+    private static String fullModifyPackageName(final String packageName) {
+        return DIUtils.modifyPackageName(packageName).replace('.', '/');
+    }
+
+    private static String modifyPackageName(final String packageName) {
+        if (!packageName.contains(" ")) {
+            return packageName;
+        }
+
+        String temp = packageName;
+
+        if (temp.contains("package ")) {
+            temp = temp.replace("package ", "");
+        }
+
+        return temp;
+    }
+    
+    private static String removeFileExtention(final String fileName){
+        String temp = fileName;
+        return temp.replace(".class", "");
     }
 }
