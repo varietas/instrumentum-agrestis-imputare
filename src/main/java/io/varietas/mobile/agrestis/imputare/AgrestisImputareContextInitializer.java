@@ -29,8 +29,10 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -116,6 +118,11 @@ public class AgrestisImputareContextInitializer {
         this.initialIteration();
     }
 
+    /**
+     * Sorts all located classes into the classes for the following initialisation steps.
+     *
+     * @param locatedClasses
+     */
     private void sorting(final List<Class<?>> locatedClasses) {
 
         ///< Sortiing classes for type
@@ -124,6 +131,10 @@ public class AgrestisImputareContextInitializer {
         this.componentClazzes.addAll(locatedClasses.stream().filter(clazz -> clazz.isAnnotationPresent(Component.class)).collect(Collectors.toList()));
     }
 
+    /**
+     * Filters the sorted classes into classes with and without dependencies. Bean definitions for classes without dependencies will created. Classes with dependencies will stored and prepared for the
+     * following steps.
+     */
     private void filtering() {
 
         this.filteredClazzes.put(Configuration.class, this.filterSimpleBeansForSecondLevelIteration(this.configurationClazzes));
@@ -131,6 +142,9 @@ public class AgrestisImputareContextInitializer {
         this.filteredClazzes.put(Component.class, this.filterSimpleBeansForSecondLevelIteration(this.componentClazzes));
     }
 
+    /**
+     * First step of initialisation. All classes without dependencies are used to create bean definitions. This t´´definitions will used for the initialisation of beans with dependencies.
+     */
     private void initialIteration() {
 
         this.filteredClazzes.forEach((annotation, clazzes) -> {
@@ -142,6 +156,57 @@ public class AgrestisImputareContextInitializer {
                 }
             });
         });
+    }
+    
+    private void rotationIteration(){
+        Queue<Class<?>> rotationQueue = new LinkedList<>();
+        
+        boolean isConfigurationClazzListNotEmpty = !this.configurationClazzes.isEmpty(), isServiceClazzListNotEmpty = !this.serviceClazzes.isEmpty(), isComponentClazzListNotEmpty = !this.componentClazzes.isEmpty();
+        
+        final Class<?> currentClazz;
+        
+        while(isConfigurationClazzListNotEmpty && isServiceClazzListNotEmpty && isComponentClazzListNotEmpty){
+
+            Class<?> clazz = this.chooseAClazz(rotationQueue, isConfigurationClazzListNotEmpty, isServiceClazzListNotEmpty, isComponentClazzListNotEmpty);
+            
+            ///< get all dependencies
+                ///< Constructor dependencies
+            
+                ///< Field dependencies
+            
+            ///< look if are dependencies available in store
+                ///< Yes -> Create bean definition
+            
+                ///< No -> Move to Stack
+        }
+    }
+    
+    /**
+     * Takes a class from any list/stack and remove from the list/stack
+     * 
+     * @param queue
+     * @param flags
+     * @return 
+     */
+    private Class<?> chooseAClazz(Queue<Class<?>> queue, Boolean... flags){
+        
+        if(flags[0]){
+            Class<?> clazz = this.configurationClazzes.iterator().next();
+            this.configurationClazzes.remove(clazz);
+            return clazz;
+        }
+        if(flags[1]){
+            Class<?> clazz = this.serviceClazzes.iterator().next();
+            this.serviceClazzes.remove(clazz);
+            return clazz;
+        }
+        if(flags[2]){
+            Class<?> clazz = this.componentClazzes.iterator().next();
+            this.componentClazzes.remove(clazz);
+            return clazz;
+        }
+        
+        return queue.remove();
     }
 
     private List<Class<?>> filterSimpleBeansForSecondLevelIteration(List<Class<?>> clazzList) {
