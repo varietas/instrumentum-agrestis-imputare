@@ -176,9 +176,8 @@ public class BeanDefinitionUtilsTests extends AbstractTestConfiguration {
     }
 
     @Test
-    public void createBeanDefinitionServiceSimple() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-
-        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(SimpleServiceBean1.class, BeanScopes.SINGELTON, BeanDefinitionUtils.formatIdentifier(SimpleServiceBean1.class.getSimpleName(), AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT), 0);
+    public void createBeanDefinitionServiceSimple() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(SimpleServiceBean1.class, BeanScopes.SINGELTON, BeanDefinitionUtils.formatIdentifier(SimpleServiceBean1.class.getSimpleName(), AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT), SimpleServiceBean1.class.getConstructors()[0]);
 
         Assertions.assertThat(SimpleServiceBean1.class).isEqualTo(beanDefinition.getBeanClass());
         LOGGER.log(Level.INFO, String.format("Bean definition class '%s' contains in class list.", beanDefinition.getBeanClass().getSimpleName()));
@@ -203,7 +202,7 @@ public class BeanDefinitionUtilsTests extends AbstractTestConfiguration {
 
     @Test
     public void createBeanDefinitionConfigurationSimple() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(SimpleConfigurationBean1.class, BeanScopes.SINGELTON, BeanDefinitionUtils.formatIdentifier(SimpleServiceBean1.class.getSimpleName(), AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT), 0);
+        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(SimpleConfigurationBean1.class, BeanScopes.SINGELTON, BeanDefinitionUtils.formatIdentifier(SimpleConfigurationBean1.class.getSimpleName(), AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT), SimpleConfigurationBean1.class.getConstructors()[0]);
 
         Assertions.assertThat(SimpleConfigurationBean1.class).isEqualTo(beanDefinition.getBeanClass());
         LOGGER.log(Level.INFO, String.format("Bean definition class '%s' contains in class list.", beanDefinition.getBeanClass().getSimpleName()));
@@ -229,7 +228,7 @@ public class BeanDefinitionUtilsTests extends AbstractTestConfiguration {
     @Test
     public void createBeanDefinitionComponentSimple() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(SimpleComponentBean1.class, BeanScopes.PROTOTYPE, BeanDefinitionUtils.formatIdentifier(SimpleServiceBean1.class.getSimpleName(), AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT), 0);
+        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(SimpleComponentBean1.class, BeanScopes.PROTOTYPE, BeanDefinitionUtils.formatIdentifier(SimpleComponentBean1.class.getSimpleName(), AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT), SimpleComponentBean1.class.getConstructors()[0]);
 
         Assertions.assertThat(SimpleComponentBean1.class).isEqualTo(beanDefinition.getBeanClass());
         LOGGER.log(Level.INFO, String.format("Bean definition class '%s' contains in class list.", beanDefinition.getBeanClass().getSimpleName()));

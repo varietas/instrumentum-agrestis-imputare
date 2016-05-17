@@ -16,6 +16,7 @@
 package io.varietas.mobile.agrestis.imputare.container;
 
 import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
+import java.lang.reflect.Constructor;
 
 /**
  * <h1>AbstractBeanDefinition</h1>
@@ -28,11 +29,13 @@ public class AbstractBeanDefinition {
     protected final String beanIdentifier;
     protected final BeanScopes beanScope;
     protected final Class beanClazz;
+    protected final Constructor beanConstructor;
 
-    public AbstractBeanDefinition(final String beanIdentifier, final BeanScopes beanScope, final Class beanClazz) {
+    public AbstractBeanDefinition(final String beanIdentifier, final BeanScopes beanScope, final Class beanClazz, final Constructor beanConstructor) {
         this.beanIdentifier = beanIdentifier;
         this.beanScope = beanScope;
         this.beanClazz = beanClazz;
+        this.beanConstructor = beanConstructor;
     }
 
     public String getIdentifier() {
@@ -42,8 +45,12 @@ public class AbstractBeanDefinition {
     public Class getBeanClass() {
         return this.beanClazz;
     }
-    
+
     public BeanScopes getBeanScope() {
         return this.beanScope;
+    }
+
+    public Constructor getBeanConstructor() {
+        return beanConstructor;
     }
 }

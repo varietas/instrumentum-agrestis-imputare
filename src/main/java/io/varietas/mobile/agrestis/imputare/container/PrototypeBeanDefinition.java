@@ -16,6 +16,7 @@
 package io.varietas.mobile.agrestis.imputare.container;
 
 import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,11 +33,11 @@ public class PrototypeBeanDefinition extends AbstractBeanDefinition implements B
 
     private final Object[] parameters;
 
-    public PrototypeBeanDefinition(final String beanIdentifier, final BeanScopes beanScope, final Class beanClazz, final Object... parameters) {
-        super(beanIdentifier, beanScope, beanClazz);
+    public PrototypeBeanDefinition(Object[] parameters, String beanIdentifier, BeanScopes beanScope, Class beanClazz, Constructor beanConstructor) {
+        super(beanIdentifier, beanScope, beanClazz, beanConstructor);
         this.parameters = parameters;
     }
-
+    
     @Override
     public Object getInstance() throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException {
         int parameterCount = this.parameters.length;

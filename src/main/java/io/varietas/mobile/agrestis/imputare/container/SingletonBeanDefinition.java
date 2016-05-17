@@ -16,6 +16,7 @@
 package io.varietas.mobile.agrestis.imputare.container;
 
 import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
+import java.lang.reflect.Constructor;
 
 /**
  * <h1>SingletonBeanDefinition</h1>
@@ -27,11 +28,11 @@ public class SingletonBeanDefinition extends AbstractBeanDefinition implements B
 
     private final Object instance;
     
-    public SingletonBeanDefinition(final String beanIdentifier, final BeanScopes beanScope, final Class beanClazz, final Object instance) {
-        super(beanIdentifier, beanScope, beanClazz);
+    public SingletonBeanDefinition(Object instance, String beanIdentifier, BeanScopes beanScope, Class beanClazz, Constructor beanConstructor) {
+        super(beanIdentifier, beanScope, beanClazz, beanConstructor);
         this.instance = instance;
     }
-
+    
     @Override
     public Object getInstance() {
         return this.instance;

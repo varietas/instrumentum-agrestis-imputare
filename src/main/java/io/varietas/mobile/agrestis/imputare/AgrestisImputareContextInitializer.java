@@ -15,19 +15,23 @@
  */
 package io.varietas.mobile.agrestis.imputare;
 
+import io.varietas.mobile.agrestis.imputare.annotation.Autowire;
 import io.varietas.mobile.agrestis.imputare.annotation.Component;
 import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
 import io.varietas.mobile.agrestis.imputare.annotation.Service;
+import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
+import io.varietas.mobile.agrestis.imputare.utils.BeanDefinitionUtils;
 import io.varietas.mobile.agrestis.imputare.utils.DIUtils;
-import java.io.File;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -59,6 +63,10 @@ public class AgrestisImputareContextInitializer {
     ///< List of bean classes
     private final List<Class<?>> beanClazzes;
 
+    private final Map<Class<? extends Annotation>, List<Class<?>>> filteredClazzes;
+
+    private final List<BeanDefinition> store;
+
     private final Class<?> applicationClazz;
 
     private static final String BAD_PACKAGE_ERROR = "Unable to get resources from path '%s'. Be sure the package '%s' exists?";
@@ -68,9 +76,9 @@ public class AgrestisImputareContextInitializer {
 
         this(application.getClass());
     }
-    
-    public AgrestisImputareContextInitializer(final Class<?> applicationClazz){
-        
+
+    public AgrestisImputareContextInitializer(final Class<?> applicationClazz) {
+
         this.nestedRequiredDependenciesClazzes = new ArrayList<>(0);
         this.constructorWithAutowireAnnotationClazzes = new ArrayList<>(0);
 
@@ -78,7 +86,11 @@ public class AgrestisImputareContextInitializer {
         this.serviceClazzes = new ArrayList<>(0);
         this.componentClazzes = new ArrayList<>(0);
         this.beanClazzes = new ArrayList<>(0);
-        
+
+        this.filteredClazzes = new HashMap<>();
+
+        this.store = new ArrayList<>();
+
         this.applicationClazz = applicationClazz;
     }
 
@@ -98,10 +110,53 @@ public class AgrestisImputareContextInitializer {
 
         List<Class<?>> locatedClasses = DIUtils.searchClassesFromPackage(this.applicationClazz.getPackage());
 
-        ///< Filter classes for type
+        this.sorting(locatedClasses);
+        this.filtering();
+
+        this.initialIteration();
+    }
+
+    private void sorting(final List<Class<?>> locatedClasses) {
+
+        ///< Sortiing classes for type
         this.configurationClazzes.addAll(locatedClasses.stream().filter(clazz -> clazz.isAnnotationPresent(Configuration.class)).collect(Collectors.toList()));
         this.serviceClazzes.addAll(locatedClasses.stream().filter(clazz -> clazz.isAnnotationPresent(Service.class)).collect(Collectors.toList()));
         this.componentClazzes.addAll(locatedClasses.stream().filter(clazz -> clazz.isAnnotationPresent(Component.class)).collect(Collectors.toList()));
+    }
+
+    private void filtering() {
+
+        this.filteredClazzes.put(Configuration.class, this.filterSimpleBeansForSecondLevelIteration(this.configurationClazzes));
+        this.filteredClazzes.put(Service.class, this.filterSimpleBeansForSecondLevelIteration(this.serviceClazzes));
+        this.filteredClazzes.put(Component.class, this.filterSimpleBeansForSecondLevelIteration(this.componentClazzes));
+    }
+
+    private void initialIteration() {
+
+        this.filteredClazzes.forEach((annotation, clazzes) -> {
+            clazzes.forEach(clazz -> {
+                try {
+                    this.store.add(BeanDefinitionUtils.createBeanInformationSimple(clazz, annotation));
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                    LOGGER.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+                }
+            });
+        });
+    }
+
+    private List<Class<?>> filterSimpleBeansForSecondLevelIteration(List<Class<?>> clazzList) {
+
+        this.constructorWithAutowireAnnotationClazzes.addAll(clazzList.stream().filter(clazz -> Arrays.asList(clazz.getConstructors()).stream().filter(constructor -> constructor.isAnnotationPresent(Autowire.class)).findFirst().isPresent()).collect(Collectors.toList()));
+
+        List<Class<?>> constructorFilteredClazzes = new ArrayList<>(clazzList);
+        constructorFilteredClazzes.removeAll(this.constructorWithAutowireAnnotationClazzes);
+
+        this.nestedRequiredDependenciesClazzes.addAll(constructorFilteredClazzes.stream().filter(clazz -> Arrays.asList(clazz.getFields()).stream().filter(field -> field.isAnnotationPresent(Autowire.class)).findFirst().isPresent()).collect(Collectors.toList()));
+
+        List<Class<?>> constructorAndFieldFilteredClazzes = new ArrayList<>(constructorFilteredClazzes);
+        constructorAndFieldFilteredClazzes.removeAll(this.nestedRequiredDependenciesClazzes);
+
+        return constructorAndFieldFilteredClazzes;
     }
 
 }
