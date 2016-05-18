@@ -20,11 +20,17 @@ import io.varietas.mobile.agrestis.imputare.annotation.Component;
 import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
 import io.varietas.mobile.agrestis.imputare.annotation.Service;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
+import io.varietas.mobile.agrestis.imputare.contant.AnnotationMethodIndices;
+import io.varietas.mobile.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import io.varietas.mobile.agrestis.imputare.utils.BeanDefinitionUtils;
 import io.varietas.mobile.agrestis.imputare.utils.DIUtils;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +38,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -157,56 +164,128 @@ public class AgrestisImputareContextInitializer {
             });
         });
     }
-    
-    private void rotationIteration(){
-        Queue<Class<?>> rotationQueue = new LinkedList<>();
-        
-        boolean isConfigurationClazzListNotEmpty = !this.configurationClazzes.isEmpty(), isServiceClazzListNotEmpty = !this.serviceClazzes.isEmpty(), isComponentClazzListNotEmpty = !this.componentClazzes.isEmpty();
-        
-        final Class<?> currentClazz;
-        
-        while(isConfigurationClazzListNotEmpty && isServiceClazzListNotEmpty && isComponentClazzListNotEmpty){
 
-            Class<?> clazz = this.chooseAClazz(rotationQueue, isConfigurationClazzListNotEmpty, isServiceClazzListNotEmpty, isComponentClazzListNotEmpty);
-            
-            ///< get all dependencies
-                ///< Constructor dependencies
-            
-                ///< Field dependencies
-            
+    ///< TODO: field injection should run after bean creation.
+    ///< TODO: handle recursive injection (means bean requires itself)
+    private void rotationIteration() throws ToManyInjectedConstructorsException, NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Queue<Class<?>> rotationQueue = new LinkedList<>();
+
+        boolean isConfigurationClazzListNotEmpty = !this.configurationClazzes.isEmpty(), isServiceClazzListNotEmpty = !this.serviceClazzes.isEmpty(), isComponentClazzListNotEmpty = !this.componentClazzes.isEmpty();
+
+        final Class<?> currentClazz;
+
+        while (isConfigurationClazzListNotEmpty && isServiceClazzListNotEmpty && isComponentClazzListNotEmpty) {
+            final Class<?> clazz = this.chooseAClazz(rotationQueue, isConfigurationClazzListNotEmpty, isServiceClazzListNotEmpty, isComponentClazzListNotEmpty);
+            final Constructor beanConstructor = this.getConstructor(clazz);
+            final Optional<Object> beanInstance = this.getBeanInstance(beanConstructor);
+
+            if (!beanInstance.isPresent()) {
+                rotationQueue.add(clazz);
+                continue;
+            }
+
+            ///< Field dependencies
+            List<Field> fields = Arrays.asList(clazz.getFields()).stream().filter(field -> field.isAnnotationPresent(Autowire.class)).collect(Collectors.toList());
+
             ///< look if are dependencies available in store
-                ///< Yes -> Create bean definition
-            
-                ///< No -> Move to Stack
+            ///< Yes -> Create bean definition
+            ///< No -> Move to Stack
         }
     }
-    
+
     /**
      * Takes a class from any list/stack and remove from the list/stack
-     * 
+     *
      * @param queue
      * @param flags
-     * @return 
+     * @return
      */
-    private Class<?> chooseAClazz(Queue<Class<?>> queue, Boolean... flags){
-        
-        if(flags[0]){
+    private Class<?> chooseAClazz(Queue<Class<?>> queue, Boolean... flags) {
+
+        if (flags[0]) {
             Class<?> clazz = this.configurationClazzes.iterator().next();
             this.configurationClazzes.remove(clazz);
             return clazz;
         }
-        if(flags[1]){
+
+        if (flags[1]) {
             Class<?> clazz = this.serviceClazzes.iterator().next();
             this.serviceClazzes.remove(clazz);
             return clazz;
         }
-        if(flags[2]){
+
+        if (flags[2]) {
             Class<?> clazz = this.componentClazzes.iterator().next();
             this.componentClazzes.remove(clazz);
             return clazz;
         }
-        
+
         return queue.remove();
+    }
+
+    private Constructor getConstructor(Class<?> clazz) throws ToManyInjectedConstructorsException, NoSuchMethodException {
+        ///< Constructor dependencies
+        List<Constructor> injectedConstructors = Arrays.asList(clazz.getConstructors()).stream().filter(constructor -> constructor.isAnnotationPresent(Autowire.class)).collect(Collectors.toList());
+
+        if (injectedConstructors.size() > 1) {
+            throw new ToManyInjectedConstructorsException(String.format("There are %d constructors injected. Only one is allowed.", injectedConstructors.size()));
+        }
+
+        if (!(injectedConstructors.isEmpty())) {
+            return injectedConstructors.get(0);
+        }
+
+        List<Constructor> annotatedParamsConstructor = Arrays.asList(clazz.getConstructors()).stream().filter(constructor -> Arrays.asList(constructor.getParameterAnnotations()).stream().filter(annotation -> annotation.getClass().equals(Autowire.class)).findFirst().isPresent()).collect(Collectors.toList());
+
+        if (annotatedParamsConstructor.size() > 1) {
+            throw new ToManyInjectedConstructorsException(String.format("There are %d constructors with injected parameters. Only one is allowed.", injectedConstructors.size()));
+        }
+
+        if (!(annotatedParamsConstructor.isEmpty())) {
+            return annotatedParamsConstructor.get(0);
+        }
+
+        return clazz.getConstructor();
+    }
+
+    private Optional<Object> getBeanInstance(Constructor beanConstructor) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+        if (beanConstructor.getParameterCount() > 0) {
+            return Optional.of(beanConstructor.newInstance());
+        }
+        ///< If the constructor itself is annotated the names of the parameters will be the identifiers for the injection.
+        Boolean isNotCustomIdentifiers = (beanConstructor.getAnnotations().length > 0);
+
+        Object[] params = new Object[beanConstructor.getParameterCount()];
+
+        for (short index = 0; index < beanConstructor.getParameterCount(); ++index) {
+
+            Parameter currentParameter = beanConstructor.getParameters()[index];
+            String beanIdentifier = this.getBeanIdentifier(currentParameter, !isNotCustomIdentifiers);
+
+            Optional<BeanDefinition> beanDefinition = this.store.stream().filter(beanDef -> beanDef.getIdentifier().equals(beanIdentifier)).findFirst();
+
+            if (!beanDefinition.isPresent()) {
+                return Optional.empty();
+            }
+
+            params[index] = beanDefinition.get().getInstance();
+        }
+
+        return Optional.of(beanConstructor.newInstance(params));
+    }
+
+    private String getBeanIdentifier(Parameter parameter, Boolean isCustomIdentifier) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        if (!isCustomIdentifier) {
+            return parameter.getName();
+        }
+
+        if (!parameter.isAnnotationPresent(Autowire.class)) {
+            return parameter.getName();
+        }
+
+        Annotation autowireAnnotation = parameter.getAnnotation(Autowire.class);
+        Method[] methods = autowireAnnotation.annotationType().getDeclaredMethods();
+        return (String) methods[AnnotationMethodIndices.NAME].invoke(autowireAnnotation);
     }
 
     private List<Class<?>> filterSimpleBeansForSecondLevelIteration(List<Class<?>> clazzList) {
