@@ -15,7 +15,6 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
-import io.varietas.mobile.agrestis.imputare.annotation.Autowire;
 import io.varietas.mobile.agrestis.imputare.annotation.Component;
 import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
 import io.varietas.mobile.agrestis.imputare.annotation.Service;
@@ -23,7 +22,6 @@ import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
 import io.varietas.mobile.agrestis.imputare.container.PrototypeBeanDefinition;
 import io.varietas.mobile.agrestis.imputare.container.SingletonBeanDefinition;
 import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
-import io.varietas.mobile.agrestis.imputare.contant.AnnotationMethodIndices;
 import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
 import io.varietas.mobile.agrestis.imputare.enumeration.ConstructorTypes;
 import java.lang.annotation.Annotation;
@@ -31,7 +29,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -58,22 +55,7 @@ public class BeanDefinitionUtils {
     public static List<BeanDefinition> createBeanInformationSimple(final List<Class<?>> clazzList, Class<? extends Annotation> annotationClass) {
         List<BeanDefinition> beanDefinitions = new ArrayList<>(clazzList.size());
         clazzList.stream().forEach((Class<?> beanClazz) -> {
-            Annotation annotation = beanClazz.getAnnotation(annotationClass);
-            Method[] methods = annotation.annotationType().getDeclaredMethods();
-            String identifier = AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
-            BeanScopes scope = BeanScopes.SINGELTON;
             try {
-                identifier = BeanDefinitionUtils.formatIdentifier((String) methods[AnnotationMethodIndices.NAME].invoke(annotation), beanClazz.getSimpleName());
-                scope = ((BeanScopes) methods[AnnotationMethodIndices.SCOPE].invoke(annotation));
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                LOGGER.log(Level.SEVERE, String.format("Method '%s' of annotation '%s' could not invoked.", methods[2].getName(), annotation.getClass().getSimpleName()), ex);
-            }
-            try {
-                Optional contructor = BeanDefinitionUtils.findSpecifiedConstructor(beanClazz, ConstructorTypes.STANDARD);
-                if (!contructor.isPresent()) {
-                    throw new NoSuchMethodException(String.format("No constructor located for ConstructorTypes.%s", ConstructorTypes.STANDARD.name()));
-                }
-
                 beanDefinitions.add(BeanDefinitionUtils.createBeanInformationSimple(beanClazz, annotationClass));
             } catch (IllegalArgumentException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
                 LOGGER.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
@@ -88,13 +70,13 @@ public class BeanDefinitionUtils {
         String identifier = AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
         BeanScopes scope = BeanScopes.SINGELTON;
         try {
-            identifier = BeanDefinitionUtils.formatIdentifier((String) methods[AnnotationMethodIndices.NAME].invoke(annotation), beanClazz.getSimpleName());
-            scope = ((BeanScopes) methods[AnnotationMethodIndices.SCOPE].invoke(annotation));
+            identifier = BeanScanUtils.getBeanIdentifier(beanClazz, annotation, methods);
+            scope = BeanScanUtils.getBeanScope(annotation, methods);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             LOGGER.log(Level.SEVERE, String.format("Method '%s' of annotation '%s' could not invoked.", methods[2].getName(), annotation.getClass().getSimpleName()), ex);
         }
 
-        Optional contructor = BeanDefinitionUtils.findSpecifiedConstructor(beanClazz, ConstructorTypes.STANDARD);
+        Optional contructor = BeanScanUtils.getSpecifiedConstructor(beanClazz, ConstructorTypes.STANDARD);
         if (!contructor.isPresent()) {
             throw new NoSuchMethodException(String.format("No constructor located for ConstructorTypes.%s", ConstructorTypes.STANDARD.name()));
         }
@@ -141,21 +123,5 @@ public class BeanDefinitionUtils {
             return identifier.substring(0, 1).toLowerCase() + identifier.substring(1);
         }
         return defaultName.substring(0, 1).toLowerCase() + defaultName.substring(1);
-    }
-
-    public static Optional<Constructor> findSpecifiedConstructor(Class<?> clazz, ConstructorTypes constructorType) {
-        List<Constructor> constructors = Arrays.asList(clazz.getConstructors());
-
-        switch (constructorType) {
-            case STANDARD:
-                ///< Standard
-                return constructors.stream().filter(constructor -> constructor.getParameterCount() == 0).findFirst();
-            case COPY:
-                ///< Copy
-                return constructors.stream().filter(constructor -> constructor.getParameterCount() == 1 && constructor.getParameters()[1].getType().equals(clazz)).findFirst();
-            default:
-                ///< Injected
-                return constructors.stream().filter(constructor -> constructor.isAnnotationPresent(Autowire.class)).findFirst();
-        }
     }
 }

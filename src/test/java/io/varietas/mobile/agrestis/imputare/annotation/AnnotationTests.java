@@ -33,36 +33,36 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class AnnotationTests {
-    
+
     private static final Logger LOGGER = Logger.getLogger(AnnotationTests.class.getName());
-    
+
     @Test
-    public void findServiceAnnotationPresent(){
-        
+    public void findServiceAnnotationPresent() {
+
         Object singletonObject = new ComponentBeanWithoutDependencies();
-        
+
         Assertions.assertThat(singletonObject.getClass()).isEqualTo(ComponentBeanWithoutDependencies.class);
         LOGGER.log(Level.INFO, String.format("Object type '%s' is equals to '%s'.", singletonObject.getClass().getName(), ComponentBeanWithoutDependencies.class.getName()));
         Assertions.assertThat(singletonObject.getClass().isAnnotationPresent(Service.class)).isTrue();
         LOGGER.log(Level.INFO, String.format("Annotation '%s' is present.", Service.class.getName()));
     }
-    
+
     @Test
-    public void findComponentAnnotationPresent(){
-        
+    public void findComponentAnnotationPresent() {
+
         Object componentObject = new PrototypeBeanWithoutDependencies();
-        
+
         Assertions.assertThat(componentObject.getClass()).isEqualTo(PrototypeBeanWithoutDependencies.class);
         LOGGER.log(Level.INFO, String.format("Object type '%s' is equals to '%s'.", componentObject.getClass().getName(), PrototypeBeanWithoutDependencies.class.getName()));
         Assertions.assertThat(componentObject.getClass().isAnnotationPresent(Component.class)).isTrue();
         LOGGER.log(Level.INFO, String.format("Annotation '%s' is present.", Component.class.getName()));
     }
-    
+
     @Test
-    public void findConfigurationAnnotationPresent(){
-        
+    public void findConfigurationAnnotationPresent() {
+
         Object configurationObject = new ConfigurationBeanWithoutDependency();
-        
+
         Assertions.assertThat(configurationObject.getClass()).isEqualTo(ConfigurationBeanWithoutDependency.class);
         LOGGER.log(Level.INFO, String.format("Object type '%s' is equals to '%s'.", configurationObject.getClass().getName(), ConfigurationBeanWithoutDependency.class.getName()));
         Assertions.assertThat(configurationObject.getClass().isAnnotationPresent(Configuration.class)).isTrue();

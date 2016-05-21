@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.mobile.agrestis.imputare.annotation;
 
+import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -31,4 +31,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.FIELD})
 public @interface Autowire {
 
+    String name() default AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
 }
