@@ -31,7 +31,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Parameter;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -178,8 +177,8 @@ public class AgrestisImputareContextInitializer {
 
         while (isConfigurationClazzListNotEmpty && isServiceClazzListNotEmpty && isComponentClazzListNotEmpty) {
             final Class<?> clazz = this.chooseAClazz(rotationQueue, isConfigurationClazzListNotEmpty, isServiceClazzListNotEmpty, isComponentClazzListNotEmpty);
-            final Constructor beanConstructor = this.getConstructor(clazz);
-            final Optional<Object> beanInstance = this.getBeanInstance(beanConstructor);
+            final Constructor beanConstructor = DIUtils.getConstructor(clazz);
+            final Optional<Object> beanInstance = BeaninstantiationUtils.getBeanInstance(this.store, beanConstructor);
             final Annotation annotation = BeanScanUtils.getBeanAnnotation(clazz);
             final String beanIdentifier = BeanScanUtils.getBeanIdentifier(clazz, annotation, annotation.annotationType().getDeclaredMethods());
 
@@ -253,57 +252,6 @@ public class AgrestisImputareContextInitializer {
         }
 
         return queue.remove();
-    }
-
-    private Constructor getConstructor(Class<?> clazz) throws ToManyInjectedConstructorsException, NoSuchMethodException {
-        ///< Constructor dependencies
-        List<Constructor> injectedConstructors = Arrays.asList(clazz.getConstructors()).stream().filter(constructor -> constructor.isAnnotationPresent(Autowire.class)).collect(Collectors.toList());
-
-        if (injectedConstructors.size() > 1) {
-            throw new ToManyInjectedConstructorsException(String.format("There are %d constructors injected. Only one is allowed.", injectedConstructors.size()));
-        }
-
-        if (!(injectedConstructors.isEmpty())) {
-            return injectedConstructors.get(0);
-        }
-
-        List<Constructor> annotatedParamsConstructor = Arrays.asList(clazz.getConstructors()).stream().filter(constructor -> Arrays.asList(constructor.getParameterAnnotations()).stream().filter(annotation -> annotation.getClass().equals(Autowire.class)).findFirst().isPresent()).collect(Collectors.toList());
-
-        if (annotatedParamsConstructor.size() > 1) {
-            throw new ToManyInjectedConstructorsException(String.format("There are %d constructors with injected parameters. Only one is allowed.", injectedConstructors.size()));
-        }
-
-        if (!(annotatedParamsConstructor.isEmpty())) {
-            return annotatedParamsConstructor.get(0);
-        }
-
-        return clazz.getConstructor();
-    }
-
-    private Optional<Object> getBeanInstance(Constructor beanConstructor) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        if (beanConstructor.getParameterCount() > 0) {
-            return Optional.of(beanConstructor.newInstance());
-        }
-        ///< If the constructor itself is annotated the names of the parameters will be the identifiers for the injection.
-        Boolean isNotCustomIdentifiers = (beanConstructor.getAnnotations().length > 0);
-
-        Object[] params = new Object[beanConstructor.getParameterCount()];
-
-        for (short index = 0; index < beanConstructor.getParameterCount(); ++index) {
-
-            Parameter currentParameter = beanConstructor.getParameters()[index];
-            String beanIdentifier = BeanScanUtils.getBeanIdentifier(currentParameter, !isNotCustomIdentifiers);
-
-            Optional<BeanDefinition> beanDefinition = this.store.stream().filter(beanDef -> beanDef.getIdentifier().equals(beanIdentifier)).findFirst();
-
-            if (!beanDefinition.isPresent()) {
-                return Optional.empty();
-            }
-
-            params[index] = beanDefinition.get().getInstance();
-        }
-
-        return Optional.of(beanConstructor.newInstance(params));
     }
 
     private List<Class<?>> filterSimpleBeansForSecondLevelIteration(List<Class<?>> clazzList) {

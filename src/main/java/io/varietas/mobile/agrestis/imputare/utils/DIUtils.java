@@ -15,7 +15,10 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
+import io.varietas.mobile.agrestis.imputare.annotation.Autowire;
+import io.varietas.mobile.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileVisitResult;
@@ -25,10 +28,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * <h1>DIUtils</h1>
@@ -47,7 +52,7 @@ public class DIUtils {
      * @return
      * @throws IOException
      */
-    public static List<Class<?>> searchClassesFromPackage(final Package packagePath) throws IOException, URISyntaxException {
+    public static final List<Class<?>> searchClassesFromPackage(final Package packagePath) throws IOException, URISyntaxException {
         final List<Class<?>> clazzList = new ArrayList<>(0);
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -64,7 +69,7 @@ public class DIUtils {
         return clazzList;
     }
 
-    private static List<Class<?>> walkFileTree(final String scannedPackage, final Path packagePath) throws IOException {
+    private static final List<Class<?>> walkFileTree(final String scannedPackage, final Path packagePath) throws IOException {
         final List<Class<?>> clazzList = new ArrayList<>();
 
         Files.walkFileTree(packagePath, new FileVisitor<Path>() {
@@ -109,11 +114,11 @@ public class DIUtils {
         return clazzList;
     }
 
-    private static String fullModifyPackageName(final String packageName) {
+    private static final String fullModifyPackageName(final String packageName) {
         return DIUtils.modifyPackageName(packageName).replace('.', '/');
     }
 
-    private static String modifyPackageName(final String packageName) {
+    private static final String modifyPackageName(final String packageName) {
         if (!packageName.contains(" ")) {
             return packageName;
         }
@@ -126,9 +131,34 @@ public class DIUtils {
 
         return temp;
     }
-    
-    private static String removeFileExtention(final String fileName){
+
+    private static final String removeFileExtention(final String fileName) {
         String temp = fileName;
         return temp.replace(".class", "");
+    }
+
+    public static final Constructor getConstructor(Class<?> clazz) throws ToManyInjectedConstructorsException, NoSuchMethodException {
+        ///< Constructor dependencies
+        List<Constructor> injectedConstructors = Arrays.asList(clazz.getConstructors()).stream().filter(constructor -> constructor.isAnnotationPresent(Autowire.class)).collect(Collectors.toList());
+
+        if (injectedConstructors.size() > 1) {
+            throw new ToManyInjectedConstructorsException(String.format("There are %d constructors injected. Only one is allowed.", injectedConstructors.size()));
+        }
+
+        if (!(injectedConstructors.isEmpty())) {
+            return injectedConstructors.get(0);
+        }
+
+        List<Constructor> annotatedParamsConstructor = Arrays.asList(clazz.getConstructors()).stream().filter(constructor -> Arrays.asList(constructor.getParameterAnnotations()).stream().filter(annotation -> annotation.getClass().equals(Autowire.class)).findFirst().isPresent()).collect(Collectors.toList());
+
+        if (annotatedParamsConstructor.size() > 1) {
+            throw new ToManyInjectedConstructorsException(String.format("There are %d constructors with injected parameters. Only one is allowed.", injectedConstructors.size()));
+        }
+
+        if (!(annotatedParamsConstructor.isEmpty())) {
+            return annotatedParamsConstructor.get(0);
+        }
+
+        return clazz.getConstructor();
     }
 }

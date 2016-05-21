@@ -20,9 +20,11 @@ import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
 import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
 import io.varietas.mobile.agrestis.imputare.contant.AnnotationMethodIndices;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,5 +50,31 @@ public class BeaninstantiationUtils {
         }
 
         return Optional.ofNullable(store.stream().filter(beanDefinition -> beanDefinition.getIdentifier().equals(identifier)).findFirst().get());
+    }
+
+    public static final Optional<Object> getBeanInstance(final List<BeanDefinition> store, Constructor beanConstructor) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+        if (beanConstructor.getParameterCount() > 0) {
+            return Optional.of(beanConstructor.newInstance());
+        }
+        ///< If the constructor itself is annotated the names of the parameters will be the identifiers for the injection.
+        Boolean isNotCustomIdentifiers = (beanConstructor.getAnnotations().length > 0);
+
+        Object[] params = new Object[beanConstructor.getParameterCount()];
+
+        for (short index = 0; index < beanConstructor.getParameterCount(); ++index) {
+
+            Parameter currentParameter = beanConstructor.getParameters()[index];
+            String beanIdentifier = BeanScanUtils.getBeanIdentifier(currentParameter, !isNotCustomIdentifiers);
+
+            Optional<BeanDefinition> beanDefinition = store.stream().filter(beanDef -> beanDef.getIdentifier().equals(beanIdentifier)).findFirst();
+
+            if (!beanDefinition.isPresent()) {
+                return Optional.empty();
+            }
+
+            params[index] = beanDefinition.get().getInstance();
+        }
+
+        return Optional.of(beanConstructor.newInstance(params));
     }
 }
