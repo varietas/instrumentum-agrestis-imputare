@@ -15,6 +15,11 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
+import io.varietas.mobile.agrestis.imputare.environments.model.diutils.SimpleBeanWithAnnotatedConstructor2;
+import io.varietas.mobile.agrestis.imputare.environments.model.diutils.SimpleBeanWithAnnotatedConstructor1;
+import io.varietas.mobile.agrestis.imputare.environments.model.diutils.NoInjectedConstructorClass1;
+import io.varietas.mobile.agrestis.imputare.environments.model.diutils.ToManyInjectionsClass1;
+import io.varietas.mobile.agrestis.imputare.environments.model.diutils.ToManyInjectionsClass2;
 import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleComponentBean1;
 import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleComponentBean2;
 import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleComponentBean3;
@@ -24,7 +29,9 @@ import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.Simpl
 import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleServiceBean1;
 import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleServiceBean2;
 import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleServiceBean3;
+import io.varietas.mobile.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,25 +51,65 @@ public class DIUtilsTests {
 
     @Test
     public void searchClassesFromPackage() throws URISyntaxException, IOException {
-        
-        List<Class<?>> testClazzes = new ArrayList<Class<?>>(){{
-            add(SimpleComponentBean1.class);
-            add(SimpleComponentBean2.class);
-            add(SimpleComponentBean3.class);
-            add(SimpleConfigurationBean1.class);
-            add(SimpleConfigurationBean2.class);
-            add(SimpleConfigurationBean3.class);
-            add(SimpleServiceBean1.class);
-            add(SimpleServiceBean2.class);
-            add(SimpleServiceBean3.class);
-        }};
-        
+
+        List<Class<?>> testClazzes = new ArrayList<Class<?>>() {
+            {
+                add(SimpleComponentBean1.class);
+                add(SimpleComponentBean2.class);
+                add(SimpleComponentBean3.class);
+                add(SimpleConfigurationBean1.class);
+                add(SimpleConfigurationBean2.class);
+                add(SimpleConfigurationBean3.class);
+                add(SimpleServiceBean1.class);
+                add(SimpleServiceBean2.class);
+                add(SimpleServiceBean3.class);
+            }
+        };
+
         LOGGER.info(String.format("Package '%s' will scanned.", testClazzes.get(0).getPackage().toString()));
         List<Class<?>> clazzList = DIUtils.searchClassesFromPackage(testClazzes.get(0).getPackage());
-        
+
         Assertions.assertThat(clazzList).hasSize(9);
         LOGGER.info(String.format("%d classes located", clazzList.size()));
         Assertions.assertThat(clazzList).hasSameElementsAs(testClazzes);
         LOGGER.info("List of located classes contains all expected classes.");
     }
+
+    @Test(expected = ToManyInjectedConstructorsException.class)
+    public void getConstructorToMannyInjectedConstructor() throws ToManyInjectedConstructorsException, NoSuchMethodException {
+        DIUtils.getConstructor(ToManyInjectionsClass1.class);
+    }
+
+    @Test(expected = ToManyInjectedConstructorsException.class)
+    public void getConstructorToMannyInjectedParameter() throws ToManyInjectedConstructorsException, NoSuchMethodException {
+        DIUtils.getConstructor(ToManyInjectionsClass2.class);
+    }
+
+    @Test
+    public void getConstructorNoInjectedConstructor() throws ToManyInjectedConstructorsException, NoSuchMethodException {
+        Constructor standardConstructor = DIUtils.getConstructor(NoInjectedConstructorClass1.class);
+
+        Assertions.assertThat(standardConstructor).isNotNull();
+        Assertions.assertThat(standardConstructor.getParameterCount()).isEqualTo(0);
+        LOGGER.info(String.format("Constructor '%s' is not injected and has %d parameters", standardConstructor.getName(), standardConstructor.getParameterCount()));
+    }
+
+    @Test
+    public void getConstructorWithInjectedConstructor() throws ToManyInjectedConstructorsException, NoSuchMethodException {
+        Constructor injectedConstructor = DIUtils.getConstructor(SimpleBeanWithAnnotatedConstructor1.class);
+
+        Assertions.assertThat(injectedConstructor).isNotNull();
+        Assertions.assertThat(injectedConstructor.getParameterCount()).isEqualTo(1);
+        LOGGER.info(String.format("Constructor '%s' is not injected and has %d parameters", injectedConstructor.getName(), injectedConstructor.getParameterCount()));
+    }
+
+    @Test
+    public void getConstructorWithInjectedParameterConstructor() throws ToManyInjectedConstructorsException, NoSuchMethodException {
+        Constructor injectedConstructor = DIUtils.getConstructor(SimpleBeanWithAnnotatedConstructor2.class);
+
+        Assertions.assertThat(injectedConstructor).isNotNull();
+        Assertions.assertThat(injectedConstructor.getParameterCount()).isEqualTo(1);
+        LOGGER.info(String.format("Constructor '%s' is not injected and has %d parameters", injectedConstructor.getName(), injectedConstructor.getParameterCount()));
+    }
+
 }

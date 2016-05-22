@@ -51,6 +51,7 @@ public class DIUtils {
      * @param packagePath
      * @return
      * @throws IOException
+     * @throws java.net.URISyntaxException
      */
     public static final List<Class<?>> searchClassesFromPackage(final Package packagePath) throws IOException, URISyntaxException {
         final List<Class<?>> clazzList = new ArrayList<>(0);
@@ -69,7 +70,32 @@ public class DIUtils {
         return clazzList;
     }
 
-    private static final List<Class<?>> walkFileTree(final String scannedPackage, final Path packagePath) throws IOException {
+    public static final Constructor getConstructor(Class<?> clazz) throws ToManyInjectedConstructorsException, NoSuchMethodException {
+        ///< Constructor dependencies
+        List<Constructor> injectedConstructors = Arrays.asList(clazz.getConstructors()).stream().filter(constructor -> constructor.isAnnotationPresent(Autowire.class)).collect(Collectors.toList());
+
+        if (injectedConstructors.size() > 1) {
+            throw new ToManyInjectedConstructorsException(String.format("There are %d constructors injected. Only one is allowed.", injectedConstructors.size()));
+        }
+
+        if (!(injectedConstructors.isEmpty())) {
+            return injectedConstructors.get(0);
+        }
+
+        List<Constructor> annotatedParamsConstructor = Arrays.asList(clazz.getConstructors()).stream().filter(constructor -> Arrays.asList(constructor.getParameters()).stream().filter(parameter -> parameter.isAnnotationPresent(Autowire.class)).findFirst().isPresent()).collect(Collectors.toList());
+
+        if (annotatedParamsConstructor.size() > 1) {
+            throw new ToManyInjectedConstructorsException(String.format("There are %d constructors with injected parameters. Only one is allowed.", injectedConstructors.size()));
+        }
+
+        if (!(annotatedParamsConstructor.isEmpty())) {
+            return annotatedParamsConstructor.get(0);
+        }
+
+        return clazz.getConstructor();
+    }
+
+    private static List<Class<?>> walkFileTree(final String scannedPackage, final Path packagePath) throws IOException {
         final List<Class<?>> clazzList = new ArrayList<>();
 
         Files.walkFileTree(packagePath, new FileVisitor<Path>() {
@@ -114,11 +140,11 @@ public class DIUtils {
         return clazzList;
     }
 
-    private static final String fullModifyPackageName(final String packageName) {
+    private static String fullModifyPackageName(final String packageName) {
         return DIUtils.modifyPackageName(packageName).replace('.', '/');
     }
 
-    private static final String modifyPackageName(final String packageName) {
+    private static String modifyPackageName(final String packageName) {
         if (!packageName.contains(" ")) {
             return packageName;
         }
@@ -132,33 +158,9 @@ public class DIUtils {
         return temp;
     }
 
-    private static final String removeFileExtention(final String fileName) {
+    private static String removeFileExtention(final String fileName) {
         String temp = fileName;
         return temp.replace(".class", "");
     }
 
-    public static final Constructor getConstructor(Class<?> clazz) throws ToManyInjectedConstructorsException, NoSuchMethodException {
-        ///< Constructor dependencies
-        List<Constructor> injectedConstructors = Arrays.asList(clazz.getConstructors()).stream().filter(constructor -> constructor.isAnnotationPresent(Autowire.class)).collect(Collectors.toList());
-
-        if (injectedConstructors.size() > 1) {
-            throw new ToManyInjectedConstructorsException(String.format("There are %d constructors injected. Only one is allowed.", injectedConstructors.size()));
-        }
-
-        if (!(injectedConstructors.isEmpty())) {
-            return injectedConstructors.get(0);
-        }
-
-        List<Constructor> annotatedParamsConstructor = Arrays.asList(clazz.getConstructors()).stream().filter(constructor -> Arrays.asList(constructor.getParameterAnnotations()).stream().filter(annotation -> annotation.getClass().equals(Autowire.class)).findFirst().isPresent()).collect(Collectors.toList());
-
-        if (annotatedParamsConstructor.size() > 1) {
-            throw new ToManyInjectedConstructorsException(String.format("There are %d constructors with injected parameters. Only one is allowed.", injectedConstructors.size()));
-        }
-
-        if (!(annotatedParamsConstructor.isEmpty())) {
-            return annotatedParamsConstructor.get(0);
-        }
-
-        return clazz.getConstructor();
-    }
 }
