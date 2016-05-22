@@ -13,23 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.mobile.agrestis.imputare.annotation;
+package io.varietas.mobile.agrestis.imputare.environments.model.beanscanutils;
 
-import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.varietas.mobile.agrestis.imputare.annotation.Autowire;
 
 /**
- * <h1>Autowire</h1>
+ * <h1>SimpleBeanWithAnnotatedConstructor1</h1>
  *
  * @author Michael Rhöse
- * @since Mo, Mai 9, 2016
+ * @since So, Mai 22, 2016
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})
-public @interface Autowire {
+public class SimpleBeanWithAnnotatedConstructor1 {
 
-    String[] value() default AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
+    private int intValue;
+
+    public SimpleBeanWithAnnotatedConstructor1(@Autowire("intBeanValue") int intValue) {
+        this.intValue = intValue;
+    }
+
+    public int getIntValue() {
+        return intValue;
+    }
 }

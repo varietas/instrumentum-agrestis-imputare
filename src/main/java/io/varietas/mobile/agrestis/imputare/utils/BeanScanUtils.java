@@ -42,11 +42,8 @@ import java.util.Optional;
 public class BeanScanUtils {
 
     public static final String getBeanIdentifier(Field field) {
-        ///< TODO: Get bean name of the autowired field bean
-        if (!field.isAnnotationPresent(Autowire.class)) {
-            return field.getName();
-        }
-        String name = field.getAnnotation(Autowire.class).annotationType().getName();
+        Autowire autowire = (Autowire) field.getAnnotation(Autowire.class);
+        String name = autowire.value()[0];
 
         if (!name.equals(AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT)) {
             return name;
@@ -55,38 +52,38 @@ public class BeanScanUtils {
         return field.getName();
     }
 
-    public static final String getBeanIdentifier(Parameter parameter, Boolean isCustomIdentifier) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        if (!isCustomIdentifier) {
-            return parameter.getName();
-        }
-
-        if (!parameter.isAnnotationPresent(Autowire.class)) {
-            return parameter.getName();
-        }
-
-        Annotation autowireAnnotation = parameter.getAnnotation(Autowire.class);
-        Method[] methods = autowireAnnotation.annotationType().getDeclaredMethods();
-        return (String) methods[AnnotationMethodIndices.NAME].invoke(autowireAnnotation);
+    public static final String getBeanIdentifier(Parameter parameter) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Autowire autowireAnnotation = (Autowire) parameter.getAnnotation(Autowire.class);
+        return autowireAnnotation.value()[0];
     }
 
-    public static final String getBeanIdentifier(final Class<?> beanClazz, final Annotation annotation, final Method[] methods) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static final String getBeanIdentifier(final Class<?> beanClazz, final Annotation annotation) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        final Method[] methods = annotation.annotationType().getDeclaredMethods();
         return BeanDefinitionUtils.formatIdentifier((String) methods[AnnotationMethodIndices.NAME].invoke(annotation), beanClazz.getSimpleName());
     }
 
-    public static final BeanScopes getBeanScope(final Annotation annotation, final Method[] methods) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static final String[] getBeanIdentifiers(Constructor constructor) {
+        Autowire constructorAnnotation = (Autowire) constructor.getAnnotation(Autowire.class);
+        return constructorAnnotation.value();
+    }
+
+    public static final BeanScopes getBeanScope(final Annotation annotation) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        final Method[] methods = annotation.annotationType().getDeclaredMethods();
         return ((BeanScopes) methods[AnnotationMethodIndices.SCOPE].invoke(annotation));
     }
 
     public static final Annotation getBeanAnnotation(final Class<?> clazz) throws IOException, URISyntaxException {
         List<Class<?>> annotationClazzes = DIUtils.searchClassesFromPackage(Bean.class.getPackage());
-
         Optional<Class<?>> res = annotationClazzes.stream().filter(annotationClazz -> clazz.isAnnotationPresent((Class<? extends Annotation>) annotationClazz)).findFirst();
-
         return clazz.getAnnotation((Class<? extends Annotation>) res.get());
     }
 
     public static Optional<Constructor> getSpecifiedConstructor(Class<?> clazz, ConstructorTypes constructorType) {
         List<Constructor> constructors = Arrays.asList(clazz.getConstructors());
+
+        if (constructorType.equals(ConstructorTypes.PARAMETERISED)) {
+            return Optional.empty();
+        }
 
         switch (constructorType) {
             case STANDARD:
@@ -94,7 +91,7 @@ public class BeanScanUtils {
                 return constructors.stream().filter(constructor -> constructor.getParameterCount() == 0).findFirst();
             case COPY:
                 ///< Copy
-                return constructors.stream().filter(constructor -> constructor.getParameterCount() == 1 && constructor.getParameters()[1].getType().equals(clazz)).findFirst();
+                return constructors.stream().filter(constructor -> constructor.getParameterCount() == 1 && constructor.getParameters()[0].getType().equals(clazz)).findFirst();
             default:
                 ///< Injected
                 return constructors.stream().filter(constructor -> constructor.isAnnotationPresent(Autowire.class)).findFirst();

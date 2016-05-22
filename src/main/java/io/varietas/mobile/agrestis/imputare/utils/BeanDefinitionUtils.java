@@ -27,7 +27,6 @@ import io.varietas.mobile.agrestis.imputare.enumeration.ConstructorTypes;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -66,15 +65,8 @@ public class BeanDefinitionUtils {
 
     public static BeanDefinition createBeanInformationSimple(final Class<?> beanClazz, Class<? extends Annotation> annotationClass) throws NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Annotation annotation = beanClazz.getAnnotation(annotationClass);
-        Method[] methods = annotation.annotationType().getDeclaredMethods();
-        String identifier = AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
-        BeanScopes scope = BeanScopes.SINGELTON;
-        try {
-            identifier = BeanScanUtils.getBeanIdentifier(beanClazz, annotation, methods);
-            scope = BeanScanUtils.getBeanScope(annotation, methods);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            LOGGER.log(Level.SEVERE, String.format("Method '%s' of annotation '%s' could not invoked.", methods[2].getName(), annotation.getClass().getSimpleName()), ex);
-        }
+        String identifier = BeanScanUtils.getBeanIdentifier(beanClazz, annotation);
+        BeanScopes scope = BeanScanUtils.getBeanScope(annotation);
 
         Optional contructor = BeanScanUtils.getSpecifiedConstructor(beanClazz, ConstructorTypes.STANDARD);
         if (!contructor.isPresent()) {

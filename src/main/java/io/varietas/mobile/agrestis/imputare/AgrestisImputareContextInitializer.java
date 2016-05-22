@@ -180,7 +180,7 @@ public class AgrestisImputareContextInitializer {
             final Constructor beanConstructor = DIUtils.getConstructor(clazz);
             final Optional<Object> beanInstance = BeaninstantiationUtils.getBeanInstance(this.store, beanConstructor);
             final Annotation annotation = BeanScanUtils.getBeanAnnotation(clazz);
-            final String beanIdentifier = BeanScanUtils.getBeanIdentifier(clazz, annotation, annotation.annotationType().getDeclaredMethods());
+            final String beanIdentifier = BeanScanUtils.getBeanIdentifier(clazz, annotation);
 
             if (!beanInstance.isPresent()) {
                 rotationQueue.add(clazz);

@@ -56,15 +56,23 @@ public class BeaninstantiationUtils {
         if (beanConstructor.getParameterCount() > 0) {
             return Optional.of(beanConstructor.newInstance());
         }
-        ///< If the constructor itself is annotated the names of the parameters will be the identifiers for the injection.
-        Boolean isNotCustomIdentifiers = (beanConstructor.getAnnotations().length > 0);
+        ///< If the constructor itself is annotated the names from the annotatio will used.
+        ///< TODO: Replace later with parameter names (not possible at this moment).
+        Boolean isConstructorAnnotatedIdentifiers = (beanConstructor.isAnnotationPresent(Autowire.class));
 
         Object[] params = new Object[beanConstructor.getParameterCount()];
 
         for (short index = 0; index < beanConstructor.getParameterCount(); ++index) {
 
             Parameter currentParameter = beanConstructor.getParameters()[index];
-            String beanIdentifier = BeanScanUtils.getBeanIdentifier(currentParameter, !isNotCustomIdentifiers);
+
+            String beanIdentifier;
+
+            if (isConstructorAnnotatedIdentifiers) {
+                beanIdentifier = BeanScanUtils.getBeanIdentifiers(beanConstructor)[index];
+            } else {
+                beanIdentifier = BeanScanUtils.getBeanIdentifier(currentParameter);
+            }
 
             Optional<BeanDefinition> beanDefinition = store.stream().filter(beanDef -> beanDef.getIdentifier().equals(beanIdentifier)).findFirst();
 
