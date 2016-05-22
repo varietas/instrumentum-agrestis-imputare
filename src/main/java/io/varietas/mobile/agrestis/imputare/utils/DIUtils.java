@@ -53,21 +53,33 @@ public class DIUtils {
      * @throws IOException
      * @throws java.net.URISyntaxException
      */
-    public static final List<Class<?>> searchClassesFromPackage(final Package packagePath) throws IOException, URISyntaxException {
+    public static final List<Class<?>> searchClassesFromPackage(final String packagePath) throws IOException, URISyntaxException {
         final List<Class<?>> clazzList = new ArrayList<>(0);
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        String path = DIUtils.fullModifyPackageName(packagePath.toString());
+        String path = DIUtils.fullModifyPackageName(packagePath);
 
         Enumeration<URL> resources = classLoader.getResources(path);
 
         while (resources.hasMoreElements()) {
             URL res = resources.nextElement();
 
-            clazzList.addAll(DIUtils.walkFileTree(DIUtils.modifyPackageName(packagePath.toString()), Paths.get(res.toURI())));
+            clazzList.addAll(DIUtils.walkFileTree(DIUtils.modifyPackageName(packagePath), Paths.get(res.toURI())));
         }
 
         return clazzList;
+    }
+
+    /**
+     * It is searching all classes from a given package. This method walks the complete file tree down and collects all classes.
+     *
+     * @param packagePath
+     * @return
+     * @throws IOException
+     * @throws java.net.URISyntaxException
+     */
+    public static final List<Class<?>> searchClassesFromPackage(final Package packagePath) throws IOException, URISyntaxException {
+        return DIUtils.searchClassesFromPackage(packagePath.toString());
     }
 
     public static final Constructor getConstructor(Class<?> clazz) throws ToManyInjectedConstructorsException, NoSuchMethodException {
