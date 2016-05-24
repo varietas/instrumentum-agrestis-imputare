@@ -24,7 +24,7 @@ import io.varietas.mobile.agrestis.imputare.error.RecursiveInjectionException;
 import io.varietas.mobile.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import io.varietas.mobile.agrestis.imputare.utils.BeanDefinitionUtils;
 import io.varietas.mobile.agrestis.imputare.utils.BeanScanUtils;
-import io.varietas.mobile.agrestis.imputare.utils.BeaninstantiationUtils;
+import io.varietas.mobile.agrestis.imputare.utils.BeanInstantiationUtils;
 import io.varietas.mobile.agrestis.imputare.utils.DIUtils;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -178,7 +178,7 @@ public class AgrestisImputareContextInitializer {
         while (isConfigurationClazzListNotEmpty && isServiceClazzListNotEmpty && isComponentClazzListNotEmpty) {
             final Class<?> clazz = this.chooseAClazz(rotationQueue, isConfigurationClazzListNotEmpty, isServiceClazzListNotEmpty, isComponentClazzListNotEmpty);
             final Constructor beanConstructor = DIUtils.getConstructor(clazz);
-            final Optional<Object> beanInstance = BeaninstantiationUtils.getBeanInstance(this.store, beanConstructor);
+            final Optional<Object> beanInstance = BeanInstantiationUtils.getBeanInstance(this.store, beanConstructor);
             final Annotation annotation = BeanScanUtils.getBeanAnnotation(clazz);
             final String beanIdentifier = BeanScanUtils.getBeanIdentifier(clazz, annotation);
 
@@ -212,7 +212,7 @@ public class AgrestisImputareContextInitializer {
                 continue;
             }
 
-            Optional beanForField = BeaninstantiationUtils.getBeanInstance(this.store, field);
+            Optional beanForField = BeanInstantiationUtils.getBeanInstance(this.store, field);
 
             if (!beanForField.isPresent()) {
                 field.setAccessible(false);

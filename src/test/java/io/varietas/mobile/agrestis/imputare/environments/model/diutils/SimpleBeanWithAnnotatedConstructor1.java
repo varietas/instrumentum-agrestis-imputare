@@ -16,6 +16,7 @@
 package io.varietas.mobile.agrestis.imputare.environments.model.diutils;
 
 import io.varietas.mobile.agrestis.imputare.annotation.Autowire;
+import io.varietas.mobile.agrestis.imputare.annotation.Component;
 
 /**
  * <h1>SimpleBeanWithAnnotatedConstructor1</h1>
@@ -23,6 +24,7 @@ import io.varietas.mobile.agrestis.imputare.annotation.Autowire;
  * @author Michael Rhöse
  * @since So, Mai 22, 2016
  */
+@Component
 public class SimpleBeanWithAnnotatedConstructor1 {
 
     private int intValue;
