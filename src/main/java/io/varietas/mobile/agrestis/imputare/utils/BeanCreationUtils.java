@@ -27,12 +27,12 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * <h1>BeanInstantiationUtils</h1>
+ * <h1>BeanCreationUtils</h1>
  *
  * @author Michael Rhöse
- * @since Sa, Mai 21, 2016
+ * @since Di, Mai 24, 2016
  */
-public class BeanInstantiationUtils {
+public class BeanCreationUtils {
 
     public static final Optional<Object> getBeanInstance(final List<BeanDefinition> store, final Field field) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InstantiationException {
 

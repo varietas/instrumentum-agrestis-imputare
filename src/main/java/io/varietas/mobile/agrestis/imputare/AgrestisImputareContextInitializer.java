@@ -22,9 +22,9 @@ import io.varietas.mobile.agrestis.imputare.annotation.Service;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
 import io.varietas.mobile.agrestis.imputare.error.RecursiveInjectionException;
 import io.varietas.mobile.agrestis.imputare.error.ToManyInjectedConstructorsException;
+import io.varietas.mobile.agrestis.imputare.utils.BeanCreationUtils;
 import io.varietas.mobile.agrestis.imputare.utils.BeanDefinitionUtils;
 import io.varietas.mobile.agrestis.imputare.utils.BeanScanUtils;
-import io.varietas.mobile.agrestis.imputare.utils.BeanInstantiationUtils;
 import io.varietas.mobile.agrestis.imputare.utils.DIUtils;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -178,7 +178,7 @@ public class AgrestisImputareContextInitializer {
         while (isConfigurationClazzListNotEmpty && isServiceClazzListNotEmpty && isComponentClazzListNotEmpty) {
             final Class<?> clazz = this.chooseAClazz(rotationQueue, isConfigurationClazzListNotEmpty, isServiceClazzListNotEmpty, isComponentClazzListNotEmpty);
             final Constructor beanConstructor = DIUtils.getConstructor(clazz);
-            final Optional<Object> beanInstance = BeanInstantiationUtils.getBeanInstance(this.store, beanConstructor);
+            final Optional<Object> beanInstance = BeanCreationUtils.getBeanInstance(this.store, beanConstructor);
             final Annotation annotation = BeanScanUtils.getBeanAnnotation(clazz);
             final String beanIdentifier = BeanScanUtils.getBeanIdentifier(clazz, annotation);
 
@@ -194,7 +194,7 @@ public class AgrestisImputareContextInitializer {
         }
     }
 
-    private void fieldDependencyInjection(final Queue<Class<?>> rotationQueue, List<Field> fields, final Optional<Object> beanInstance, final Class<?> clazz, final String beanIdentifier) throws RecursiveInjectionException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+    private void fieldDependencyInjection(final Queue<Class<?>> rotationQueue, List<Field> fields, final Optional<Object> beanInstance, final Class<?> clazz, final String beanIdentifier) throws RecursiveInjectionException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, InstantiationException {
         for (Field field : fields) {
             String fieldBeanIdentifier = BeanScanUtils.getBeanIdentifier(field);
             ///< TODO: Get current bean identifier to test for recursive init
@@ -212,7 +212,7 @@ public class AgrestisImputareContextInitializer {
                 continue;
             }
 
-            Optional beanForField = BeanInstantiationUtils.getBeanInstance(this.store, field);
+            Optional beanForField = BeanCreationUtils.getBeanInstance(this.store, field);
 
             if (!beanForField.isPresent()) {
                 field.setAccessible(false);

@@ -46,15 +46,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * <h1>BeanInstantiationUtilsTests</h1>
+ * <h1>BeanCreationUtilsTests</h1>
  *
  * @author Michael Rhöse
  * @since Di, Mai 24, 2016
  */
 @RunWith(JUnit4.class)
-public class BeanInstantiationUtilsTests {
+public class BeanCreationUtilsTests {
 
-    private static final Logger LOGGER = Logger.getLogger(BeanInstantiationUtilsTests.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(BeanCreationUtilsTests.class.getSimpleName());
 
     private List<BeanDefinition> store;
 
@@ -81,7 +81,7 @@ public class BeanInstantiationUtilsTests {
         LOGGER.info(String.format("%d fields located | %d fields expected", loadedFields.length, 9));
 
         for (Field field : loadedFields) {
-            Optional<Object> beanInstance = BeanInstantiationUtils.getBeanInstance(store, field);
+            Optional<Object> beanInstance = BeanCreationUtils.getBeanInstance(store, field);
 
             Assertions.assertThat(beanInstance.isPresent()).isTrue();
             LOGGER.info(String.format("Bean for field name '%s' located.", field.getName()));
@@ -96,7 +96,7 @@ public class BeanInstantiationUtilsTests {
         Assertions.assertThat(constructor.isPresent()).isTrue();
         LOGGER.info("Annotated constructor located");
 
-        Optional beanInstance = BeanInstantiationUtils.getBeanInstance(this.store, constructor.get());
+        Optional beanInstance = BeanCreationUtils.getBeanInstance(this.store, constructor.get());
 
         Assertions.assertThat(beanInstance.isPresent()).isTrue();
         Assertions.assertThat(beanInstance.get().getClass()).isEqualTo(ClassWithBeansInConstructor.class);
