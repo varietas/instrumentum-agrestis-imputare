@@ -100,7 +100,7 @@ public class DIUtilsTests {
 
         Assertions.assertThat(injectedConstructor).isNotNull();
         Assertions.assertThat(injectedConstructor.getParameterCount()).isEqualTo(1);
-        LOGGER.info(String.format("Constructor '%s' is not injected and has %d parameters", injectedConstructor.getName(), injectedConstructor.getParameterCount()));
+        LOGGER.info(String.format("Constructor '%s' is injected and has %d parameters", injectedConstructor.getName(), injectedConstructor.getParameterCount()));
     }
 
     @Test
@@ -109,7 +109,7 @@ public class DIUtilsTests {
 
         Assertions.assertThat(injectedConstructor).isNotNull();
         Assertions.assertThat(injectedConstructor.getParameterCount()).isEqualTo(1);
-        LOGGER.info(String.format("Constructor '%s' is not injected and has %d parameters", injectedConstructor.getName(), injectedConstructor.getParameterCount()));
+        LOGGER.info(String.format("Constructor '%s' is injected and has %d parameters", injectedConstructor.getName(), injectedConstructor.getParameterCount()));
     }
 
 }
