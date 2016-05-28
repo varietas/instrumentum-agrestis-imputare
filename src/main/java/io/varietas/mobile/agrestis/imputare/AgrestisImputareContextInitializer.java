@@ -113,7 +113,14 @@ public class AgrestisImputareContextInitializer {
         this.init();
 
         context.addContextDefinition(contectDefinition);
-        context.addBeanDefinitions((BeanDefinition[]) this.store.toArray());
+
+        final BeanDefinition[] convertedStore = new BeanDefinition[this.store.size()];
+
+        for (int index = 0; index < this.store.size(); ++index) {
+            convertedStore[index] = this.store.get(index);
+        }
+
+        context.addBeanDefinitions(convertedStore);
 
         return context;
     }

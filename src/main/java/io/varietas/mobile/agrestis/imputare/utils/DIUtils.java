@@ -17,6 +17,7 @@ package io.varietas.mobile.agrestis.imputare.utils;
 
 import io.varietas.mobile.agrestis.imputare.annotation.Autowire;
 import io.varietas.mobile.agrestis.imputare.error.ToManyInjectedConstructorsException;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URISyntaxException;
@@ -127,7 +128,7 @@ public class DIUtils {
                 }
                 try {
                     LOGGER.log(Level.FINEST, String.format("  -> [ACCEPTED] %s", file.getFileName().toString()));
-                    clazzList.add(Class.forName(scannedPackage + '.' + DIUtils.removeFileExtention(file.toFile().getName())));
+                    clazzList.add(Class.forName(DIUtils.clazzName(scannedPackage, file.toString())));
                 } catch (ClassNotFoundException ex) {
                     LOGGER.log(Level.SEVERE, null, ex);
                     return FileVisitResult.CONTINUE;
@@ -170,9 +171,15 @@ public class DIUtils {
         return temp;
     }
 
-    private static String removeFileExtention(final String fileName) {
+    private static String cleanFileName(final String fileName) {
         String temp = fileName;
-        return temp.replace(".class", "");
+        return temp.replace(File.separatorChar, '.').replace(".class", "");
     }
 
+    private static String clazzName(final String scannedPackage, String relativeFilePath) {
+        String convertedFileName = DIUtils.cleanFileName(relativeFilePath);
+        int index = convertedFileName.indexOf(scannedPackage);
+
+        return convertedFileName.substring(index);
+    }
 }
