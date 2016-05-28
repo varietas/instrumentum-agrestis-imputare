@@ -20,6 +20,8 @@ import io.varietas.mobile.agrestis.imputare.annotation.Component;
 import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
 import io.varietas.mobile.agrestis.imputare.annotation.Service;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
+import io.varietas.mobile.agrestis.imputare.container.SingletonBeanDefinition;
+import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
 import io.varietas.mobile.agrestis.imputare.error.RecursiveInjectionException;
 import io.varietas.mobile.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import io.varietas.mobile.agrestis.imputare.utils.BeanCreationUtils;
@@ -70,9 +72,6 @@ public class AgrestisImputareContextInitializer {
     ///< List of component classes
     private final List<Class<?>> componentClazzes;
 
-    ///< List of bean classes
-    private final List<Class<?>> beanClazzes;
-
     private final Map<Class<? extends Annotation>, List<Class<?>>> filteredClazzes;
 
     private final List<BeanDefinition> store;
@@ -95,7 +94,6 @@ public class AgrestisImputareContextInitializer {
         this.configurationClazzes = new ArrayList<>(0);
         this.serviceClazzes = new ArrayList<>(0);
         this.componentClazzes = new ArrayList<>(0);
-        this.beanClazzes = new ArrayList<>(0);
 
         this.filteredClazzes = new HashMap<>();
 
@@ -104,10 +102,18 @@ public class AgrestisImputareContextInitializer {
         this.applicationClazz = applicationClazz;
     }
 
-    public AgrestisImputareContext initializeContext() throws IllegalArgumentException, URISyntaxException, IOException, ToManyInjectedConstructorsException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, RecursiveInjectionException {
-        AgrestisImputareContextImpl context = new AgrestisImputareContextImpl();
+    public final AgrestisImputareContext initializeContext() throws IllegalArgumentException, URISyntaxException, IOException, ToManyInjectedConstructorsException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, RecursiveInjectionException {
+
+        final AgrestisImputareContextImpl context = new AgrestisImputareContextImpl();
+
+        final BeanDefinition contectDefinition = new SingletonBeanDefinition(context, "applicationContext", BeanScopes.SINGELTON, AgrestisImputareContext.class, AgrestisImputareContextImpl.class.getConstructor());
+
+        this.store.add(contectDefinition);
 
         this.init();
+
+        context.addContextDefinition(contectDefinition);
+        context.addBeanDefinitions((BeanDefinition[]) this.store.toArray());
 
         return context;
     }

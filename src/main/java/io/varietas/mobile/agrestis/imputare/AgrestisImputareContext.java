@@ -15,6 +15,8 @@
  */
 package io.varietas.mobile.agrestis.imputare;
 
+import java.util.Optional;
+
 /**
  * <h1>AgrestisImputareContext</h1>
  *
@@ -23,7 +25,9 @@ package io.varietas.mobile.agrestis.imputare;
  */
 public interface AgrestisImputareContext {
 
-    public <T> T getBean(Class<T> beanClazz);
+    public <T> Optional<T> getBean(Class<T> beanClazz);
 
-    public <T> T getBean(String beanIdentifier, Class<T> beanClazz);
+    public <T> Optional<T> getBean(String beanIdentifier, Class<T> targetType);
+
+    public Optional<AgrestisImputareContext> getContext();
 }

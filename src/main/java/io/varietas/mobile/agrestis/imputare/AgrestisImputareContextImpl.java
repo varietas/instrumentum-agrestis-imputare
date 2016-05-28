@@ -13,8 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.mobile.agrestis.imputare;
+
+import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
+import io.varietas.mobile.agrestis.imputare.error.BeanLoadException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * <h1>AgrestisImputareContextImpl</h1>
@@ -24,14 +34,61 @@ package io.varietas.mobile.agrestis.imputare;
  */
 public class AgrestisImputareContextImpl implements AgrestisImputareContext {
 
-    @Override
-    public <T> T getBean(Class<T> beanClazz) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private static final Logger LOGGER = Logger.getLogger(AgrestisImputareContextImpl.class.getSimpleName());
+
+    private BeanDefinition[] store;
+
+    private BeanDefinition contextDefinition;
+
+    public AgrestisImputareContextImpl() {
     }
 
     @Override
-    public <T> T getBean(String beanIdentifier, Class<T> beanClazz) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public <T> Optional<T> getBean(Class<T> beanClazz) {
+        return this.getBean(bean -> bean.getBeanClass().equals(beanClazz), beanClazz, beanClazz.getSimpleName(), "class");
     }
 
+    @Override
+    public <T> Optional<T> getBean(String beanIdentifier, Class<T> targetType) {
+        return this.getBean(bean -> bean.getIdentifier().equals(beanIdentifier), targetType, beanIdentifier, "identifier");
+    }
+
+    @Override
+    public Optional<AgrestisImputareContext> getContext() {
+        try {
+            return Optional.of((AgrestisImputareContext) this.contextDefinition.getInstance());
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+            LOGGER.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+        }
+        return Optional.empty();
+    }
+
+    public void addContextDefinition(BeanDefinition contextDefinition) {
+        this.contextDefinition = contextDefinition;
+    }
+
+    public void addBeanDefinitions(BeanDefinition... beanDefinitions) {
+        this.store = beanDefinitions;
+    }
+
+    public Integer beanCount() {
+        return this.store.length;
+    }
+
+    private <T> Optional<T> getBean(Predicate<BeanDefinition> predicate, Class<T> targetType, String logObject, String logObjectType) {
+        List<BeanDefinition> res = Arrays.asList(this.store).stream().filter(predicate).collect(Collectors.toList());
+        try {
+            if (res.size() > 1) {
+                throw new BeanLoadException(String.format("There are %d beans located for bean %s '%s' but only 1 is allowed.", res.size(), logObjectType, logObject));
+            }
+
+            if (res.isEmpty()) {
+                throw new ClassNotFoundException(String.format("There is now bean located for %s '%s'.", logObjectType, logObject));
+            }
+            return Optional.of((T) res.get(0).getInstance());
+        } catch (BeanLoadException | ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+            LOGGER.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+        }
+        return Optional.empty();
+    }
 }
