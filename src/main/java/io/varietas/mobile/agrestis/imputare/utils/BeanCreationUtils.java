@@ -19,6 +19,8 @@ import io.varietas.mobile.agrestis.imputare.annotation.Autowire;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
 import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
 import io.varietas.mobile.agrestis.imputare.contant.AnnotationMethodIndices;
+import io.varietas.mobile.agrestis.imputare.error.BeanLoadException;
+import io.varietas.mobile.agrestis.imputare.error.RecursiveInjectionException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -49,19 +51,25 @@ public class BeanCreationUtils {
         return Optional.ofNullable(store.stream().filter(beanDefinition -> beanDefinition.getIdentifier().equals(identifier)).findFirst().get().getInstance());
     }
 
-    public static final Optional<Object> getBeanInstance(final List<BeanDefinition> store, Constructor beanConstructor) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+    public static final Optional<Object> getBeanInstance(final List<BeanDefinition> store, Constructor beanConstructor) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, BeanLoadException, SecurityException, RecursiveInjectionException {
         if (beanConstructor.getParameterCount() == 0) {
             return Optional.of(beanConstructor.newInstance());
         }
         ///< If the constructor itself is annotated the names from the annotatio will used.
         ///< TODO: Replace later with parameter names (not possible at this moment).
+        return Optional.of(beanConstructor.newInstance(BeanCreationUtils.getBeanConstructorParameterBeans(store, beanConstructor)));
+    }
+
+    public static final Object[] getBeanConstructorParameterBeans(final List<BeanDefinition> store, Constructor beanConstructor) throws BeanLoadException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, InstantiationException, RecursiveInjectionException {
         Boolean isConstructorAnnotatedIdentifiers = (beanConstructor.isAnnotationPresent(Autowire.class));
-
         Object[] params = new Object[beanConstructor.getParameterCount()];
-
         for (short index = 0; index < beanConstructor.getParameterCount(); ++index) {
 
             Parameter currentParameter = beanConstructor.getParameters()[index];
+
+            if (currentParameter.getType().getName().equals(beanConstructor.getName())) {
+                throw new RecursiveInjectionException(String.format("Paramter %d is from type %s. Recursive injection is not allowed.", index + 1, beanConstructor.getName()));
+            }
 
             String beanIdentifier;
 
@@ -74,12 +82,16 @@ public class BeanCreationUtils {
             Optional<BeanDefinition> beanDefinition = store.stream().filter(beanDef -> beanDef.getIdentifier().equals(beanIdentifier)).findFirst();
 
             if (!beanDefinition.isPresent()) {
-                return Optional.empty();
+                throw new BeanLoadException(String.format("Required bean for parameter %d for bean constructor %s not present.", index + 1, beanConstructor.getName()));
             }
 
             params[index] = beanDefinition.get().getInstance();
         }
 
-        return Optional.of(beanConstructor.newInstance(params));
+        return params;
+    }
+
+    public static Optional<BeanDefinition> getBeanDefinitionForIdentifier(final List<BeanDefinition> store, final String identifier) {
+        return store.stream().filter(beanDefinition -> beanDefinition.getIdentifier().equals(identifier)).findFirst();
     }
 }

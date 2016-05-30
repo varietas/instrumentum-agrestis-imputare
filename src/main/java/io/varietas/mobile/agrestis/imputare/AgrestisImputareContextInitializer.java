@@ -22,6 +22,7 @@ import io.varietas.mobile.agrestis.imputare.annotation.Service;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
 import io.varietas.mobile.agrestis.imputare.container.SingletonBeanDefinition;
 import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
+import io.varietas.mobile.agrestis.imputare.error.BeanLoadException;
 import io.varietas.mobile.agrestis.imputare.error.RecursiveInjectionException;
 import io.varietas.mobile.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import io.varietas.mobile.agrestis.imputare.utils.BeanCreationUtils;
@@ -37,12 +38,9 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -78,7 +76,7 @@ public class AgrestisImputareContextInitializer {
 
     private final Class<?> applicationClazz;
 
-    private static final String BAD_PACKAGE_ERROR = "Unable to get resources from path '%s'. Be sure the package '%s' exists?";
+    private static final Integer MAX_ITERATION_FACTOR = 100;
     private static final String BAD_APPLICATION_ERROR = "Unable to scan package. Be sure that a package/application is configured";
 
     public AgrestisImputareContextInitializer(final Object application) {
@@ -102,7 +100,7 @@ public class AgrestisImputareContextInitializer {
         this.applicationClazz = applicationClazz;
     }
 
-    public final AgrestisImputareContext initializeContext() throws IllegalArgumentException, URISyntaxException, IOException, ToManyInjectedConstructorsException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, RecursiveInjectionException {
+    public final AgrestisImputareContext initializeContext() throws IllegalArgumentException, URISyntaxException, IOException, ToManyInjectedConstructorsException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, RecursiveInjectionException, BeanLoadException {
 
         final AgrestisImputareContextImpl context = new AgrestisImputareContextImpl();
 
@@ -125,7 +123,7 @@ public class AgrestisImputareContextInitializer {
         return context;
     }
 
-    private void init() throws IllegalArgumentException, URISyntaxException, IOException, ToManyInjectedConstructorsException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, RecursiveInjectionException {
+    private void init() throws IllegalArgumentException, URISyntaxException, IOException, ToManyInjectedConstructorsException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, RecursiveInjectionException, BeanLoadException {
 
         if (this.applicationClazz == null) {
             throw new IllegalArgumentException(BAD_APPLICATION_ERROR);
@@ -136,9 +134,9 @@ public class AgrestisImputareContextInitializer {
         this.sorting(locatedClasses);
         this.filtering();
 
-        this.initialIteration();
-
-        this.rotationIteration();
+        this.initialBeanCreationProcessing();
+        this.constructorBeanInjectionProcessing();
+        this.postBeanFieldInjectionProcessing();
     }
 
     /**
@@ -168,7 +166,7 @@ public class AgrestisImputareContextInitializer {
     /**
      * First step of initialisation. All classes without dependencies are used to create bean definitions. This t´´definitions will used for the initialisation of beans with dependencies.
      */
-    private void initialIteration() {
+    private void initialBeanCreationProcessing() {
 
         this.filteredClazzes.forEach((annotation, clazzes) -> {
             clazzes.forEach(clazz -> {
@@ -183,57 +181,57 @@ public class AgrestisImputareContextInitializer {
 
     ///< TODO: field injection should run after bean creation.
     ///< TODO: handle recursive injection (means bean requires itself)
-    private void rotationIteration() throws ToManyInjectedConstructorsException, NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, URISyntaxException, RecursiveInjectionException {
-        Queue<Class<?>> rotationQueue = new LinkedList<>();
+    private void constructorBeanInjectionProcessing() throws ToManyInjectedConstructorsException, NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, URISyntaxException, RecursiveInjectionException, BeanLoadException {
 
-        boolean isConfigurationClazzListNotEmpty = !this.configurationClazzes.isEmpty(), isServiceClazzListNotEmpty = !this.serviceClazzes.isEmpty(), isComponentClazzListNotEmpty = !this.componentClazzes.isEmpty();
+        boolean isRotationIterationRequired = !this.configurationClazzes.isEmpty() && !this.serviceClazzes.isEmpty() || !this.componentClazzes.isEmpty();
 
-        while (isConfigurationClazzListNotEmpty && isServiceClazzListNotEmpty && isComponentClazzListNotEmpty) {
-            final Class<?> clazz = this.chooseAClazz(rotationQueue, isConfigurationClazzListNotEmpty, isServiceClazzListNotEmpty, isComponentClazzListNotEmpty);
+        while (isRotationIterationRequired) {
+            final Class<?> clazz = this.chooseAClazz(!this.configurationClazzes.isEmpty(), !this.serviceClazzes.isEmpty(), !this.componentClazzes.isEmpty());
             final Constructor beanConstructor = DIUtils.getConstructor(clazz);
-            final Optional<Object> beanInstance = BeanCreationUtils.getBeanInstance(this.store, beanConstructor);
+            final Object[] params = BeanCreationUtils.getBeanConstructorParameterBeans(this.store, beanConstructor);
             final Annotation annotation = BeanScanUtils.getBeanAnnotation(clazz);
             final String beanIdentifier = BeanScanUtils.getBeanIdentifier(clazz, annotation);
+            final BeanScopes scope = BeanScanUtils.getBeanScope(annotation);
 
-            if (!beanInstance.isPresent()) {
-                rotationQueue.add(clazz);
-                continue;
-            }
+            ///< TODO: Load beans for constructor
+            ///< TODO: change naming of constructor beans
+            this.store.add(BeanDefinitionUtils.createBeanDefinition(clazz, scope, beanIdentifier, beanConstructor, params));
 
-            ///< Field dependencies
-            List<Field> fields = Arrays.asList(clazz.getFields()).stream().filter(field -> field.isAnnotationPresent(Autowire.class)).collect(Collectors.toList());
-
-            this.fieldDependencyInjection(rotationQueue, fields, beanInstance, clazz, beanIdentifier);
+            isRotationIterationRequired = !this.configurationClazzes.isEmpty() && !this.serviceClazzes.isEmpty() || !this.componentClazzes.isEmpty();
         }
     }
 
-    private void fieldDependencyInjection(final Queue<Class<?>> rotationQueue, List<Field> fields, final Optional<Object> beanInstance, final Class<?> clazz, final String beanIdentifier) throws RecursiveInjectionException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, InstantiationException {
-        for (Field field : fields) {
-            String fieldBeanIdentifier = BeanScanUtils.getBeanIdentifier(field);
-            ///< TODO: Get current bean identifier to test for recursive init
-            if (beanIdentifier.equals(fieldBeanIdentifier)) {
-                throw new RecursiveInjectionException(String.format("Bean '%s' contains dependencies to itself. This is not allowed! Field %s %s ", beanIdentifier, field.getType().getSimpleName(), field.getName()));
-            }
+    /**
+     * Third step. After creation of all beans the required fields will be injected.
+     */
+    private void postBeanFieldInjectionProcessing() {
+        this.store.parallelStream().forEach(storedBeanDefinition -> {
+            try {
+                List<Field> fields = Arrays.asList(storedBeanDefinition.getBeanClass().getFields()).stream().filter(field -> field.isAnnotationPresent(Autowire.class)).collect(Collectors.toList());
 
+                this.fieldDependencyInjection(fields, storedBeanDefinition);
+            } catch (RecursiveInjectionException | IllegalArgumentException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException | InstantiationException | BeanLoadException ex) {
+                LOGGER.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+            }
+        });
+    }
+
+    private void fieldDependencyInjection(List<Field> fields, final BeanDefinition storedBeanDefinition) throws RecursiveInjectionException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, InstantiationException, BeanLoadException {
+        for (Field field : fields) {
             if (!field.isAnnotationPresent(Autowire.class)) {
                 continue;
             }
 
             field.setAccessible(true);
-            if (!Objects.isNull(field.get(beanInstance.get()))) {
-                field.setAccessible(false);
-                continue;
-            }
-
             Optional beanForField = BeanCreationUtils.getBeanInstance(this.store, field);
 
             if (!beanForField.isPresent()) {
                 field.setAccessible(false);
-                rotationQueue.add(clazz);
-                return;
+                throw new BeanLoadException(String.format("Required bean %s for field %s %s of bean %s not present.", ((BeanDefinition) beanForField.get()).getIdentifier(), field.getType().getSimpleName(), field.getName(), storedBeanDefinition.getIdentifier()));
             }
 
-            field.set(beanInstance.get(), ((Optional<Object>) beanForField).get());
+            field.set(storedBeanDefinition.getInstance(), ((Optional<Object>) beanForField).get());
+            field.setAccessible(false);
         }
     }
 
@@ -244,7 +242,7 @@ public class AgrestisImputareContextInitializer {
      * @param flags
      * @return
      */
-    private Class<?> chooseAClazz(Queue<Class<?>> queue, Boolean... flags) {
+    private Class<?> chooseAClazz(Boolean... flags) {
 
         if (flags[0]) {
             Class<?> clazz = this.configurationClazzes.iterator().next();
@@ -258,13 +256,9 @@ public class AgrestisImputareContextInitializer {
             return clazz;
         }
 
-        if (flags[2]) {
-            Class<?> clazz = this.componentClazzes.iterator().next();
-            this.componentClazzes.remove(clazz);
-            return clazz;
-        }
-
-        return queue.remove();
+        Class<?> clazz = this.componentClazzes.iterator().next();
+        this.componentClazzes.remove(clazz);
+        return clazz;
     }
 
     private List<Class<?>> filterSimpleBeansForSecondLevelIteration(List<Class<?>> clazzList) {

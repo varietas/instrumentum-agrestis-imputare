@@ -31,6 +31,8 @@ import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.Simpl
 import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleServiceBean1;
 import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleServiceBean2;
 import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleServiceBean3;
+import io.varietas.mobile.agrestis.imputare.error.BeanLoadException;
+import io.varietas.mobile.agrestis.imputare.error.RecursiveInjectionException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -89,7 +91,7 @@ public class BeanCreationUtilsTests {
     }
 
     @Test
-    public void getBeanInstanceWithBeansInConstructor() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+    public void getBeanInstanceWithBeansInConstructor() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, BeanLoadException, SecurityException, RecursiveInjectionException {
 
         Optional<Constructor<?>> constructor = Arrays.asList(ClassWithBeansInConstructor.class.getConstructors()).stream().filter(constr -> constr.isAnnotationPresent(Autowire.class)).findFirst();
 
