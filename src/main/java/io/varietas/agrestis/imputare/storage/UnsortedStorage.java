@@ -16,6 +16,7 @@
 
 package io.varietas.agrestis.imputare.storage;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -25,6 +26,22 @@ import java.util.List;
  * @since So, Jul 3, 2016
  */
 public interface UnsortedStorage<Type> extends Storage<Type>{
+    
+    /**
+     * Stores a class in the storage. Returns -1 if the class is not stored otherwise the current number of stored classes will be returned.
+     *
+     * @param entry Entry to be stored.
+     * @return Number of stored entries or -1 for an error.
+     */
+    public int store(final Type entry);
+    
+    /**
+     * Stores all classes from a given collection in the storage. Returns -1 if the classes are not stored otherwise the current number of stored classes will be returned.
+     *
+     * @param entries Entries to be stored.
+     * @return Number of stored entries or -1 for an error.
+     */
+    public int storeAll(Collection<Type> entries);
     
     /**
      * All stored entries as list.

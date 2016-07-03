@@ -19,11 +19,13 @@ import io.varietas.agrestis.imputare.utils.methods.MethodMetaDataExtractionUtils
 import io.varietas.mobile.agrestis.imputare.container.information.BeanInformation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * <h1>SortedBeanInformationStorage</h1>
@@ -31,7 +33,7 @@ import java.util.Optional;
  * @author Michael Rhöse
  * @since Fr, Jul 1, 2016
  */
-public class SortedBeanInformationStorage {
+public class SortedBeanInformationStorage implements SortedStorage<Integer, BeanInformation> {
 
     private final Map<Integer, List<BeanInformation>> storage;
     private final Map<Integer, Boolean> emptyFlags;
@@ -44,6 +46,40 @@ public class SortedBeanInformationStorage {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    /**
+     * Searches for a given entry all available {@link BeanInformation}. If is no {@link BeanInformation} available an empty list will returned.
+     *
+     * @param entry Equal entries searched for.
+     * @return
+     */
+    @Override
+    public List<BeanInformation> findByTypes(BeanInformation entry) {
+        final List<BeanInformation> res = new ArrayList<>();
+        this.storage.entrySet().stream().forEach(storageEntry -> {
+            res.addAll(storageEntry.getValue().stream().filter(storageEntryEntry -> Objects.equals(storageEntryEntry.getBeanClazz(), entry.getBeanClazz())).collect(Collectors.toList()));
+        });
+
+        return res;
+    }
+
+    /**
+     * Searches for a given entry and {@link ClassMetaDataExtractionUtils.AnnotationCodes} all available {@link BeanInformation}. If is no {@link BeanInformation} available an empty list will
+     * returned.
+     *
+     * @param entry Equal entries searched for.
+     * @param code Annotation code.
+     * @return
+     */
+    @Override
+    public List<BeanInformation> findByTypesAndAnnotationCode(BeanInformation entry, Integer code) {
+        final List<BeanInformation> res = new ArrayList<>();
+
+        res.addAll(this.storage.get(code).stream().filter(storageEntry -> Objects.equals(storageEntry.getBeanClazz(), entry.getBeanClazz())).collect(Collectors.toList()));
+
+        return res;
+    }
+
+    @Override
     public Optional<BeanInformation> next() {
 
         Optional<Map.Entry<Integer, Boolean>> nextListIndex = this.emptyFlags.entrySet().stream().filter(entry -> !entry.getValue()).findFirst();
@@ -51,8 +87,8 @@ public class SortedBeanInformationStorage {
         if (!nextListIndex.isPresent()) {
             return Optional.empty();
         }
-        
-        if(nextListIndex.get().getValue()){
+
+        if (nextListIndex.get().getValue()) {
             return Optional.empty();
         }
 
@@ -64,9 +100,10 @@ public class SortedBeanInformationStorage {
 
         return Optional.of(res);
     }
-    
-    public Optional<BeanInformation> next(final Integer code){
-        
+
+    @Override
+    public Optional<BeanInformation> next(final Integer code) {
+
         Boolean listFlag = this.emptyFlags.get(code);
 
         if (listFlag) {
@@ -81,7 +118,7 @@ public class SortedBeanInformationStorage {
 
         return Optional.of(res);
     }
-    
+
     /**
      * Stores a class in the storage. Returns -1 if the class is not stored otherwise the current number of stored classes will be returned.
      *
@@ -89,8 +126,9 @@ public class SortedBeanInformationStorage {
      * @param code Annotation type code where the class should be stored for.
      * @return Number of stored classes or -1 for an error.
      */
+    @Override
     public int store(final BeanInformation beanInformation, final Integer code) {
-        if (code == MethodMetaDataExtractionUtils.AnnotationCodes.NONE) {
+        if (Objects.equals(code, MethodMetaDataExtractionUtils.AnnotationCodes.NONE)) {
             return -1;
         }
 
@@ -104,13 +142,13 @@ public class SortedBeanInformationStorage {
     /**
      * Stores all classes from a given collection in the storage. Returns -1 if the classes are not stored otherwise the current number of stored classes will be returned.
      *
-     * @param beanInfos Classes to be stored.
+     * @param entries Classes to be stored.
      * @param code Annotation type code where the class should be stored for.
      * @return Number of stored classes or -1 for an error.
      */
-    public int storeAll(final List<BeanInformation> beanInfos, final Integer code) {
-
-        for (BeanInformation beanInformation : beanInfos) {
+    @Override
+    public int storeAll(Collection<BeanInformation> entries, Integer code) {
+        for (BeanInformation beanInformation : entries) {
             if (this.store(beanInformation, code) == -1) {
                 return -1;
             }
@@ -120,6 +158,12 @@ public class SortedBeanInformationStorage {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    @Override
+    public Map<Integer, List<BeanInformation>> getStorage() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private void initialiseStorage() throws IllegalArgumentException, IllegalAccessException, InstantiationException {
 
         Object annotationCodesInstance = MethodMetaDataExtractionUtils.AnnotationCodes.class.newInstance();

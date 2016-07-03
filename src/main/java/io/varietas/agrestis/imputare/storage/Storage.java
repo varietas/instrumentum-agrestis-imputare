@@ -16,39 +16,22 @@
 
 package io.varietas.agrestis.imputare.storage;
 
-import java.util.Collection;
 import java.util.Optional;
 
 /**
  * <h1>Storage</h1>
  *
- * @param <T> Generic type for the storage.
+ * @param <Type> Generic type for the storage.
  * 
  * @author Michael Rhöse
  * @since Fr, Jul 1, 2016
  */
-public interface Storage<T> {
+public interface Storage<Type> {
     
     /**
      * Loads the next entry from the storage. Important is that this entry will be removed from the storage.
      *
      * @return Next entry from the storage.
      */
-    public Optional<T> next();
-    
-    /**
-     * Stores a class in the storage. Returns -1 if the class is not stored otherwise the current number of stored classes will be returned.
-     *
-     * @param entry Entry to be stored.
-     * @return Number of stored entries or -1 for an error.
-     */
-    public int store(final T entry);
-    
-    /**
-     * Stores all classes from a given collection in the storage. Returns -1 if the classes are not stored otherwise the current number of stored classes will be returned.
-     *
-     * @param entries Entries to be stored.
-     * @return Number of stored entries or -1 for an error.
-     */
-    public int storeAll(Collection<T> entries);
+    public Optional<Type> next();
 }

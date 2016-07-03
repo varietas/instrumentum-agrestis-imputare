@@ -31,21 +31,21 @@ import java.util.Optional;
 public interface SortedStorage<Code extends Serializable,Type> extends Storage<Type>{
 
     /**
-     * Searches for a given class all available classes. If is no class available an empty list will returned. Internally the {@link ClassMetaDataExtractionUtils.AnnotationCodes} will searched.
+     * Searches for a given entry all available entries. If is no class available an empty list will returned.
      *
-     * @param entry Equal classes searched for.
+     * @param entry Equal entries searched for.
      * @return
      */
     public List<Type> findByTypes(final Type entry);
     
     /**
-     * Searches for a given class and {@link ClassMetaDataExtractionUtils.AnnotationCodes} all available classes. If is no class available an empty list will returned.
+     * Searches for a given entry and {@link ClassMetaDataExtractionUtils.AnnotationCodes} all available entries. If is no class available an empty list will returned.
      *
-     * @param entry Equal classes searched for.
+     * @param entry Equal entries searched for.
      * @param code Annotation code.
      * @return
      */
-    public List<Class<?>> findByTypesAndAnnotationCode(final Type entry, final Code code);
+    public List<Type> findByTypesAndAnnotationCode(final Type entry, final Code code);
     
     /**
      * Stores a class in the storage. Returns -1 if the class is not stored otherwise the current number of stored classes will be returned.
@@ -65,7 +65,7 @@ public interface SortedStorage<Code extends Serializable,Type> extends Storage<T
      */
     public int storeAll(Collection<Type> entries, final Code code);
     
-    public Optional<Class<?>> next(final Code code);
+    public Optional<Type> next(final Code code);
     
     /**
      * All stored entries as list.

@@ -124,11 +124,6 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
         return res;
     }
 
-    @Override
-    public int store(Class<?> entry) {
-        return this.store(entry, ClassMetaDataExtractionUtils.getPresentAnnotationCode(entry));
-    }
-
     /**
      * Stores a class in the storage. Returns -1 if the class is not stored otherwise the current number of stored classes will be returned.
      *
@@ -147,15 +142,6 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
         }
 
         return this.clazzes.get(code).size();
-    }
-
-    @Override
-    public int storeAll(Collection<Class<?>> entries) {
-        if (entries.isEmpty()) {
-            return -1;
-        }
-
-        return this.storeAll(entries, ClassMetaDataExtractionUtils.getPresentAnnotationCode(entries.iterator().next()));
     }
 
     /**
