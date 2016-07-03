@@ -13,27 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.mobile.agrestis.imputare.container;
-
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
-
 /**
- * <h1>SingletonBeanDefinition</h1>
+ * <h1>io.varietas.mobile.agrestis.imputare.annotation</h1>
+ *
+ * The annotations are organised for a program structure. There is a hierarchy which bean could contains other beans. The full description could be found in the documentation.
  *
  * @author Michael Rhöse
- * @since Sa, Mai 7, 2016
+ * @since Mo, Jun 6, 2016
  */
-public class SingletonBeanDefinition extends AbstractBeanDefinition implements BeanDefinition {
-
-    private final Object instance;
-
-    public SingletonBeanDefinition(String beanIdentifier, Class beanClazz, final Object instance) {
-        super(beanIdentifier, BeanScopes.SINGELTON, beanClazz);
-        this.instance = instance;
-    }
-
-    @Override
-    public Object getInstance() {
-        return this.instance;
-    }
-}
+package io.varietas.mobile.agrestis.imputare.annotation;

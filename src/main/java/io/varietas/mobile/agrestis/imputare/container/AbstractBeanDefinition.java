@@ -16,7 +16,7 @@
 package io.varietas.mobile.agrestis.imputare.container;
 
 import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
-import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * <h1>AbstractBeanDefinition</h1>
@@ -24,33 +24,33 @@ import java.lang.reflect.Constructor;
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016
  */
-public class AbstractBeanDefinition {
+public abstract class AbstractBeanDefinition implements BeanDefinition {
 
     protected final String beanIdentifier;
     protected final BeanScopes beanScope;
     protected final Class beanClazz;
-    protected final Constructor beanConstructor;
 
-    public AbstractBeanDefinition(final String beanIdentifier, final BeanScopes beanScope, final Class beanClazz, final Constructor beanConstructor) {
+    public AbstractBeanDefinition(final String beanIdentifier, final BeanScopes beanScope, final Class beanClazz) {
         this.beanIdentifier = beanIdentifier;
         this.beanScope = beanScope;
         this.beanClazz = beanClazz;
-        this.beanConstructor = beanConstructor;
     }
 
+    @Override
     public String getIdentifier() {
         return this.beanIdentifier;
     }
 
+    @Override
     public Class getBeanClass() {
         return this.beanClazz;
     }
 
+    @Override
     public BeanScopes getBeanScope() {
         return this.beanScope;
     }
 
-    public Constructor getBeanConstructor() {
-        return beanConstructor;
-    }
+    @Override
+    public abstract Object getInstance() throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException;
 }

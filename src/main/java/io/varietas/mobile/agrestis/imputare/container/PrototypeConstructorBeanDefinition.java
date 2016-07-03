@@ -22,37 +22,28 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * <h1>PrototypeBeanDefinition</h1>
+ * <h1>PrototypeConstructorBeanDefinition</h1>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016
  */
-public class PrototypeBeanDefinition extends AbstractBeanDefinition implements BeanDefinition {
+public class PrototypeConstructorBeanDefinition extends AbstractBeanDefinition {
 
-    private static final Logger LOGGER = Logger.getLogger(PrototypeBeanDefinition.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PrototypeConstructorBeanDefinition.class.getName());
 
-    private final Object[] parameters;
+    final Constructor constructor;
+    final Object[] params;
 
-    public PrototypeBeanDefinition(Object[] parameters, String beanIdentifier, BeanScopes beanScope, Class beanClazz, Constructor beanConstructor) {
-        super(beanIdentifier, beanScope, beanClazz, beanConstructor);
-        this.parameters = parameters;
+    public PrototypeConstructorBeanDefinition(String beanIdentifier, Class<?> beanClazz, Constructor constructor, Object... params) {
+        super(beanIdentifier, BeanScopes.PROTOTYPE, beanClazz);
+        this.constructor = constructor;
+        this.params = params;
     }
-    
+
     @Override
     public Object getInstance() throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        int parameterCount = this.parameters.length;
-
+        int parameterCount = this.params.length;
         LOGGER.log(Level.FINER, String.format("Constructor for identifier %s with %d parameters called.", this.beanIdentifier, parameterCount));
-        
-        if (parameterCount == 0) {
-            return this.beanClazz.getConstructor().newInstance();
-        }
-
-        Class[] parameterTypes = new Class[this.parameters.length];
-        for (int index = 0; index < parameterCount; ++index) {
-            parameterTypes[parameterCount] = this.parameters[index].getClass();
-        }
-
-        return this.beanClazz.getConstructor(parameterTypes).newInstance(this.parameters);
+        return this.constructor.newInstance(this.params);
     }
 }

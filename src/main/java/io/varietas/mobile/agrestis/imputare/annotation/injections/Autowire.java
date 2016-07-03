@@ -13,27 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.mobile.agrestis.imputare.container;
+package io.varietas.mobile.agrestis.imputare.annotation.injections;
 
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
+import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * <h1>SingletonBeanDefinition</h1>
+ * <h1>Autowire</h1>
  *
  * @author Michael Rhöse
- * @since Sa, Mai 7, 2016
+ * @since Mo, Mai 9, 2016
  */
-public class SingletonBeanDefinition extends AbstractBeanDefinition implements BeanDefinition {
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})
+public @interface Autowire {
 
-    private final Object instance;
-
-    public SingletonBeanDefinition(String beanIdentifier, Class beanClazz, final Object instance) {
-        super(beanIdentifier, BeanScopes.SINGELTON, beanClazz);
-        this.instance = instance;
-    }
-
-    @Override
-    public Object getInstance() {
-        return this.instance;
-    }
+    String[] value() default AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
 }

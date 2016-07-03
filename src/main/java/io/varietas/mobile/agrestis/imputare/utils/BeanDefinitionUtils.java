@@ -15,11 +15,12 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
+import io.varietas.mobile.agrestis.imputare.annotation.Bean;
 import io.varietas.mobile.agrestis.imputare.annotation.Component;
 import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
 import io.varietas.mobile.agrestis.imputare.annotation.Service;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
-import io.varietas.mobile.agrestis.imputare.container.PrototypeBeanDefinition;
+import io.varietas.mobile.agrestis.imputare.container.PrototypeMethodBeanDefinition;
 import io.varietas.mobile.agrestis.imputare.container.SingletonBeanDefinition;
 import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
 import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
@@ -27,8 +28,10 @@ import io.varietas.mobile.agrestis.imputare.enumeration.ConstructorTypes;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,6 +80,20 @@ public class BeanDefinitionUtils {
     }
 
     /**
+     * Creates a {@link BeanDefinition} without instance of the bean. If the bean is configured as prototype the instance will created if required. If the bean configured as singleton the instance
+     * will created in a following step.
+     *
+     * @param beanClazz Class of the configuration.
+     * @param method Given method which will used to create the bean.
+     * @return
+     */
+//    public static BeanDefinition createBeanDefinitionSimple(final Class<?> beanClazz, final Method method) {
+//        ///< TODO: Search nested dependencies
+//        Bean beanAnnotation = (Bean)method.getAnnotation(Bean.class);
+//        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(method.getReturnType(), beanAnnotation.scope(), BeanDefinitionUtils.formatIdentifier(beanAnnotation.name(), method.getName()), constructor, params)
+//        return method.invoke(beanClazz.newInstance());
+//    }
+    /**
      * Creates a {@link BeanDefinition} for a given class. The identifier must follow the Java naming conventions (camel case, first letter lower case). If needed this method creates a new instance of
      * the class (used for prototypes only).
      *
@@ -93,16 +110,18 @@ public class BeanDefinitionUtils {
      */
     public static BeanDefinition createBeanDefinition(final Class<?> beanClazz, final BeanScopes scope, final String identifier, final Constructor constructor, Object... params)
             throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        LOGGER.log(Level.FINER, String.format("Bean definition for bean '%s' of type '%s' (%s) created.", identifier, scope.name(), beanClazz.getName()));
-        if (scope.equals(BeanScopes.SINGELTON)) {
-            Object instance = constructor.newInstance(params);
-            LOGGER.log(Level.FINER, String.format("Instance for bean '%s' created.", identifier));
-            return new SingletonBeanDefinition(instance, identifier, scope, beanClazz, constructor);
-        }
-        LOGGER.log(Level.FINER, String.format("Bean definition for bean '%s' of type '%s' (%s) created.", identifier, scope.name(), beanClazz.getName()));
-        return new PrototypeBeanDefinition(params, identifier, scope, beanClazz, constructor);
+//        LOGGER.log(Level.FINER, String.format("Bean definition for bean '%s' of type '%s' (%s) created.", identifier, scope.name(), beanClazz.getName()));
+//        if (scope.equals(BeanScopes.SINGELTON)) {
+//            Object instance = constructor.newInstance(params);
+//            LOGGER.log(Level.FINER, String.format("Instance for bean '%s' created.", identifier));
+//            return new SingletonBeanDefinition(instance, identifier, scope, beanClazz, constructor);
+//        }
+//        LOGGER.log(Level.FINER, String.format("Bean definition for bean '%s' of type '%s' (%s) created.", identifier, scope.name(), beanClazz.getName()));
+//        return new PrototypeConstructorBeanDefinition(params, identifier, scope, beanClazz, constructor);
+        return null;
     }
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     /**
      * Formats the identifier of a bean to the internal required format. This format follows the java naming conventions.
      *
@@ -116,4 +135,32 @@ public class BeanDefinitionUtils {
         }
         return defaultName.substring(0, 1).toLowerCase() + defaultName.substring(1);
     }
+
+    /**
+     * Creates a {@link BeanDefinition} for a given method. The {@link BeanDefinition} could be an instace of {@link SingletonBeanDefinition} or {@link PrototypeMethodBeanDefinition}.
+     *
+     * @param parentObject Instance of the class tie method should invoked on.
+     * @param method Method which is used to create the bean.
+     * @param params (Optional) Required method parameters.
+     * @return
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     */
+    public static BeanDefinition createBeanDefinition(final Object parentObject, final Method method, Object... params) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+        Bean beanAnnotation = (Bean) method.getAnnotation(Bean.class);
+        BeanScopes scope = beanAnnotation.scope();
+        String identifier = BeanDefinitionUtils.formatIdentifier(beanAnnotation.name(), method.getName());
+        boolean isSingleton = Objects.equals(scope, BeanScopes.PROTOTYPE);
+
+        Object instanceObject = method.invoke(parentObject, params);
+
+        if (isSingleton) {
+            return new SingletonBeanDefinition(identifier, method.getReturnType(), instanceObject);
+        }
+
+        return new PrototypeMethodBeanDefinition(identifier, scope, method.getReturnType(), method, parentObject, params);
+    }
+
 }

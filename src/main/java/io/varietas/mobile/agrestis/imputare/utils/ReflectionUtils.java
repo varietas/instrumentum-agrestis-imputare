@@ -16,14 +16,14 @@
 package io.varietas.mobile.agrestis.imputare.utils;
 
 import io.varietas.mobile.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.mobile.agrestis.imputare.contant.ExtractionFileType;
 import io.varietas.mobile.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
+import java.net.URLClassLoader;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,23 +33,24 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
+import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
- * <h1>DIUtils</h1>
+ * <h1>ReflectionUtils</h1>
  *
  * @author Michael Rhöse
- * @since Di, Mai 10, 2016
+ * @since Mo, Jun 6, 2016
  */
-@Deprecated
-public class DIUtils {
+public class ReflectionUtils {
 
-    private static final Logger LOGGER = Logger.getLogger(DIUtils.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ReflectionUtils.class.getName());
 
     /**
      * It is searching all classes from a given package. This method walks the complete file tree down and collects all classes.
@@ -58,31 +59,35 @@ public class DIUtils {
      * @return
      * @throws IOException
      * @throws java.net.URISyntaxException
+     * @throws java.lang.ClassNotFoundException
      */
-    public static final List<Class<?>> searchClassesFromPackage(final String packagePath) throws IOException, URISyntaxException {
+    public static final List<Class<?>> searchClasses(final String packagePath) throws IOException, URISyntaxException, ClassNotFoundException {
         final List<Class<?>> clazzList = new ArrayList<>(0);
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        String path = DIUtils.fullModifyPackageName(packagePath);
+        String path = ReflectionUtils.fullModifyPackageName(packagePath);
 
         Enumeration<URL> resources = classLoader.getResources(path);
 
         while (resources.hasMoreElements()) {
 
             URL res = resources.nextElement();
-            Path root;
 
-            ///< TODO: iterate jar/zip file
             if (res.toString().contains("jar!")) {
-                ///< TODO: not a good way. build a example project to fix the issues
-                try (FileSystem zipFileSystem = DIUtils.createZipFileSystem(res.toString(), false)) {
-                    root = zipFileSystem.getPath(DIUtils.extractJarFileRootNode(res.toString()));
-                };
-            } else {
-                root = Paths.get(res.toURI());
+                Path jarFilePath = Paths.get(ReflectionUtils.extractJarFileSystemPath(res.toString()));
+
+                Optional<ZipFile> jarFile = CompressedFileUtil.loadZipFile(jarFilePath);
+
+                if (!jarFile.isPresent()) {
+                    LOGGER.log(Level.SEVERE, "Could not open jar file.");
+                    continue;
+                }
+
+                clazzList.addAll(ReflectionUtils.loadPluginVerticleMainClass((JarFile) CompressedFileUtil.loadZipFile(jarFilePath).get(), ClassLoader.getSystemClassLoader()));
             }
 
-            clazzList.addAll(DIUtils.walkFileTree(DIUtils.modifyPackageName(packagePath), root));
+            Path root = Paths.get(res.toURI());
+            clazzList.addAll(ReflectionUtils.walkFileTree(ReflectionUtils.modifyPackageName(packagePath), root));
 
         }
 
@@ -96,9 +101,10 @@ public class DIUtils {
      * @return
      * @throws IOException
      * @throws java.net.URISyntaxException
+     * @throws java.lang.ClassNotFoundException
      */
-    public static final List<Class<?>> searchClassesFromPackage(final Package packagePath) throws IOException, URISyntaxException {
-        return DIUtils.searchClassesFromPackage(packagePath.toString());
+    public static final List<Class<?>> searchClasses(final Package packagePath) throws IOException, URISyntaxException, ClassNotFoundException {
+        return ReflectionUtils.searchClasses(packagePath.toString());
     }
 
     public static final Constructor getConstructor(Class<?> clazz) throws ToManyInjectedConstructorsException, NoSuchMethodException {
@@ -113,7 +119,10 @@ public class DIUtils {
             return injectedConstructors.get(0);
         }
 
-        List<Constructor> annotatedParamsConstructor = Arrays.asList(clazz.getConstructors()).stream().filter(constructor -> Arrays.asList(constructor.getParameters()).stream().filter(parameter -> parameter.isAnnotationPresent(Autowire.class)).findFirst().isPresent()).collect(Collectors.toList());
+        List<Constructor> annotatedParamsConstructor = Arrays.asList(clazz.getConstructors())
+                .stream().filter(constructor -> Arrays.asList(constructor.getParameters())
+                        .stream().filter(parameter -> parameter.isAnnotationPresent(Autowire.class)).findFirst().isPresent())
+                .collect(Collectors.toList());
 
         if (annotatedParamsConstructor.size() > 1) {
             throw new ToManyInjectedConstructorsException(String.format("There are %d constructors with injected parameters. Only one is allowed.", injectedConstructors.size()));
@@ -139,7 +148,7 @@ public class DIUtils {
                 }
                 try {
                     LOGGER.log(Level.FINEST, String.format("  -> [ACCEPTED] %s", file.getFileName().toString()));
-                    clazzList.add(Class.forName(DIUtils.clazzName(scannedPackage, file.toString())));
+                    clazzList.add(Class.forName(ReflectionUtils.clazzName(scannedPackage, file.toString())));
                 } catch (ClassNotFoundException ex) {
                     LOGGER.log(Level.SEVERE, null, ex);
                     return FileVisitResult.CONTINUE;
@@ -152,7 +161,7 @@ public class DIUtils {
     }
 
     private static String fullModifyPackageName(final String packageName) {
-        return DIUtils.modifyPackageName(packageName).replace('.', '/');
+        return ReflectionUtils.modifyPackageName(packageName).replace('.', '/');
     }
 
     private static String modifyPackageName(final String packageName) {
@@ -175,7 +184,7 @@ public class DIUtils {
     }
 
     private static String clazzName(final String scannedPackage, String relativeFilePath) {
-        String convertedFileName = DIUtils.cleanFileName(relativeFilePath);
+        String convertedFileName = ReflectionUtils.cleanFileName(relativeFilePath);
         int index = convertedFileName.indexOf(scannedPackage);
 
         return convertedFileName.substring(index);
@@ -186,17 +195,27 @@ public class DIUtils {
         return res.substring(index).replace('\\', '/');
     }
 
-    private static FileSystem createZipFileSystem(String res, boolean create) throws IOException {
-        // convert the filename to a URI
+    public static String extractJarFileSystemPath(String res) {
         Integer index = res.indexOf(".jar!") + 4;
-        String externalFilePath = res.substring(0, index).replace('\\', '/').replace("jar:file:/", "");
+        return res.substring(0, index).replace('\\', '/').replace("jar:file:/", "");
+    }
 
-        Path zipfile = Paths.get(externalFilePath);
+    public static List<Class<?>> loadPluginVerticleMainClass(JarFile jar, ClassLoader classLoader) throws IOException, ClassNotFoundException {
 
-//        final URI uri = URI.create(externalFilePath);
-        final Map<String, String> env = new HashMap<>();
-        env.put("create", Boolean.toString(create));
+        List<String> loadedClassUrls = JarUtil.loadClassUrlsFromJar(jar);
+        List<Class<?>> res = new ArrayList<>(loadedClassUrls.size());
+        ClassLoader jarClassLoader = URLClassLoader.newInstance(new URL[]{new URL(String.format("jar:file:%s!/", jar.getName()))}, classLoader);
 
-        return FileSystems.newFileSystem(zipfile, null);
+        for (String classUrl : loadedClassUrls) {
+            res.add(jarClassLoader.loadClass(classUrl));
+        }
+        return res;
+    }
+
+    public static List<String> loadClassUrlsFromJar(JarFile jar) throws IOException {
+        List<ZipEntry> entries = JarUtil.loadObjectsUrlFromJar(jar, ExtractionFileType.TYPE_CLASS, false);
+        List<String> urlList = new ArrayList<>(entries.size());
+        entries.forEach(entry -> urlList.add(entry.getName().replace(ExtractionFileType.TYPE_CLASS, "").replace("/", ".")));
+        return urlList;
     }
 }
