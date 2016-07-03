@@ -55,6 +55,27 @@
             <version>1.4.3</version>
         </dependency>
         
+        <!-- Dependency for byte code analysis. The internal used asm classes couldn't be used. -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>5.1</version>
+        </dependency>
+
+        
+        <!-- Dependencies for logging with logback -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.7</version>
+        </dependency>
+        <dependency>                                    
+            <groupId>org.slf4j</groupId>                
+            <artifactId>jcl-over-slf4j</artifactId>     
+            <version>1.7.21</version>  
+        </dependency>
+        
+        <!-- Dependencies for testing -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -73,15 +94,6 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
-                <configuration>
-                    <includes>
-                        <include>**/*Tests.java</include>
-                    </includes>
-                </configuration>
-            </plugin>
-            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
