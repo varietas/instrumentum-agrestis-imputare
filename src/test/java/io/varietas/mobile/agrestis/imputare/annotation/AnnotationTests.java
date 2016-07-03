@@ -15,9 +15,9 @@
  */
 package io.varietas.mobile.agrestis.imputare.annotation;
 
-import io.varietas.mobile.agrestis.imputare.environments.model.PrototypeBeanWithoutDependencies;
-import io.varietas.mobile.agrestis.imputare.environments.model.ComponentBeanWithoutDependencies;
-import io.varietas.mobile.agrestis.imputare.environments.model.ConfigurationBeanWithoutDependency;
+import io.varietas.test.environments.model.PrototypeBeanWithoutDependencies;
+import io.varietas.test.environments.model.ComponentBeanWithoutDependencies;
+import io.varietas.test.environments.model.ConfigurationBeanWithoutDependency;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.assertj.core.api.Assertions;

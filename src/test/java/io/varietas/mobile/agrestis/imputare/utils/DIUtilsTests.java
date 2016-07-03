@@ -15,20 +15,20 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
-import io.varietas.mobile.agrestis.imputare.environments.model.diutils.SimpleBeanWithAnnotatedConstructor2;
-import io.varietas.mobile.agrestis.imputare.environments.model.diutils.SimpleBeanWithAnnotatedConstructor1;
-import io.varietas.mobile.agrestis.imputare.environments.model.diutils.NoInjectedConstructorClass1;
-import io.varietas.mobile.agrestis.imputare.environments.model.diutils.ToManyInjectionsClass1;
-import io.varietas.mobile.agrestis.imputare.environments.model.diutils.ToManyInjectionsClass2;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleComponentBean1;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleComponentBean2;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleComponentBean3;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleConfigurationBean1;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleConfigurationBean2;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleConfigurationBean3;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleServiceBean1;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleServiceBean2;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleServiceBean3;
+import io.varietas.test.environments.model.diutils.SimpleBeanWithAnnotatedConstructor2;
+import io.varietas.test.environments.model.diutils.SimpleBeanWithAnnotatedConstructor1;
+import io.varietas.test.environments.model.diutils.NoInjectedConstructorClass1;
+import io.varietas.test.environments.model.diutils.ToManyInjectionsClass1;
+import io.varietas.test.environments.model.diutils.ToManyInjectionsClass2;
+import io.varietas.test.environments.model.utilssimple.SimpleComponentBean1;
+import io.varietas.test.environments.model.utilssimple.SimpleComponentBean2;
+import io.varietas.test.environments.model.utilssimple.SimpleComponentBean3;
+import io.varietas.test.environments.model.utilssimple.SimpleConfigurationBean1;
+import io.varietas.test.environments.model.utilssimple.SimpleConfigurationBean2;
+import io.varietas.test.environments.model.utilssimple.SimpleConfigurationBean3;
+import io.varietas.test.environments.model.utilssimple.SimpleServiceBean1;
+import io.varietas.test.environments.model.utilssimple.SimpleServiceBean2;
+import io.varietas.test.environments.model.utilssimple.SimpleServiceBean3;
 import io.varietas.mobile.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -112,4 +112,33 @@ public class DIUtilsTests {
         LOGGER.info(String.format("Constructor '%s' is injected and has %d parameters", injectedConstructor.getName(), injectedConstructor.getParameterCount()));
     }
 
+    @Test
+    public void stack() {
+        // First way -----------------------------------------
+        String anyString = "This is a moe_than_on_word string.";
+
+        int spaceCount = 0;
+        int underlineCount = 0;
+
+        // Iterate over them and count the spaces and underlines. In this short example the count of both is in one for-statement
+        for (char singleLetter : anyString.toCharArray()) {
+            if (singleLetter == ' ') {
+                spaceCount++;
+            }
+
+            if (singleLetter == '_') {
+                underlineCount++;
+            }
+        }
+        // Second way -----------------------------------------
+        // Split the string on every space
+        String[] anyStringParts = anyString.split(" ");
+        // Create a boolean array to store if a part contains a underline symbole
+        boolean[] stringPartUnderlineContainingFlag = new boolean[anyStringParts.length];
+
+        // Iterate the string parts and test for underline symbole
+        for (int index = 0; index < anyStringParts.length; ++index) {
+            stringPartUnderlineContainingFlag[index] = anyStringParts[index].contains("_");
+        }
+    }
 }

@@ -15,22 +15,22 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
-import io.varietas.mobile.agrestis.imputare.annotation.Autowire;
+import io.varietas.mobile.agrestis.imputare.annotation.injections.Autowire;
 import io.varietas.mobile.agrestis.imputare.annotation.Component;
 import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
 import io.varietas.mobile.agrestis.imputare.annotation.Service;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
-import io.varietas.mobile.agrestis.imputare.environments.model.beaininstantiationutils.ClassWithAllFields;
-import io.varietas.mobile.agrestis.imputare.environments.model.beaininstantiationutils.ClassWithBeansInConstructor;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleComponentBean1;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleComponentBean2;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleComponentBean3;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleConfigurationBean1;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleConfigurationBean2;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleConfigurationBean3;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleServiceBean1;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleServiceBean2;
-import io.varietas.mobile.agrestis.imputare.environments.model.utilssimple.SimpleServiceBean3;
+import io.varietas.test.environments.model.beaininstantiationutils.ClassWithAllFields;
+import io.varietas.test.environments.model.beaininstantiationutils.ClassWithBeansInConstructor;
+import io.varietas.test.environments.model.utilssimple.SimpleComponentBean1;
+import io.varietas.test.environments.model.utilssimple.SimpleComponentBean2;
+import io.varietas.test.environments.model.utilssimple.SimpleComponentBean3;
+import io.varietas.test.environments.model.utilssimple.SimpleConfigurationBean1;
+import io.varietas.test.environments.model.utilssimple.SimpleConfigurationBean2;
+import io.varietas.test.environments.model.utilssimple.SimpleConfigurationBean3;
+import io.varietas.test.environments.model.utilssimple.SimpleServiceBean1;
+import io.varietas.test.environments.model.utilssimple.SimpleServiceBean2;
+import io.varietas.test.environments.model.utilssimple.SimpleServiceBean3;
 import io.varietas.mobile.agrestis.imputare.error.BeanLoadException;
 import io.varietas.mobile.agrestis.imputare.error.RecursiveInjectionException;
 import java.lang.reflect.Constructor;

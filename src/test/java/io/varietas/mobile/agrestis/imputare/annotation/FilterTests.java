@@ -16,10 +16,11 @@
 
 package io.varietas.mobile.agrestis.imputare.annotation;
 
-import io.varietas.mobile.agrestis.imputare.environments.model.ComponentBeanWithConstructorDependency;
-import io.varietas.mobile.agrestis.imputare.environments.model.ComponentBeanWithoutDependencies;
-import io.varietas.mobile.agrestis.imputare.environments.model.PojoOnlyWithParamConstructor;
-import io.varietas.mobile.agrestis.imputare.environments.model.PojoWithoutConstructor;
+import io.varietas.mobile.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.test.environments.model.ComponentBeanWithConstructorDependency;
+import io.varietas.test.environments.model.ComponentBeanWithoutDependencies;
+import io.varietas.test.environments.model.PojoOnlyWithParamConstructor;
+import io.varietas.test.environments.model.PojoWithoutConstructor;
 import java.lang.reflect.Constructor;
 import java.util.logging.Logger;
 import org.junit.Test;
