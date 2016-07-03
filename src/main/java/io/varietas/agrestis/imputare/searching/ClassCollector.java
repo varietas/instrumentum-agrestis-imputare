@@ -15,8 +15,9 @@
  */
 package io.varietas.agrestis.imputare.searching;
 
-import io.varietas.agrestis.imputare.storage.ClassStorage;
-import io.varietas.agrestis.imputare.utils.ClassLoadUtils;
+import io.varietas.agrestis.imputare.storage.UnsortedStorageImpl;
+import io.varietas.agrestis.imputare.storage.UnsortedStorage;
+import io.varietas.agrestis.imputare.utils.classes.ClassLoadUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -35,12 +36,12 @@ import java.util.List;
 public class ClassCollector {
 
     private final String applicationPackage;
-    private final ClassStorage clazzStorage;
+    private final UnsortedStorage clazzStorage;
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     public ClassCollector(String applicationPackage) {
         this.applicationPackage = applicationPackage;
-        this.clazzStorage = new ClassStorage();
+        this.clazzStorage = new UnsortedStorageImpl();
     }
 
     public ClassCollector(Package applicationPackage) {
@@ -62,7 +63,7 @@ public class ClassCollector {
         return this;
     }
 
-    public ClassStorage getClazzStorage() {
+    public UnsortedStorage getClazzStorage() {
         return this.clazzStorage;
     }
 

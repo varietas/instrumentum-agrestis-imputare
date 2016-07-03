@@ -16,9 +16,10 @@
 package io.varietas.agrestis.imputare.searching;
 
 import io.varietas.agrestis.imputare.error.IllegalAnnotationException;
-import io.varietas.agrestis.imputare.storage.ClassStorage;
-import io.varietas.agrestis.imputare.storage.SortedClassStorage;
-import io.varietas.agrestis.imputare.utils.ClassMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.storage.UnsortedStorageImpl;
+import io.varietas.agrestis.imputare.storage.SortedStorageImpl;
+import io.varietas.agrestis.imputare.storage.UnsortedStorage;
+import io.varietas.agrestis.imputare.utils.classes.ClassMetaDataExtractionUtils;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,13 +34,13 @@ public class ClassSorter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClassSorter.class);
 
-    private final SortedClassStorage sortedClassStorage;
-    private final ClassStorage classStorage;
+    private final SortedStorageImpl sortedClassStorage;
+    private final UnsortedStorage classStorage;
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public ClassSorter(ClassStorage classStorage) throws IllegalArgumentException, IllegalAccessException, InstantiationException {
+    public ClassSorter(UnsortedStorageImpl classStorage) throws IllegalArgumentException, IllegalAccessException, InstantiationException {
         this.classStorage = classStorage;
-        this.sortedClassStorage = new SortedClassStorage();
+        this.sortedClassStorage = new SortedStorageImpl();
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -69,7 +70,7 @@ public class ClassSorter {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public SortedClassStorage getSortedClassStorage() {
+    public SortedStorageImpl getSortedClassStorage() {
         return this.sortedClassStorage;
     }
 }
