@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.agrestis.imputare.utils;
+package io.varietas.agrestis.imputare.utils.classes;
 
 import io.varietas.mobile.agrestis.imputare.annotation.Component;
 import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 /**
  * <h1>ClassMetaDataExtractionUtils</h1>
  *
+ * This class is a collection of useful methods to collect information from classes.
+ * 
  * @author Michael Rhöse
  * @since Di, Jun 28, 2016
  */

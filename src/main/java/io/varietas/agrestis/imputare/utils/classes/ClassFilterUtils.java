@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.varietas.agrestis.imputare.utils;
+package io.varietas.agrestis.imputare.utils.classes;
 
 /**
  * <h1>ClassFilterUtils</h1>
