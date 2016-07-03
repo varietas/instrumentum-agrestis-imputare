@@ -28,7 +28,7 @@ import java.util.Optional;
  * @author Michael Rhöse
  * @since Di, Jun 28, 2016
  */
-public class ClassStorage {
+public class ClassStorage implements UnsortedStorage<Class<?>> {
 
     private final List<Class<?>> clazzes;
 
@@ -43,11 +43,27 @@ public class ClassStorage {
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     /**
+     * Loads the next class from the storage. Important is that this class will be removed from the storage.
+     *
+     * @return Next class from the storage.
+     */
+    @Override
+    public Optional<Class<?>> next() {
+        if (this.clazzes.isEmpty()) {
+            return Optional.empty();
+        }
+        Class<?> res = this.clazzes.get(this.clazzes.size() - 1);
+        this.clazzes.remove(res);
+        return Optional.of(res);
+    }
+
+    /**
      * Stores a class in the storage. Returns -1 if the class is not stored otherwise the current number of stored classes will be returned.
      *
      * @param clazz Class to be stored.
      * @return Number of stored classes or -1 for an error.
      */
+    @Override
     public int store(final Class<?> clazz) {
         if (!this.clazzes.add(clazz)) {
             return this.clazzes.size();
@@ -70,22 +86,14 @@ public class ClassStorage {
         }
     }
 
-    /**
-     * Loads the next class from the storage. Important is that this class is removed from the storage.
-     *
-     * @return Next class from the storage.
-     */
-    public Optional<Class<?>> next() {
-        if(this.clazzes.isEmpty()){
-            return Optional.empty();
-        }
-        Class<?> res = this.clazzes.get(this.clazzes.size() - 1);
-        this.clazzes.remove(res);
-        return Optional.of(res);
-    }
-
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public List<Class<?>> getClazzes() {
+    /**
+     * All stored classes as list.
+     *
+     * @return
+     */
+    @Override
+    public List<Class<?>> getStorage() {
         return clazzes;
     }
 

@@ -15,13 +15,14 @@
  */
 package io.varietas.agrestis.imputare.storage;
 
-import io.varietas.agrestis.imputare.utils.ClassMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.classes.ClassMetaDataExtractionUtils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
  * @author Michael Rhöse
  * @since Do, Jun 30, 2016
  */
-public class SortedClassStorage {
+public class SortedClassStorage implements SortedStorage<Integer, Class<?>> {
 
     private final Map<Integer, List<Class<?>>> clazzes;
     private final Map<Integer, Boolean> emptyFlags;
@@ -47,6 +48,7 @@ public class SortedClassStorage {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    @Override
     public Optional<Class<?>> next() {
 
         Optional<Map.Entry<Integer, Boolean>> nextListIndex = this.emptyFlags.entrySet().stream().filter(entry -> !entry.getValue()).findFirst();
@@ -55,7 +57,11 @@ public class SortedClassStorage {
             return Optional.empty();
         }
 
-        List<Class<?>> nextList = this.clazzes.get(nextListIndex.get().getKey());
+        if (nextListIndex.get().getValue()) {
+            return Optional.empty();
+        }
+
+        final List<Class<?>> nextList = this.clazzes.get(nextListIndex.get().getKey());
         Class<?> res = nextList.get(nextList.size() - 1);
         nextList.remove(res);
 
@@ -64,16 +70,35 @@ public class SortedClassStorage {
         return Optional.of(res);
     }
 
+    @Override
+    public Optional<Class<?>> next(final Integer code) {
+
+        Boolean listFlag = this.emptyFlags.get(code);
+
+        if (listFlag) {
+            return Optional.empty();
+        }
+
+        final List<Class<?>> nextList = this.clazzes.get(code);
+        Class<?> res = nextList.get(nextList.size() - 1);
+        nextList.remove(res);
+
+        this.emptyFlags.entrySet().stream().filter(entry -> Objects.equals(entry.getKey(), code)).findFirst().get().setValue(nextList.isEmpty());
+
+        return Optional.of(res);
+    }
+
     /**
      * Searches for a given class all available classes. If is no class available an empty list will returned. Internally the {@link ClassMetaDataExtractionUtils.AnnotationCodes} will searched.
      *
-     * @param clazz Equal classes searched for.
+     * @param entry Equal classes searched for.
      * @return
      */
-    public List<Class<?>> findByTypes(final Class<?> clazz) {
+    @Override
+    public List<Class<?>> findByTypes(final Class<?> entry) {
         List<Class<?>> res = new ArrayList<>();
 
-        this.findByTypesAndAnnotationCode(clazz, ClassMetaDataExtractionUtils.getPresentAnnotationCode(clazz));
+        this.findByTypesAndAnnotationCode(entry, ClassMetaDataExtractionUtils.getPresentAnnotationCode(entry));
 
         return res;
     }
@@ -81,11 +106,12 @@ public class SortedClassStorage {
     /**
      * Searches for a given class and {@link ClassMetaDataExtractionUtils.AnnotationCodes} all available classes. If is no class available an empty list will returned.
      *
-     * @param clazz Equal classes searched for.
+     * @param entry Equal classes searched for.
      * @param code Annotation code.
      * @return
      */
-    public List<Class<?>> findByTypesAndAnnotationCode(final Class<?> clazz, final Integer code) {
+    @Override
+    public List<Class<?>> findByTypesAndAnnotationCode(final Class<?> entry, final Integer code) {
 
         List<Class<?>> res = new ArrayList<>();
 
@@ -93,41 +119,57 @@ public class SortedClassStorage {
             return res;
         }
 
-        res.addAll(this.clazzes.get(code).stream().filter(entry -> entry.equals(clazz)).collect(Collectors.toList()));
+        res.addAll(this.clazzes.get(code).stream().filter(clazz -> clazz.equals(entry)).collect(Collectors.toList()));
 
         return res;
+    }
+
+    @Override
+    public int store(Class<?> entry) {
+        return this.store(entry, ClassMetaDataExtractionUtils.getPresentAnnotationCode(entry));
     }
 
     /**
      * Stores a class in the storage. Returns -1 if the class is not stored otherwise the current number of stored classes will be returned.
      *
-     * @param clazz Class to be stored.
+     * @param entry Class to be stored.
      * @param code Annotation type code where the class should be stored for.
      * @return Number of stored classes or -1 for an error.
      */
-    public int store(final Class<?> clazz, final Integer code) {
+    @Override
+    public int store(final Class<?> entry, final Integer code) {
         if (code == ClassMetaDataExtractionUtils.AnnotationCodes.NONE) {
             return -1;
         }
 
-        if (!this.clazzes.get(code).add(clazz)) {
+        if (!this.clazzes.get(code).add(entry)) {
             return -1;
         }
 
         return this.clazzes.get(code).size();
     }
 
+    @Override
+    public int storeAll(Collection<Class<?>> entries) {
+        if (entries.isEmpty()) {
+            return -1;
+        }
+
+        return this.storeAll(entries, ClassMetaDataExtractionUtils.getPresentAnnotationCode(entries.iterator().next()));
+    }
+
     /**
      * Stores all classes from a given collection in the storage. Returns -1 if the classes are not stored otherwise the current number of stored classes will be returned.
      *
-     * @param clazzes Classes to be stored.
+     * @param entries Classes to be stored.
      * @param code Annotation type code where the class should be stored for.
      * @return Number of stored classes or -1 for an error.
      */
-    public int storeAll(Collection<Class<?>> clazzes, final Integer code) {
+    @Override
+    public int storeAll(Collection<Class<?>> entries, final Integer code) {
 
-        for (Class<?> clazz : clazzes) {
-            if(this.store(clazz, code) == -1){
+        for (Class<?> clazz : entries) {
+            if (this.store(clazz, code) == -1) {
                 return -1;
             }
         }
@@ -136,7 +178,8 @@ public class SortedClassStorage {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public Map<Integer, List<Class<?>>> getSortedClazzes() {
+    @Override
+    public Map<Integer, List<Class<?>>> getStorage() {
         return this.clazzes;
     }
 
