@@ -27,20 +27,20 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * <h1>SortedClassStorage</h1>
+ * <h1>SortedStorageImpl</h1>
  *
  * This class represents a container to store all classes sorted by {@link ClassMetaDataExtractionUtils.AnnotationCodes}. Additionally there are a number of useful methods.
  *
  * @author Michael Rhöse
  * @since Do, Jun 30, 2016
  */
-public class SortedClassStorage implements SortedStorage<Integer, Class<?>> {
+public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
 
     private final Map<Integer, List<Class<?>>> clazzes;
     private final Map<Integer, Boolean> emptyFlags;
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public SortedClassStorage() throws IllegalArgumentException, IllegalAccessException, InstantiationException {
+    public SortedStorageImpl() throws IllegalArgumentException, IllegalAccessException, InstantiationException {
         this.clazzes = new HashMap<>();
         this.emptyFlags = new HashMap<>();
 

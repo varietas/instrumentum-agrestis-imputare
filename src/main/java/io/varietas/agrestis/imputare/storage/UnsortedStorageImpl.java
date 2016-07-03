@@ -21,23 +21,23 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * <h1>ClassStorage</h1>
+ * <h1>UnsortedStorageImpl</h1>
  *
  * This class represents a container to store all located, annotated classes. Additionally there are a number of useful methods.
  *
  * @author Michael Rhöse
  * @since Di, Jun 28, 2016
  */
-public class ClassStorage implements UnsortedStorage<Class<?>> {
+public class UnsortedStorageImpl implements UnsortedStorage<Class<?>> {
 
     private final List<Class<?>> clazzes;
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public ClassStorage() {
+    public UnsortedStorageImpl() {
         this(0);
     }
 
-    public ClassStorage(int listSize) {
+    public UnsortedStorageImpl(int listSize) {
         this.clazzes = new ArrayList<>(listSize);
     }
 
