@@ -17,6 +17,8 @@
 package io.varietas.agrestis.imputare.analysis.container;
 
 import io.varietas.agrestis.imputare.enumeration.BeanScope;
+import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * <h1>MethodInformation</h1>
@@ -24,9 +26,13 @@ import io.varietas.agrestis.imputare.enumeration.BeanScope;
  * @author Michael Rhöse
  * @since Fr, Jul 1, 2016
  */
-public class MethodInformation extends AbstractInformation{
+public class MethodInformation extends AbstracInstanceCreationtInformation{
 
+    private final Method method;
+    private final List<DependencyInformation> dependencies;
+    
     public MethodInformation(String identifier, BeanScope scope, Class<?> type) {
         super(identifier, scope, type);
+        
     }
 }

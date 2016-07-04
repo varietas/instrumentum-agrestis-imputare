@@ -18,14 +18,16 @@ package io.varietas.agrestis.imputare.analysis.container;
 import io.varietas.agrestis.imputare.enumeration.BeanScope;
 
 /**
- * <h1>BeainInformation</h1>
+ * <h1>InstanceCreationInformation</h1>
  *
  * @author Michael Rhöse
- * @since Fr, Jul 1, 2016
+ * @since Mo, Jul 4, 2016
  */
-public class BeainInformation extends AbstractInformation{
+public interface InstanceCreationInformation {
 
-    public BeainInformation(String identifier, BeanScope scope, Class<?> type) {
-        super(identifier, scope, type);
-    }
+    public String identifier();
+
+    public BeanScope scope();
+
+    public Class<?> type();
 }

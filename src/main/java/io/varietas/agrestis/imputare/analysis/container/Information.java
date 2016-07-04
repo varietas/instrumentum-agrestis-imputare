@@ -16,8 +16,6 @@
 
 package io.varietas.agrestis.imputare.analysis.container;
 
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
-
 /**
  * <h1>Information</h1>
  *
@@ -25,7 +23,5 @@ import io.varietas.agrestis.imputare.enumeration.BeanScope;
  * @since Fr, Jul 1, 2016
  */
 public interface Information {
-    public String identifier();
-    public BeanScope scope();
-    public Class<?> type();
+    
 }

@@ -13,15 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.agrestis.imputare.analysis.container;
 
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
+
 /**
- * <h1>AbstractInformation</h1>
+ * <h1>BeainInformation</h1>
  *
  * @author Michael Rhöse
- * @since Mo, Jul 4, 2016
+ * @since Fr, Jul 1, 2016
  */
-public class AbstractInformation implements Information{
+public class MethodBeainInformation extends AbstracInstanceCreationtInformation{
 
+    private final MethodInformation methodInformation;
+    
+    public MethodBeainInformation(String identifier, BeanScope scope, Class<?> type) {
+        super(identifier, scope, type);
+    }
 }
