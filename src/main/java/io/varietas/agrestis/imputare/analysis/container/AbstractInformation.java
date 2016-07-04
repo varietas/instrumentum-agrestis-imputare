@@ -16,6 +16,7 @@
 package io.varietas.agrestis.imputare.analysis.container;
 
 import io.varietas.agrestis.imputare.analysis.container.Information;
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 
 /**
  * <h1>AbstractInformation</h1>
@@ -25,4 +26,22 @@ import io.varietas.agrestis.imputare.analysis.container.Information;
  */
 public abstract class AbstractInformation implements Information {
 
+    private final String identifier;
+    private final BeanScope scope;
+
+    public AbstractInformation(String identifier, BeanScope scope) {
+        this.identifier = identifier;
+        this.scope = scope;
+    }
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    @Override
+    public String identifier() {
+        return this.identifier;
+    }
+
+    @Override
+    public BeanScope scope() {
+        return this.scope;
+    }
 }

@@ -15,6 +15,8 @@
  */
 package io.varietas.agrestis.imputare.analysis.container;
 
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
+
 /**
  * <h1>BeainInformation</h1>
  *
@@ -22,5 +24,9 @@ package io.varietas.agrestis.imputare.analysis.container;
  * @since Fr, Jul 1, 2016
  */
 public class BeainInformation extends AbstractInformation{
+
+    public BeainInformation(String identifier, BeanScope scope) {
+        super(identifier, scope);
+    }
 
 }
