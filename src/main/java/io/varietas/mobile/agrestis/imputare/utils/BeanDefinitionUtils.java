@@ -15,15 +15,15 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
-import io.varietas.mobile.agrestis.imputare.annotation.Bean;
-import io.varietas.mobile.agrestis.imputare.annotation.Component;
-import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
-import io.varietas.mobile.agrestis.imputare.annotation.Service;
+import io.varietas.agrestis.imputare.annotation.Bean;
+import io.varietas.agrestis.imputare.annotation.Component;
+import io.varietas.agrestis.imputare.annotation.Configuration;
+import io.varietas.agrestis.imputare.annotation.Service;
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
 import io.varietas.mobile.agrestis.imputare.container.PrototypeMethodBeanDefinition;
 import io.varietas.mobile.agrestis.imputare.container.SingletonBeanDefinition;
 import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
 import io.varietas.mobile.agrestis.imputare.enumeration.ConstructorTypes;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -69,7 +69,7 @@ public class BeanDefinitionUtils {
     public static BeanDefinition createBeanInformationSimple(final Class<?> beanClazz, Class<? extends Annotation> annotationClass) throws NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Annotation annotation = beanClazz.getAnnotation(annotationClass);
         String identifier = BeanScanUtils.getBeanIdentifier(beanClazz, annotation);
-        BeanScopes scope = BeanScanUtils.getBeanScope(annotation);
+        BeanScope scope = BeanScanUtils.getBeanScope(annotation);
 
         Optional contructor = BeanScanUtils.getSpecifiedConstructor(beanClazz, ConstructorTypes.STANDARD);
         if (!contructor.isPresent()) {
@@ -108,10 +108,10 @@ public class BeanDefinitionUtils {
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
      */
-    public static BeanDefinition createBeanDefinition(final Class<?> beanClazz, final BeanScopes scope, final String identifier, final Constructor constructor, Object... params)
+    public static BeanDefinition createBeanDefinition(final Class<?> beanClazz, final BeanScope scope, final String identifier, final Constructor constructor, Object... params)
             throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 //        LOGGER.log(Level.FINER, String.format("Bean definition for bean '%s' of type '%s' (%s) created.", identifier, scope.name(), beanClazz.getName()));
-//        if (scope.equals(BeanScopes.SINGELTON)) {
+//        if (scope.equals(BeanScope.SINGELTON)) {
 //            Object instance = constructor.newInstance(params);
 //            LOGGER.log(Level.FINER, String.format("Instance for bean '%s' created.", identifier));
 //            return new SingletonBeanDefinition(instance, identifier, scope, beanClazz, constructor);
@@ -150,9 +150,9 @@ public class BeanDefinitionUtils {
     public static BeanDefinition createBeanDefinition(final Object parentObject, final Method method, Object... params) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
         Bean beanAnnotation = (Bean) method.getAnnotation(Bean.class);
-        BeanScopes scope = beanAnnotation.scope();
+        BeanScope scope = beanAnnotation.scope();
         String identifier = BeanDefinitionUtils.formatIdentifier(beanAnnotation.name(), method.getName());
-        boolean isSingleton = Objects.equals(scope, BeanScopes.PROTOTYPE);
+        boolean isSingleton = Objects.equals(scope, BeanScope.PROTOTYPE);
 
         Object instanceObject = method.invoke(parentObject, params);
 

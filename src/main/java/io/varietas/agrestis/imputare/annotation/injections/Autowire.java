@@ -13,26 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.mobile.agrestis.imputare.annotation;
+package io.varietas.agrestis.imputare.annotation.injections;
 
 import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <h1>Service</h1>
+ * <h1>Autowire</h1>
  *
  * @author Michael Rhöse
- * @since Sa, Mai 7, 2016
+ * @since Mo, Mai 9, 2016
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Service {
+@Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})
+public @interface Autowire {
 
-    String name() default AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
-
-    BeanScopes scope() default BeanScopes.SINGELTON;
+    String[] value() default AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
 }

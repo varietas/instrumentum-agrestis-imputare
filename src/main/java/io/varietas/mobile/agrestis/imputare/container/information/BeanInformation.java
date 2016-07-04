@@ -15,8 +15,8 @@
  */
 package io.varietas.mobile.agrestis.imputare.container.information;
 
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +33,11 @@ public class BeanInformation {
 
     private final Class<?> beanClazz;
     private final String beanIdentifier;
-    private final BeanScopes scope;
+    private final BeanScope scope;
 
     private final List<String> dependencies = new ArrayList<>();
 
-    public BeanInformation(Class<?> beanClazz, String beanIdentifier, BeanScopes scope, List<String> dependencies) {
+    public BeanInformation(Class<?> beanClazz, String beanIdentifier, BeanScope scope, List<String> dependencies) {
         this.beanClazz = beanClazz;
         this.beanIdentifier = beanIdentifier;
         this.scope = scope;
@@ -52,7 +52,7 @@ public class BeanInformation {
         return beanIdentifier;
     }
 
-    public BeanScopes getScope() {
+    public BeanScope getScope() {
         return scope;
     }
 

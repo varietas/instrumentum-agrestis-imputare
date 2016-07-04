@@ -16,7 +16,7 @@
 
 package io.varietas.mobile.agrestis.imputare.annotation;
 
-import io.varietas.mobile.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 import io.varietas.test.environments.model.ComponentBeanWithConstructorDependency;
 import io.varietas.test.environments.model.ComponentBeanWithoutDependencies;
 import io.varietas.test.environments.model.PojoOnlyWithParamConstructor;

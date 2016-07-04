@@ -15,11 +15,11 @@
  */
 package io.varietas.test.environments.model.beanscanutils;
 
-import io.varietas.mobile.agrestis.imputare.annotation.Bean;
-import io.varietas.mobile.agrestis.imputare.annotation.Component;
-import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
-import io.varietas.mobile.agrestis.imputare.annotation.Service;
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
+import io.varietas.agrestis.imputare.annotation.Bean;
+import io.varietas.agrestis.imputare.annotation.Component;
+import io.varietas.agrestis.imputare.annotation.Configuration;
+import io.varietas.agrestis.imputare.annotation.Service;
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 
 /**
  * <h1>AllAnnotationsBeanClass</h1>
@@ -39,7 +39,7 @@ public class AllAnnotationsBeanClass {
         return this.intValue;
     }
 
-    @Bean(scope = BeanScopes.SINGELTON)
+    @Bean(scope = BeanScope.SINGELTON)
     public int int2Bean() {
         return this.intValue;
     }

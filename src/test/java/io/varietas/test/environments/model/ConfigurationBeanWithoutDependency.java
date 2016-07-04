@@ -15,8 +15,8 @@
  */
 package io.varietas.test.environments.model;
 
-import io.varietas.mobile.agrestis.imputare.annotation.Bean;
-import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
+import io.varietas.agrestis.imputare.annotation.Bean;
+import io.varietas.agrestis.imputare.annotation.Configuration;
 
 /**
  * <h1>ConfigurationBeanWithoutDependency</h1>

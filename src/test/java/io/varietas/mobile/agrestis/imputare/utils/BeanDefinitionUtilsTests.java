@@ -16,12 +16,12 @@
 package io.varietas.mobile.agrestis.imputare.utils;
 
 import io.varietas.mobile.agrestis.imputare.AbstractTestConfiguration;
-import io.varietas.mobile.agrestis.imputare.annotation.Component;
-import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
-import io.varietas.mobile.agrestis.imputare.annotation.Service;
+import io.varietas.agrestis.imputare.annotation.Component;
+import io.varietas.agrestis.imputare.annotation.Configuration;
+import io.varietas.agrestis.imputare.annotation.Service;
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
 import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
 import io.varietas.test.environments.model.utilssimple.SimpleComponentBean1;
 import io.varietas.test.environments.model.utilssimple.SimpleComponentBean2;
 import io.varietas.test.environments.model.utilssimple.SimpleComponentBean3;
@@ -73,8 +73,8 @@ public class BeanDefinitionUtilsTests extends AbstractTestConfiguration {
             Assertions.assertThat(clazzList).contains(beanDefinition.getBeanClass());
             LOGGER.log(Level.INFO, String.format("Bean definition class '%s' contains in class list.", beanDefinition.getBeanClass().getSimpleName()));
 
-            Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScopes.SINGELTON);
-            LOGGER.log(Level.INFO, String.format("BeanScopes.%s of bean definition is equals to configured BeanScopes.%s", beanDefinition.getBeanScope().name(), BeanScopes.SINGELTON.name()));
+            Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScope.SINGELTON);
+            LOGGER.log(Level.INFO, String.format("BeanScope.%s of bean definition is equals to configured BeanScope.%s", beanDefinition.getBeanScope().name(), BeanScope.SINGELTON.name()));
 
             try {
                 Assertions.assertThat(beanDefinition.getInstance()).isNotNull();
@@ -113,8 +113,8 @@ public class BeanDefinitionUtilsTests extends AbstractTestConfiguration {
             Assertions.assertThat(clazzList).contains(beanDefinition.getBeanClass());
             LOGGER.log(Level.INFO, String.format("Bean definition class '%s' contains in class list.", beanDefinition.getBeanClass().getSimpleName()));
 
-            Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScopes.SINGELTON);
-            LOGGER.log(Level.INFO, String.format("BeanScopes.%s of bean definition is equals to configured BeanScopes.%s", beanDefinition.getBeanScope().name(), BeanScopes.SINGELTON.name()));
+            Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScope.SINGELTON);
+            LOGGER.log(Level.INFO, String.format("BeanScope.%s of bean definition is equals to configured BeanScope.%s", beanDefinition.getBeanScope().name(), BeanScope.SINGELTON.name()));
 
             try {
                 Assertions.assertThat(beanDefinition.getInstance()).isNotNull();
@@ -153,8 +153,8 @@ public class BeanDefinitionUtilsTests extends AbstractTestConfiguration {
             Assertions.assertThat(clazzList).contains(beanDefinition.getBeanClass());
             LOGGER.log(Level.INFO, String.format("Bean definition class '%s' contains in class list.", beanDefinition.getBeanClass().getSimpleName()));
 
-            Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScopes.PROTOTYPE);
-            LOGGER.log(Level.INFO, String.format("BeanScopes.%s of bean definition is equals to configured BeanScopes.%s", beanDefinition.getBeanScope().name(), BeanScopes.PROTOTYPE.name()));
+            Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScope.PROTOTYPE);
+            LOGGER.log(Level.INFO, String.format("BeanScope.%s of bean definition is equals to configured BeanScope.%s", beanDefinition.getBeanScope().name(), BeanScope.PROTOTYPE.name()));
 
             try {
                 Assertions.assertThat(beanDefinition.getInstance()).isNotNull();
@@ -177,13 +177,13 @@ public class BeanDefinitionUtilsTests extends AbstractTestConfiguration {
 
     @Test
     public void createBeanDefinitionServiceSimple() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(SimpleServiceBean1.class, BeanScopes.SINGELTON, BeanDefinitionUtils.formatIdentifier(SimpleServiceBean1.class.getSimpleName(), AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT), SimpleServiceBean1.class.getConstructors()[0]);
+        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(SimpleServiceBean1.class, BeanScope.SINGELTON, BeanDefinitionUtils.formatIdentifier(SimpleServiceBean1.class.getSimpleName(), AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT), SimpleServiceBean1.class.getConstructors()[0]);
 
         Assertions.assertThat(SimpleServiceBean1.class).isEqualTo(beanDefinition.getBeanClass());
         LOGGER.log(Level.INFO, String.format("Bean definition class '%s' contains in class list.", beanDefinition.getBeanClass().getSimpleName()));
 
-        Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScopes.SINGELTON);
-        LOGGER.log(Level.INFO, String.format("BeanScopes.%s of bean definition is equals to configured BeanScopes.%s", beanDefinition.getBeanScope().name(), BeanScopes.SINGELTON.name()));
+        Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScope.SINGELTON);
+        LOGGER.log(Level.INFO, String.format("BeanScope.%s of bean definition is equals to configured BeanScope.%s", beanDefinition.getBeanScope().name(), BeanScope.SINGELTON.name()));
 
         try {
             Assertions.assertThat(beanDefinition.getInstance()).isNotNull();
@@ -202,13 +202,13 @@ public class BeanDefinitionUtilsTests extends AbstractTestConfiguration {
 
     @Test
     public void createBeanDefinitionConfigurationSimple() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(SimpleConfigurationBean1.class, BeanScopes.SINGELTON, BeanDefinitionUtils.formatIdentifier(SimpleConfigurationBean1.class.getSimpleName(), AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT), SimpleConfigurationBean1.class.getConstructors()[0]);
+        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(SimpleConfigurationBean1.class, BeanScope.SINGELTON, BeanDefinitionUtils.formatIdentifier(SimpleConfigurationBean1.class.getSimpleName(), AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT), SimpleConfigurationBean1.class.getConstructors()[0]);
 
         Assertions.assertThat(SimpleConfigurationBean1.class).isEqualTo(beanDefinition.getBeanClass());
         LOGGER.log(Level.INFO, String.format("Bean definition class '%s' contains in class list.", beanDefinition.getBeanClass().getSimpleName()));
 
-        Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScopes.SINGELTON);
-        LOGGER.log(Level.INFO, String.format("BeanScopes.%s of bean definition is equals to configured BeanScopes.%s", beanDefinition.getBeanScope().name(), BeanScopes.SINGELTON.name()));
+        Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScope.SINGELTON);
+        LOGGER.log(Level.INFO, String.format("BeanScope.%s of bean definition is equals to configured BeanScope.%s", beanDefinition.getBeanScope().name(), BeanScope.SINGELTON.name()));
 
         try {
             Assertions.assertThat(beanDefinition.getInstance()).isNotNull();
@@ -228,13 +228,13 @@ public class BeanDefinitionUtilsTests extends AbstractTestConfiguration {
     @Test
     public void createBeanDefinitionComponentSimple() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(SimpleComponentBean1.class, BeanScopes.PROTOTYPE, BeanDefinitionUtils.formatIdentifier(SimpleComponentBean1.class.getSimpleName(), AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT), SimpleComponentBean1.class.getConstructors()[0]);
+        BeanDefinition beanDefinition = BeanDefinitionUtils.createBeanDefinition(SimpleComponentBean1.class, BeanScope.PROTOTYPE, BeanDefinitionUtils.formatIdentifier(SimpleComponentBean1.class.getSimpleName(), AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT), SimpleComponentBean1.class.getConstructors()[0]);
 
         Assertions.assertThat(SimpleComponentBean1.class).isEqualTo(beanDefinition.getBeanClass());
         LOGGER.log(Level.INFO, String.format("Bean definition class '%s' contains in class list.", beanDefinition.getBeanClass().getSimpleName()));
 
-        Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScopes.PROTOTYPE);
-        LOGGER.log(Level.INFO, String.format("BeanScopes.%s of bean definition is equals to configured BeanScopes.%s", beanDefinition.getBeanScope().name(), BeanScopes.PROTOTYPE.name()));
+        Assertions.assertThat(beanDefinition.getBeanScope()).isEqualTo(BeanScope.PROTOTYPE);
+        LOGGER.log(Level.INFO, String.format("BeanScope.%s of bean definition is equals to configured BeanScope.%s", beanDefinition.getBeanScope().name(), BeanScope.PROTOTYPE.name()));
 
         try {
             Assertions.assertThat(beanDefinition.getInstance()).isNotNull();

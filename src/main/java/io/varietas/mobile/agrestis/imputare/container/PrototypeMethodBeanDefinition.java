@@ -15,7 +15,7 @@
  */
 package io.varietas.mobile.agrestis.imputare.container;
 
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -31,7 +31,7 @@ public class PrototypeMethodBeanDefinition extends AbstractBeanDefinition {
     final Object parentObject;
     final Object[] params;
 
-    public PrototypeMethodBeanDefinition(String beanIdentifier, BeanScopes beanScope, Class beanClazz, Method method, Object parentObject, Object... params) {
+    public PrototypeMethodBeanDefinition(String beanIdentifier, BeanScope beanScope, Class beanClazz, Method method, Object parentObject, Object... params) {
         super(beanIdentifier, beanScope, beanClazz);
         this.method = method;
         this.parentObject = parentObject;

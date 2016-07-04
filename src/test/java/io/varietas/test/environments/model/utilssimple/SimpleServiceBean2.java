@@ -15,7 +15,7 @@
  */
 package io.varietas.test.environments.model.utilssimple;
 
-import io.varietas.mobile.agrestis.imputare.annotation.Service;
+import io.varietas.agrestis.imputare.annotation.Service;
 import java.util.Random;
 
 /**

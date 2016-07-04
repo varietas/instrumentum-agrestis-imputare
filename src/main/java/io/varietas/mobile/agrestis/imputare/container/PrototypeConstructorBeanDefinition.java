@@ -15,7 +15,7 @@
  */
 package io.varietas.mobile.agrestis.imputare.container;
 
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
@@ -35,7 +35,7 @@ public class PrototypeConstructorBeanDefinition extends AbstractBeanDefinition {
     final Object[] params;
 
     public PrototypeConstructorBeanDefinition(String beanIdentifier, Class<?> beanClazz, Constructor constructor, Object... params) {
-        super(beanIdentifier, BeanScopes.PROTOTYPE, beanClazz);
+        super(beanIdentifier, BeanScope.PROTOTYPE, beanClazz);
         this.constructor = constructor;
         this.params = params;
     }

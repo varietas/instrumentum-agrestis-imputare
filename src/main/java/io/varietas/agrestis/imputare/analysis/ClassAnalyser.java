@@ -15,10 +15,10 @@
  */
 package io.varietas.agrestis.imputare.analysis;
 
-import io.varietas.agrestis.imputare.storage.SortedStorageImpl;
+import io.varietas.agrestis.imputare.storage.SortedStorage;
 import io.varietas.agrestis.imputare.utils.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.methods.MethodMetaDataExtractionUtils;
-import io.varietas.mobile.agrestis.imputare.annotation.Bean;
+import io.varietas.agrestis.imputare.annotation.Bean;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
@@ -35,10 +35,10 @@ public class ClassAnalyser {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ClassAnalyser.class);
     
-    private final SortedStorageImpl storage;
+    private final SortedStorage<Integer,Class<?>> storage;
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public ClassAnalyser(SortedStorageImpl storage) {
+    public ClassAnalyser(SortedStorage<Integer,Class<?>> storage) {
         this.storage = storage;
     }
     
@@ -46,6 +46,7 @@ public class ClassAnalyser {
     public ClassAnalyser doBeanAnalysis(){
         
         // Do configuration class analysis
+        this.doMethodBeanAnalysis();
         
         // Do bean class analysis
         
@@ -61,6 +62,7 @@ public class ClassAnalyser {
             List<Method> methods = MethodMetaDataExtractionUtils.getAnnotatedMethods(next.get(), Bean.class);
             
             methods.stream().forEach(method -> {
+                Class<?> beanType = method.getReturnType();
                 
             });
             

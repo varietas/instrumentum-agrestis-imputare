@@ -15,7 +15,7 @@
  */
 package io.varietas.mobile.agrestis.imputare.container;
 
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -45,7 +45,7 @@ public interface BeanDefinition {
      *
      * @return
      */
-    public BeanScopes getBeanScope();
+    public BeanScope getBeanScope();
 
     /**
      * his creates and returns an instance of the bean. If the bean has the scope {@link BeanScopes}.PROTOTYPE a new instance will created.

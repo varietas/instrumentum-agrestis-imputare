@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.mobile.agrestis.imputare.annotation;
+package io.varietas.agrestis.imputare.annotation;
 
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -34,5 +34,5 @@ public @interface Repository {
 
     String name() default AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
 
-    BeanScopes scope() default BeanScopes.SINGELTON;
+    BeanScope scope() default BeanScope.SINGELTON;
 }

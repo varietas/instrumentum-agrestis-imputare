@@ -15,7 +15,7 @@
  */
 package io.varietas.test.environments.model.diutils;
 
-import io.varietas.mobile.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 
 /**
  * <h1>ToManyInjectionsClass1</h1>

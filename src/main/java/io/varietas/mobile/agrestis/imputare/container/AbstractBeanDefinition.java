@@ -15,7 +15,7 @@
  */
 package io.varietas.mobile.agrestis.imputare.container;
 
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -27,10 +27,10 @@ import java.lang.reflect.InvocationTargetException;
 public abstract class AbstractBeanDefinition implements BeanDefinition {
 
     protected final String beanIdentifier;
-    protected final BeanScopes beanScope;
+    protected final BeanScope beanScope;
     protected final Class beanClazz;
 
-    public AbstractBeanDefinition(final String beanIdentifier, final BeanScopes beanScope, final Class beanClazz) {
+    public AbstractBeanDefinition(final String beanIdentifier, final BeanScope beanScope, final Class beanClazz) {
         this.beanIdentifier = beanIdentifier;
         this.beanScope = beanScope;
         this.beanClazz = beanClazz;
@@ -47,7 +47,7 @@ public abstract class AbstractBeanDefinition implements BeanDefinition {
     }
 
     @Override
-    public BeanScopes getBeanScope() {
+    public BeanScope getBeanScope() {
         return this.beanScope;
     }
 

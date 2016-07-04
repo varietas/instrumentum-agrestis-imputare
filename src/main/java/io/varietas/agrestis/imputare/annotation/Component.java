@@ -13,26 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.mobile.agrestis.imputare.annotation;
+package io.varietas.agrestis.imputare.annotation;
 
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <h1>Bean</h1>
+ * <h1>Component</h1>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.METHOD})
-public @interface Bean {
+@Target(ElementType.TYPE)
+public @interface Component {
 
     String name() default AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
 
-    BeanScopes scope() default BeanScopes.PROTOTYPE;
+    BeanScope scope() default BeanScope.PROTOTYPE;
 }

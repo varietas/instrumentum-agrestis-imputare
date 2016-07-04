@@ -15,16 +15,16 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
-import io.varietas.mobile.agrestis.imputare.annotation.injections.Autowire;
-import io.varietas.mobile.agrestis.imputare.annotation.Bean;
-import io.varietas.mobile.agrestis.imputare.annotation.Component;
-import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
-import io.varietas.mobile.agrestis.imputare.annotation.Controller;
-import io.varietas.mobile.agrestis.imputare.annotation.Repository;
-import io.varietas.mobile.agrestis.imputare.annotation.Service;
+import io.varietas.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.annotation.Bean;
+import io.varietas.agrestis.imputare.annotation.Component;
+import io.varietas.agrestis.imputare.annotation.Configuration;
+import io.varietas.agrestis.imputare.annotation.Controller;
+import io.varietas.agrestis.imputare.annotation.Repository;
+import io.varietas.agrestis.imputare.annotation.Service;
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
 import io.varietas.mobile.agrestis.imputare.contant.AnnotationMethodIndices;
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
 import io.varietas.mobile.agrestis.imputare.enumeration.ConstructorTypes;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -72,9 +72,9 @@ public class BeanScanUtils {
         return constructorAnnotation.value();
     }
 
-    public static final BeanScopes getBeanScope(final Annotation annotation) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static final BeanScope getBeanScope(final Annotation annotation) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         final Method[] methods = annotation.annotationType().getDeclaredMethods();
-        return ((BeanScopes) methods[AnnotationMethodIndices.SCOPE].invoke(annotation));
+        return ((BeanScope) methods[AnnotationMethodIndices.SCOPE].invoke(annotation));
     }
 
     public static final Annotation getBeanAnnotation(final Class<?> clazz) throws IOException, URISyntaxException, ClassNotFoundException {

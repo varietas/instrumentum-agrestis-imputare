@@ -15,11 +15,11 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
-import io.varietas.mobile.agrestis.imputare.annotation.Bean;
-import io.varietas.mobile.agrestis.imputare.annotation.Component;
-import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
-import io.varietas.mobile.agrestis.imputare.annotation.Service;
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
+import io.varietas.agrestis.imputare.annotation.Bean;
+import io.varietas.agrestis.imputare.annotation.Component;
+import io.varietas.agrestis.imputare.annotation.Configuration;
+import io.varietas.agrestis.imputare.annotation.Service;
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.mobile.agrestis.imputare.enumeration.ConstructorTypes;
 import io.varietas.test.environments.model.beanscanutils.AllAnnotationsBeanClass;
 import io.varietas.test.environments.model.beanscanutils.SimpleBeanWithAnnotatedConstructor1;
@@ -121,9 +121,9 @@ public class BeanScanUtilsTests {
         Class<?> clazz = AllAnnotationsBeanClass.class;
         LOGGER.info(String.format("Class '%s' for bean scope tests used.", clazz.getSimpleName()));
 
-        this.assertAndLogClazzAnnotation(clazz, Configuration.class, BeanScopes.SINGELTON);
-        this.assertAndLogClazzAnnotation(clazz, Service.class, BeanScopes.SINGELTON);
-        this.assertAndLogClazzAnnotation(clazz, Component.class, BeanScopes.PROTOTYPE);
+        this.assertAndLogClazzAnnotation(clazz, Configuration.class, BeanScope.SINGELTON);
+        this.assertAndLogClazzAnnotation(clazz, Service.class, BeanScope.SINGELTON);
+        this.assertAndLogClazzAnnotation(clazz, Component.class, BeanScope.PROTOTYPE);
 
         this.assertAndLogFieldAnnotation(clazz, Bean.class, (short) 2);
     }
@@ -158,8 +158,8 @@ public class BeanScanUtilsTests {
 //        LOGGER.info(String.format("Annotation '%s' located | Annotation '%s' expected", annotation.annotationType().getSimpleName(), expectedAnnotation.getSimpleName()));
     }
 
-    private void assertAndLogClazzAnnotation(final Class<?> clazz, final Class<? extends Annotation> annotationClass, final BeanScopes expectedScope) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        BeanScopes scope = BeanScanUtils.getBeanScope(clazz.getAnnotation(annotationClass));
+    private void assertAndLogClazzAnnotation(final Class<?> clazz, final Class<? extends Annotation> annotationClass, final BeanScope expectedScope) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        BeanScope scope = BeanScanUtils.getBeanScope(clazz.getAnnotation(annotationClass));
         Assertions.assertThat(scope).isEqualTo(expectedScope);
         LOGGER.info(String.format("BeanScope.%s located in annotation '%s', expected BeanScops.%s", scope.name(), annotationClass.getSimpleName(), expectedScope.name()));
     }
@@ -170,9 +170,9 @@ public class BeanScanUtilsTests {
             if (!method.isAnnotationPresent(Bean.class)) {
                 continue;
             }
-            BeanScopes scope = BeanScanUtils.getBeanScope(method.getAnnotation(annotationClass));
+            BeanScope scope = BeanScanUtils.getBeanScope(method.getAnnotation(annotationClass));
 
-            Assertions.assertThat(scope).isIn((Object[]) BeanScopes.values());
+            Assertions.assertThat(scope).isIn((Object[]) BeanScope.values());
             methodCount++;
             LOGGER.info(String.format("%d: BeanScope.%s located in annotation '%s'.", methodCount, scope.name(), annotationClass.getSimpleName()));
         }

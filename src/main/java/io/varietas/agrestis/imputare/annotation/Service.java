@@ -13,12 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.varietas.agrestis.imputare.annotation;
+
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
+import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
- * <h1>io.varietas.mobile.agrestis.imputare.annotation</h1>
- *
- * The annotations are organised for a program structure. There is a hierarchy which bean could contains other beans. The full description could be found in the documentation.
+ * <h1>Service</h1>
  *
  * @author Michael Rhöse
- * @since Mo, Jun 6, 2016
+ * @since Sa, Mai 7, 2016
  */
-package io.varietas.mobile.agrestis.imputare.annotation;
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Service {
+
+    String name() default AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
+
+    BeanScope scope() default BeanScope.SINGELTON;
+}

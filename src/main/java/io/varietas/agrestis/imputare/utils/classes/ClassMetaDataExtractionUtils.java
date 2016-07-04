@@ -15,12 +15,12 @@
  */
 package io.varietas.agrestis.imputare.utils.classes;
 
-import io.varietas.mobile.agrestis.imputare.annotation.Component;
-import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
-import io.varietas.mobile.agrestis.imputare.annotation.Controller;
-import io.varietas.mobile.agrestis.imputare.annotation.Repository;
-import io.varietas.mobile.agrestis.imputare.annotation.Service;
-import io.varietas.mobile.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.annotation.Component;
+import io.varietas.agrestis.imputare.annotation.Configuration;
+import io.varietas.agrestis.imputare.annotation.Controller;
+import io.varietas.agrestis.imputare.annotation.Repository;
+import io.varietas.agrestis.imputare.annotation.Service;
+import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 import io.varietas.mobile.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import io.varietas.mobile.agrestis.imputare.utils.BeanScanUtils;
 import java.lang.reflect.Constructor;

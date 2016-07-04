@@ -15,7 +15,7 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
-import io.varietas.mobile.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 import io.varietas.mobile.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import java.io.File;
 import java.io.IOException;

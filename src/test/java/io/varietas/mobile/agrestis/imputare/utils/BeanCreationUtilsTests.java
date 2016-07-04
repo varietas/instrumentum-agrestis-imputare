@@ -15,10 +15,10 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
-import io.varietas.mobile.agrestis.imputare.annotation.injections.Autowire;
-import io.varietas.mobile.agrestis.imputare.annotation.Component;
-import io.varietas.mobile.agrestis.imputare.annotation.Configuration;
-import io.varietas.mobile.agrestis.imputare.annotation.Service;
+import io.varietas.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.annotation.Component;
+import io.varietas.agrestis.imputare.annotation.Configuration;
+import io.varietas.agrestis.imputare.annotation.Service;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
 import io.varietas.test.environments.model.beaininstantiationutils.ClassWithAllFields;
 import io.varietas.test.environments.model.beaininstantiationutils.ClassWithBeansInConstructor;

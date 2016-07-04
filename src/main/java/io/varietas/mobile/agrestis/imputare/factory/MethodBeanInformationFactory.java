@@ -16,10 +16,10 @@
 package io.varietas.mobile.agrestis.imputare.factory;
 
 import io.varietas.mobile.agrestis.imputare.AgrestisImputareContextInitialiser;
-import io.varietas.mobile.agrestis.imputare.annotation.Bean;
-import io.varietas.mobile.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.annotation.Bean;
+import io.varietas.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.mobile.agrestis.imputare.container.information.BeanInformation;
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
 import io.varietas.mobile.agrestis.imputare.utils.BeanDefinitionUtils;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -70,7 +70,7 @@ public class MethodBeanInformationFactory {
         methods.forEach(method -> {
 
             String beanIdentifier = BeanDefinitionUtils.formatIdentifier(((Bean) method.getAnnotation(Bean.class)).name(), method.getName());
-            BeanScopes scope = ((Bean) method.getAnnotation(Bean.class)).scope();
+            BeanScope scope = ((Bean) method.getAnnotation(Bean.class)).scope();
             List<String> dependencies = null;
 
             ///< Is Autowire existing? (y) collect identifier

@@ -15,7 +15,7 @@
  */
 package io.varietas.test.environments.model.beaininstantiationutils;
 
-import io.varietas.mobile.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 import io.varietas.test.environments.model.utilssimple.SimpleComponentBean1;
 import io.varietas.test.environments.model.utilssimple.SimpleComponentBean2;
 import io.varietas.test.environments.model.utilssimple.SimpleComponentBean3;

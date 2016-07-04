@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.mobile.agrestis.imputare.enumeration;
-
 /**
- * <h1>BeanScopes</h1>
+ * <h1>io.varietas.mobile.agrestis.imputare.annotation</h1>
+ *
+ * The annotations are organised for a program structure. There is a hierarchy which bean could contains other beans. The full description could be found in the documentation.
  *
  * @author Michael Rhöse
- * @since Sa, Mai 7, 2016
+ * @since Mo, Jun 6, 2016
  */
-public enum BeanScopes {
-    PROTOTYPE, SINGELTON,
-}
+package io.varietas.agrestis.imputare.annotation;

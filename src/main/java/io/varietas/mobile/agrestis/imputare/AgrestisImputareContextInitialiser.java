@@ -15,11 +15,11 @@
  */
 package io.varietas.mobile.agrestis.imputare;
 
-import io.varietas.mobile.agrestis.imputare.annotation.Bean;
-import io.varietas.mobile.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.annotation.Bean;
+import io.varietas.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
 import io.varietas.mobile.agrestis.imputare.container.information.BeanInformation;
-import io.varietas.mobile.agrestis.imputare.enumeration.BeanScopes;
 import io.varietas.mobile.agrestis.imputare.utils.BeanDefinitionUtils;
 import io.varietas.mobile.agrestis.imputare.utils.BeanScanUtils;
 import io.varietas.mobile.agrestis.imputare.utils.ReflectionUtils;
@@ -177,7 +177,7 @@ public class AgrestisImputareContextInitialiser {
 
         Annotation beanAnnotation = BeanScanUtils.convertAnnotationCodeToAnnotation(typeCode).get();
         String beanIdentifier = BeanScanUtils.getBeanIdentifier(clazz, beanAnnotation);
-        BeanScopes scope = BeanScanUtils.getBeanScope(beanAnnotation);
+        BeanScope scope = BeanScanUtils.getBeanScope(beanAnnotation);
         List<String> dependencies = new ArrayList<>();;
 
         Arrays.asList(clazz.getDeclaredFields()).stream().filter(field -> field.isAnnotationPresent(Autowire.class)).collect(Collectors.toList()).forEach(field -> {
