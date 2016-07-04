@@ -26,8 +26,7 @@ import io.varietas.agrestis.imputare.enumeration.BeanScope;
  */
 public class ConstructorInformation extends AbstractInformation{
 
-    public ConstructorInformation(String identifier, BeanScope scope) {
-        super(identifier, scope);
+    public ConstructorInformation(String identifier, BeanScope scope, Class<?> type) {
+        super(identifier, scope, type);
     }
-
 }

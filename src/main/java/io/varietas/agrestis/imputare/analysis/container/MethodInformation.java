@@ -25,9 +25,8 @@ import io.varietas.agrestis.imputare.enumeration.BeanScope;
  * @since Fr, Jul 1, 2016
  */
 public class MethodInformation extends AbstractInformation{
-    
-    public MethodInformation(String identifier, BeanScope scope) {
-        super(identifier, scope);
+
+    public MethodInformation(String identifier, BeanScope scope, Class<?> type) {
+        super(identifier, scope, type);
     }
-    
 }

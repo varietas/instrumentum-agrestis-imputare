@@ -26,8 +26,7 @@ import io.varietas.agrestis.imputare.enumeration.BeanScope;
  */
 public class DependencyInformation extends AbstractInformation{
 
-    public DependencyInformation(String identifier, BeanScope scope) {
-        super(identifier, scope);
+    public DependencyInformation(String identifier, BeanScope scope, Class<?> type) {
+        super(identifier, scope, type);
     }
-
 }

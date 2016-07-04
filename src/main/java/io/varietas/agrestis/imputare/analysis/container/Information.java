@@ -27,4 +27,5 @@ import io.varietas.agrestis.imputare.enumeration.BeanScope;
 public interface Information {
     public String identifier();
     public BeanScope scope();
+    public Class<?> type();
 }

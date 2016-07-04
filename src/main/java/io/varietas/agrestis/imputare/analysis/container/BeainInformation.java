@@ -25,8 +25,7 @@ import io.varietas.agrestis.imputare.enumeration.BeanScope;
  */
 public class BeainInformation extends AbstractInformation{
 
-    public BeainInformation(String identifier, BeanScope scope) {
-        super(identifier, scope);
+    public BeainInformation(String identifier, BeanScope scope, Class<?> type) {
+        super(identifier, scope, type);
     }
-
 }

@@ -28,10 +28,12 @@ public abstract class AbstractInformation implements Information {
 
     private final String identifier;
     private final BeanScope scope;
+    private final Class<?> type;
 
-    public AbstractInformation(String identifier, BeanScope scope) {
+    public AbstractInformation(String identifier, BeanScope scope, Class<?> type) {
         this.identifier = identifier;
         this.scope = scope;
+        this.type = type;
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,5 +45,10 @@ public abstract class AbstractInformation implements Information {
     @Override
     public BeanScope scope() {
         return this.scope;
+    }
+
+    @Override
+    public Class<?> type() {
+        return this.type;
     }
 }
