@@ -13,32 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.mobile.agrestis.imputare.error;
+package io.varietas.agrestis.imputare.error;
 
 /**
- * <h1>BeanLoadException</h1>
+ * <h1>RecursiveInjectionException</h1>
  *
  * @author Michael Rhöse
- * @since Fr, Mai 27, 2016
+ * @since Mi, Mai 18, 2016
  */
-public class BeanLoadException extends Exception {
+public class RecursiveInjectionException extends Exception {
 
-    public BeanLoadException() {
+    public RecursiveInjectionException() {
     }
 
-    public BeanLoadException(String message) {
+    public RecursiveInjectionException(String message) {
         super(message);
     }
 
-    public BeanLoadException(String message, Throwable cause) {
+    public RecursiveInjectionException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public BeanLoadException(Throwable cause) {
+    public RecursiveInjectionException(Throwable cause) {
         super(cause);
     }
 
-    public BeanLoadException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public RecursiveInjectionException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
+
 }

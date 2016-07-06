@@ -29,7 +29,7 @@ import io.varietas.test.environments.model.utilssimple.SimpleConfigurationBean3;
 import io.varietas.test.environments.model.utilssimple.SimpleServiceBean1;
 import io.varietas.test.environments.model.utilssimple.SimpleServiceBean2;
 import io.varietas.test.environments.model.utilssimple.SimpleServiceBean3;
-import io.varietas.mobile.agrestis.imputare.error.ToManyInjectedConstructorsException;
+import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URISyntaxException;

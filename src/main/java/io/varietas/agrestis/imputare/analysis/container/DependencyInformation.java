@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.agrestis.imputare.analysis.container;
-
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
 
 /**
  * <h1>DependencyInformation</h1>
@@ -24,9 +21,21 @@ import io.varietas.agrestis.imputare.enumeration.BeanScope;
  * @author Michael Rhöse
  * @since Fr, Jul 1, 2016
  */
-public class DependencyInformation extends AbstracInstanceCreationtInformation{
+public class DependencyInformation {
 
-    public DependencyInformation(String identifier, BeanScope scope, Class<?> type) {
-        super(identifier, scope, type);
+    private final String identifier;
+    private final Class<?> type;
+
+    public DependencyInformation(String identifier, Class<?> type) {
+        this.identifier = identifier;
+        this.type = type;
+    }
+
+    public String identifier() {
+        return identifier;
+    }
+
+    public Class<?> type() {
+        return type;
     }
 }

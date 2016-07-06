@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.mobile.agrestis.imputare.enumeration;
+
+package io.varietas.agrestis.imputare.contant;
 
 /**
- * <h1>ConstructorTypes</h1>
+ * <h1>BeanIdentifier</h1>
+ *
+ * This constants are used to specify a file type to extract from a jar.
  *
  * @author Michael Rhöse
- * @since Di, Mai 17, 2016
+ * @since Do, Nov 5, 2015
  */
-public enum ConstructorTypes {
-    STANDARD, PARAMETERISED, COPY, INJECTED
+public class ExtractionFileType {
+
+    public static final String 
+            TYPE_ALL = "",
+            TYPE_JSON = ".json",
+            TYPE_CLASS = ".class";
 }

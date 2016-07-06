@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.mobile.agrestis.imputare.contant;
+package io.varietas.agrestis.imputare.contant;
 
 /**
  * <h1>AnnotationMethodIndices</h1>

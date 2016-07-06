@@ -15,7 +15,7 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
-import io.varietas.mobile.agrestis.imputare.contant.ExtractionFileType;
+import io.varietas.agrestis.imputare.contant.ExtractionFileType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;

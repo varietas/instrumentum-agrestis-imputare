@@ -168,6 +168,16 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
     public Map<Integer, List<Class<?>>> getStorage() {
         return this.clazzes;
     }
+    
+    @Override
+    public Boolean isEmpty(Integer code) {
+        return this.clazzes.get(code).isEmpty();
+    }
+
+    @Override
+    public Boolean isEmpty() {
+        return this.getStorage().keySet().stream().filter(key -> this.isEmpty(key)).findFirst().isPresent();
+    }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private void initialiseStorage() throws IllegalArgumentException, IllegalAccessException, InstantiationException {

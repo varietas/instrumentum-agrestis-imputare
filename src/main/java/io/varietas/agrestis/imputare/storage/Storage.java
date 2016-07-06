@@ -34,4 +34,10 @@ public interface Storage<Type> {
      * @return Next entry from the storage.
      */
     public Optional<Type> next();
+    
+    /**
+     * 
+     * @return 
+     */
+    public Boolean isEmpty();
 }

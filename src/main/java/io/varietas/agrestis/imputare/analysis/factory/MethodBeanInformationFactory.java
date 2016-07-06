@@ -13,21 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.agrestis.imputare.analysis.container;
 
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
+package io.varietas.agrestis.imputare.analysis.factory;
 
 /**
- * <h1>InstanceCreationInformation</h1>
+ * <h1>MethodBeanInformationFactory</h1>
  *
  * @author Michael Rhöse
  * @since Mo, Jul 4, 2016
  */
-public interface InstanceCreationInformation {
+public class MethodBeanInformationFactory {
 
-    public String identifier();
-
-    public BeanScope scope();
-
-    public Class<?> type();
+    
 }

@@ -21,7 +21,7 @@ import io.varietas.agrestis.imputare.annotation.Configuration;
 import io.varietas.agrestis.imputare.annotation.Service;
 import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
-import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
+import io.varietas.agrestis.imputare.contant.AnnotationConstants;
 import io.varietas.test.environments.model.utilssimple.SimpleComponentBean1;
 import io.varietas.test.environments.model.utilssimple.SimpleComponentBean2;
 import io.varietas.test.environments.model.utilssimple.SimpleComponentBean3;

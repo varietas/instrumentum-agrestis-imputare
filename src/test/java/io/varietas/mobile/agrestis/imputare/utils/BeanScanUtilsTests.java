@@ -20,7 +20,7 @@ import io.varietas.agrestis.imputare.annotation.Component;
 import io.varietas.agrestis.imputare.annotation.Configuration;
 import io.varietas.agrestis.imputare.annotation.Service;
 import io.varietas.agrestis.imputare.enumeration.BeanScope;
-import io.varietas.mobile.agrestis.imputare.enumeration.ConstructorTypes;
+import io.varietas.agrestis.imputare.enumeration.ConstructorTypes;
 import io.varietas.test.environments.model.beanscanutils.AllAnnotationsBeanClass;
 import io.varietas.test.environments.model.beanscanutils.SimpleBeanWithAnnotatedConstructor1;
 import io.varietas.test.environments.model.beanscanutils.SimpleBeanWithAnnotatedConstructor2;

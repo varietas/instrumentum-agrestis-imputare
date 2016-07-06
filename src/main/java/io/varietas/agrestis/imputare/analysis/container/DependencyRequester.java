@@ -17,11 +17,17 @@
 package io.varietas.agrestis.imputare.analysis.container;
 
 /**
- * <h1>AbstractInformation</h1>
+ * <h1>DependencyRequester</h1>
  *
  * @author Michael Rhöse
- * @since Mo, Jul 4, 2016
+ * @since Mi, Jul 6, 2016
  */
-public class AbstractInformation implements Information{
+public interface DependencyRequester {
 
+    
+    public DependencyInformation[] getDependencies();
+    
+    public Boolean isDependenciesRequired();
+    
+    public Boolean isDependenciesAvailable();
 }

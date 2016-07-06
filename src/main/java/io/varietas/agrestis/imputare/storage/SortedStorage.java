@@ -73,4 +73,10 @@ public interface SortedStorage<Code extends Serializable,Type> extends Storage<T
      * @return
      */
     public Map<Code, List<Type>> getStorage();
+    
+    /**
+     * 
+     * @return 
+     */
+    public Boolean isEmpty(Code code);
 }

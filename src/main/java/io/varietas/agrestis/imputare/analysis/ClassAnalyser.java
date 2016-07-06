@@ -15,13 +15,27 @@
  */
 package io.varietas.agrestis.imputare.analysis;
 
+import io.varietas.agrestis.imputare.analysis.container.BeanInformation;
+import io.varietas.agrestis.imputare.analysis.container.ConstructorInformation;
+import io.varietas.agrestis.imputare.analysis.container.DependencyInformation;
+import io.varietas.agrestis.imputare.analysis.container.MethodInformation;
 import io.varietas.agrestis.imputare.storage.SortedStorage;
 import io.varietas.agrestis.imputare.utils.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.methods.MethodMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.annotation.Bean;
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
+import io.varietas.agrestis.imputare.enumeration.ConstructorTypes;
+import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
+import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
+import io.varietas.agrestis.imputare.utils.ConstructorMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.container.Pair;
+import io.varietas.agrestis.imputare.utils.dependency.DependencyMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.fields.FieldMetaDataExtractorUtils;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Optional;
+import java8.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,49 +48,109 @@ import org.slf4j.LoggerFactory;
 public class ClassAnalyser {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ClassAnalyser.class);
-    
-    private final SortedStorage<Integer,Class<?>> storage;
+
+    private final SortedBeanInformationStorage sortedBeanInformationStorage;
+    private final SortedStorage<Integer, Class<?>> sortedClassesStorage;
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public ClassAnalyser(SortedStorage<Integer,Class<?>> storage) {
-        this.storage = storage;
+    public ClassAnalyser(SortedStorage<Integer, Class<?>> storage) throws IllegalArgumentException, IllegalAccessException, InstantiationException {
+        this.sortedBeanInformationStorage = new SortedBeanInformationStorage();
+        this.sortedClassesStorage = storage;
     }
-    
+
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public ClassAnalyser doBeanAnalysis(){
-        
-        // Do configuration class analysis
+    public ClassAnalyser doAnalysis() throws ToManyInjectedConstructorsException, NoSuchMethodException, IOException {
+
+        ///< Do configuration class analysis
         this.doMethodBeanAnalysis();
-        
-        // Do bean class analysis
-        
+
+        ///< Do bean class analysis
+        this.doBeanAnalysis();
+
         return this;
     }
-    
-    public ClassAnalyser doMethodBeanAnalysis(){
-        
-        Optional<Class<?>> next = this.storage.next(ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
-        
-        while(next.isPresent()){
-            
-            List<Method> methods = MethodMetaDataExtractionUtils.getAnnotatedMethods(next.get(), Bean.class);
-            
-            methods.stream().forEach(method -> {
-                Class<?> beanType = method.getReturnType();
-                
-            });
-            
-            next = this.storage.next(ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
+
+    private ClassAnalyser doMethodBeanAnalysis() {
+
+        Optional<Class<?>> next = this.sortedClassesStorage.next(ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
+
+        while (next.isPresent()) {
+
+            for (Method method : MethodMetaDataExtractionUtils.getAnnotatedMethods(next.get(), Bean.class)) {
+                this.sortedBeanInformationStorage.store(this.createMethodInformation(method, next.get()), ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
+            }
+
+            next = this.sortedClassesStorage.next(ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
         }
-        
         return this;
     }
-    
-    public ClassAnalyser doClazzBeanAnalysis(){
-        
+
+    private ClassAnalyser doBeanAnalysis() throws ToManyInjectedConstructorsException, NoSuchMethodException, IOException {
+
+        for (Integer annotationType : this.sortedClassesStorage.getStorage().keySet()) {
+
+            ///< Skip type category is is there no entry
+            if (this.sortedClassesStorage.isEmpty(annotationType)) {
+                continue;
+            }
+
+            Optional<Class<?>> next = this.sortedClassesStorage.next(annotationType);
+
+            while (next.isPresent()) {
+                this.sortedBeanInformationStorage.store(this.createClassInformation(next.get(), annotationType), annotationType);
+                next = this.sortedClassesStorage.next(annotationType);
+            }
+        }
+
         return this;
     }
-    
+
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    
+    private BeanInformation createMethodInformation(final Method method, Class<?> parent) {
+        ///< Bean meta data
+        Class<?> beanType = method.getReturnType();
+        BeanScope scope = MethodMetaDataExtractionUtils.getBeanScope(method);
+        String identifier = MethodMetaDataExtractionUtils.getBeanIdentifier(method);
+        MethodInformation methodInformation = null;
+
+        ///< Depednency meta data
+        if (MethodMetaDataExtractionUtils.isDependenciesExist(method)) {
+            try {
+                ///< Collect Dependencies
+                methodInformation = new MethodInformation(parent, method, DependencyMetaDataExtractionUtils.getDependenciesWithIdentifier(method));
+            } catch (IOException ex) {
+                LOGGER.error(ex.getLocalizedMessage(), ex);
+            }
+        }
+
+        return new BeanInformation(methodInformation, scope, identifier, beanType);
+    }
+
+    private BeanInformation createClassInformation(final Class<?> beanType, final Integer annotationType) throws ToManyInjectedConstructorsException, NoSuchMethodException, IOException {
+        ///< Bean meta data
+        BeanScope scope = ClassMetaDataExtractionUtils.getBeanScope(beanType, annotationType);
+        String identifier = ClassMetaDataExtractionUtils.getBeanIdentifier(beanType, annotationType);
+
+        ///< Constructor analysis
+        Pair<ConstructorTypes, Constructor> chosenConstructor = ConstructorMetaDataExtractionUtils.chooseConstructor(beanType);
+
+        ConstructorInformation constructorInformation = null;
+
+        if (!Objects.equals(chosenConstructor.getValue1(), ConstructorTypes.STANDARD)) {
+            try {
+                ///< Constructor parameter analysis
+                constructorInformation = new ConstructorInformation(chosenConstructor.getValue2(), DependencyMetaDataExtractionUtils.getDependenciesWithIdentifier(chosenConstructor.getValue2()));
+            } catch (IOException ex) {
+                LOGGER.error(ex.getLocalizedMessage(), ex);
+            }
+        }
+
+        DependencyInformation[] dependencies = null;
+        ///< Bean field analysis
+        if (FieldMetaDataExtractorUtils.isDependenciesExist(beanType)) {
+            dependencies = DependencyMetaDataExtractionUtils.getDependenciesWithIdentifier(beanType);
+        }
+
+        return new BeanInformation(constructorInformation, scope, identifier, beanType, dependencies);
+    }
 }

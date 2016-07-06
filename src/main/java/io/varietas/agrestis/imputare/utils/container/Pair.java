@@ -13,21 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.agrestis.imputare.analysis.container;
 
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
+package io.varietas.agrestis.imputare.utils.container;
 
 /**
- * <h1>BeainInformation</h1>
+ * <h1>Pair</h1>
  *
  * @author Michael Rhöse
- * @since Fr, Jul 1, 2016
+ * @since Mo, Jul 4, 2016
  */
-public class MethodBeainInformation extends AbstracInstanceCreationtInformation{
+public class Pair<Value1,Value2> {
 
-    private final MethodInformation methodInformation;
-    
-    public MethodBeainInformation(String identifier, BeanScope scope, Class<?> type) {
-        super(identifier, scope, type);
+    private final Value1 value1;
+    private final Value2 value2;
+
+    public Pair(Value1 value1, Value2 value2) {
+        this.value1 = value1;
+        this.value2 = value2;
+    }
+
+    public Value1 getValue1() {
+        return value1;
+    }
+
+    public Value2 getValue2() {
+        return value2;
     }
 }

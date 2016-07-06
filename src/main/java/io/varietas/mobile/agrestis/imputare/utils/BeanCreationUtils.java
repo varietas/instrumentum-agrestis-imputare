@@ -17,10 +17,10 @@ package io.varietas.mobile.agrestis.imputare.utils;
 
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
-import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
-import io.varietas.mobile.agrestis.imputare.contant.AnnotationMethodIndices;
-import io.varietas.mobile.agrestis.imputare.error.BeanLoadException;
-import io.varietas.mobile.agrestis.imputare.error.RecursiveInjectionException;
+import io.varietas.agrestis.imputare.contant.AnnotationConstants;
+import io.varietas.agrestis.imputare.contant.AnnotationMethodIndices;
+import io.varietas.agrestis.imputare.error.BeanLoadException;
+import io.varietas.agrestis.imputare.error.RecursiveInjectionException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

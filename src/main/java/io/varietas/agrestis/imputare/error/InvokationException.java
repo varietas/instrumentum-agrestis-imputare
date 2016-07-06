@@ -13,32 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.mobile.agrestis.imputare.error;
+
+package io.varietas.agrestis.imputare.error;
 
 /**
- * <h1>ToManyInjectedConstructorsException</h1>
+ * <h1>InvokationException</h1>
  *
  * @author Michael Rhöse
- * @since Mi, Mai 18, 2016
+ * @since Di, Jul 5, 2016
  */
-public class ToManyInjectedConstructorsException extends Exception {
+public class InvokationException extends RuntimeException{
 
-    public ToManyInjectedConstructorsException() {
+    public InvokationException() {
     }
 
-    public ToManyInjectedConstructorsException(String message) {
+    public InvokationException(String message) {
         super(message);
     }
 
-    public ToManyInjectedConstructorsException(String message, Throwable cause) {
+    public InvokationException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public ToManyInjectedConstructorsException(Throwable cause) {
+    public InvokationException(Throwable cause) {
         super(cause);
     }
 
-    public ToManyInjectedConstructorsException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public InvokationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
+    
 }

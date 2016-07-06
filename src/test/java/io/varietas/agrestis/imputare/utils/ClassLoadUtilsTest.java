@@ -42,7 +42,7 @@ public class ClassLoadUtilsTest {
 
     @Before
     public void setUp() throws UnexpectedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        URL jarUrl = this.getClass().getResource("/http-server-plugin.jar");
+        URL jarUrl = this.getClass().getResource("/bins/http-server-plugin.jar");
         Optional<URLClassLoader> appClassLoader = Optional.ofNullable(((URLClassLoader) this.getClass().getClassLoader()));
 
         if (!appClassLoader.isPresent()) {

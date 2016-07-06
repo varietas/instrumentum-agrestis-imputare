@@ -86,6 +86,11 @@ public class UnsortedStorageImpl implements UnsortedStorage<Class<?>> {
         }
     }
 
+    @Override
+    public Boolean isEmpty() {
+        return this.clazzes.isEmpty();
+    }
+    
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     /**
      * All stored classes as list.
@@ -96,5 +101,4 @@ public class UnsortedStorageImpl implements UnsortedStorage<Class<?>> {
     public List<Class<?>> getStorage() {
         return clazzes;
     }
-
 }

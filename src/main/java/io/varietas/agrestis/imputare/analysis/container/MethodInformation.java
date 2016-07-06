@@ -13,26 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.agrestis.imputare.analysis.container;
 
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import java.lang.reflect.Method;
-import java.util.List;
 
 /**
  * <h1>MethodInformation</h1>
  *
+ * The method information contains all information about the creation of an instance for a bean. The dependencies represents the required parameters if the method needs parameters.
+ *
  * @author Michael Rhöse
  * @since Fr, Jul 1, 2016
  */
-public class MethodInformation extends AbstracInstanceCreationtInformation{
+public class MethodInformation extends AbstractDependencyRequester {
 
+    private final Class<?> parent;
     private final Method method;
-    private final List<DependencyInformation> dependencies;
-    
-    public MethodInformation(String identifier, BeanScope scope, Class<?> type) {
-        super(identifier, scope, type);
-        
+
+    public MethodInformation(final Class<?> parent, final Method method, final DependencyInformation... dependencies) {
+        super(dependencies, method.getParameterCount());
+        this.parent = parent;
+        this.method = method;
+    }
+
+    public Class<?> getParent() {
+        return parent;
+    }
+
+    public Method getMethod() {
+        return method;
     }
 }

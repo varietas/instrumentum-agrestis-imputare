@@ -15,7 +15,11 @@
  */
 package io.varietas.agrestis.imputare.utils.methods;
 
+import io.varietas.agrestis.imputare.annotation.Bean;
+import io.varietas.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.agrestis.imputare.utils.classes.ClassMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.common.NamingUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -42,7 +46,58 @@ public class MethodMetaDataExtractionUtils {
     public static List<Method> getAnnotatedMethods(Class<?> clazz, Class<? extends Annotation> annotationType) {
         return Arrays.asList(clazz.getDeclaredMethods()).stream().filter(method -> method.isAnnotationPresent(annotationType)).collect(Collectors.toList());
     }
-    
+
+    public static BeanScope getBeanScope(final Method method) {
+        Bean beanAnnotation = (Bean) method.getAnnotation(Bean.class);
+        return beanAnnotation.scope();
+    }
+
+    public static String getBeanIdentifier(final Method method) {
+        Bean beanAnnotation = (Bean) method.getAnnotation(Bean.class);
+        return NamingUtils.formatIdentifier(beanAnnotation.name(), method.getName());
+    }
+
+    /**
+     * Searches for {@link Autowire} annotation on a given method. If is the annotation on the method or on any parameter true will returned.
+     * 
+     * @param method Method where the annotation will searched on.
+     * @return 
+     */
+    public static Boolean isDependenciesExist(final Method method) {
+
+        if (MethodMetaDataExtractionUtils.getAnnotationPosition(method) > ClassMetaDataExtractionUtils.AnnotationPosition.NONE) {
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
+    }
+
+    /**
+     * Searches for {@link Autowire} annotation on a given method. Codes could be:
+     * 
+     * <ul>
+     * <li>NONE = 0</li>
+     * <li>METHOD_PARAMETER = 2</li>
+     * <li>METHOD = 3</li>
+     * </ul>
+     * 
+     * A full list of available codes in general could be found on the {@link ClassMetaDataExtractionUtils.AnnotationPosition}.
+     * 
+     * @param method Method where the annotation will searched on.
+     * @return 
+     */
+    public static Integer getAnnotationPosition(Method method) {
+        if (method.isAnnotationPresent(Autowire.class)) {
+            return ClassMetaDataExtractionUtils.AnnotationPosition.METHOD;
+        }
+
+        if (Arrays.asList(method.getParameters()).stream().filter(param -> param.isAnnotationPresent(Autowire.class)).findFirst().isPresent()) {
+            return ClassMetaDataExtractionUtils.AnnotationPosition.METHOD_PARAMETER;
+        }
+
+        return ClassMetaDataExtractionUtils.AnnotationPosition.NONE;
+    }
+
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     /**
      * <h2>MethodMetaDataExtractionUtils.AnnotationCodes</h2>
@@ -60,7 +115,7 @@ public class MethodMetaDataExtractionUtils {
      * @author Michael Rhöse
      * @since Fr, Jul 01, 2016
      */
-    public static class AnnotationCodes extends ClassMetaDataExtractionUtils.AnnotationCodes{
+    public static class AnnotationCodes extends ClassMetaDataExtractionUtils.AnnotationCodes {
 
         public static final Integer //
                 BEAN = 32;

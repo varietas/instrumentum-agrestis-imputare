@@ -15,8 +15,9 @@
  */
 package io.varietas.agrestis.imputare.storage;
 
+import io.varietas.agrestis.imputare.analysis.container.BeanInformation;
+import io.varietas.agrestis.imputare.utils.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.methods.MethodMetaDataExtractionUtils;
-import io.varietas.mobile.agrestis.imputare.container.information.BeanInformation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,7 +57,7 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     public List<BeanInformation> findByTypes(BeanInformation entry) {
         final List<BeanInformation> res = new ArrayList<>();
         this.storage.entrySet().stream().forEach(storageEntry -> {
-            res.addAll(storageEntry.getValue().stream().filter(storageEntryEntry -> Objects.equals(storageEntryEntry.getBeanClazz(), entry.getBeanClazz())).collect(Collectors.toList()));
+            res.addAll(storageEntry.getValue().stream().filter(storageEntryEntry -> Objects.equals(storageEntryEntry.type(), entry.type())).collect(Collectors.toList()));
         });
 
         return res;
@@ -74,7 +75,7 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     public List<BeanInformation> findByTypesAndAnnotationCode(BeanInformation entry, Integer code) {
         final List<BeanInformation> res = new ArrayList<>();
 
-        res.addAll(this.storage.get(code).stream().filter(storageEntry -> Objects.equals(storageEntry.getBeanClazz(), entry.getBeanClazz())).collect(Collectors.toList()));
+        res.addAll(this.storage.get(code).stream().filter(storageEntry -> Objects.equals(storageEntry.type(), entry.type())).collect(Collectors.toList()));
 
         return res;
     }
@@ -122,17 +123,17 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     /**
      * Stores a class in the storage. Returns -1 if the class is not stored otherwise the current number of stored classes will be returned.
      *
-     * @param beanInformation Bean information to be stored.
+     * @param entry Bean information to be stored.
      * @param code Annotation type code where the class should be stored for.
      * @return Number of stored classes or -1 for an error.
      */
     @Override
-    public int store(final BeanInformation beanInformation, final Integer code) {
+    public int store(final BeanInformation entry, final Integer code) {
         if (Objects.equals(code, MethodMetaDataExtractionUtils.AnnotationCodes.NONE)) {
             return -1;
         }
 
-        if (!this.storage.get(code).add(beanInformation)) {
+        if (!this.storage.get(code).add(entry)) {
             return -1;
         }
 
@@ -142,14 +143,14 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     /**
      * Stores all classes from a given collection in the storage. Returns -1 if the classes are not stored otherwise the current number of stored classes will be returned.
      *
-     * @param entries Classes to be stored.
+     * @param entries bean information to be stored.
      * @param code Annotation type code where the class should be stored for.
      * @return Number of stored classes or -1 for an error.
      */
     @Override
     public int storeAll(Collection<BeanInformation> entries, Integer code) {
-        for (BeanInformation beanInformation : entries) {
-            if (this.store(beanInformation, code) == -1) {
+        for (BeanInformation entry : entries) {
+            if (this.store(entry, code) == -1) {
                 return -1;
             }
         }
@@ -157,10 +158,20 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
         return this.storage.get(code).size();
     }
 
+    @Override
+    public Boolean isEmpty(Integer code) {
+        return this.storage.get(code).isEmpty();
+    }
+
+    @Override
+    public Boolean isEmpty() {
+        return this.storage.keySet().stream().filter(code -> this.isEmpty(code)).findFirst().isPresent();
+    }
+
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public Map<Integer, List<BeanInformation>> getStorage() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.storage;
     }
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -13,19 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.mobile.agrestis.imputare.contant;
+package io.varietas.agrestis.imputare.enumeration;
 
 /**
- * <h1>AnnotationConstants</h1>
- *
- * This class contains all required constants used as default values in annotation types.
+ * <h1>ConstructorTypes</h1>
  *
  * @author Michael Rhöse
- * @since Sa, Mai 7, 2016
+ * @since Di, Mai 17, 2016
  */
-public class AnnotationConstants {
-
-    public static final String //
-            ANNOTATION_BEAN_NAME_DEFAULT = "UseGeneratedIdentifier",
-            ANNOTATION_DB_NAMING_DEFAULT = "UseGeneratedDbNaming";
+public enum ConstructorTypes {
+    STANDARD, PARAMETERISED, COPY, INJECTED
 }

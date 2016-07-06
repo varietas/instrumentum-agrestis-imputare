@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.agrestis.imputare.analysis.container;
 
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
+import java.lang.reflect.Constructor;
 
 /**
  * <h1>ConstructorInformation</h1>
@@ -24,9 +23,16 @@ import io.varietas.agrestis.imputare.enumeration.BeanScope;
  * @author Michael Rhöse
  * @since Fr, Jul 1, 2016
  */
-public class ConstructorInformation extends AbstracInstanceCreationtInformation{
+public class ConstructorInformation extends AbstractDependencyRequester {
 
-    public ConstructorInformation(String identifier, BeanScope scope, Class<?> type) {
-        super(identifier, scope, type);
+    private final Constructor constructor;
+
+    public ConstructorInformation(Constructor constructor, DependencyInformation... dependencies) {
+        super(dependencies, constructor.getParameterCount());
+        this.constructor = constructor;
+    }
+
+    public Constructor getConstructor() {
+        return constructor;
     }
 }

@@ -15,7 +15,7 @@
  */
 package io.varietas.agrestis.imputare.annotation.injections;
 
-import io.varietas.mobile.agrestis.imputare.contant.AnnotationConstants;
+import io.varietas.agrestis.imputare.contant.AnnotationConstants;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

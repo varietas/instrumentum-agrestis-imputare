@@ -15,8 +15,6 @@
  */
 package io.varietas.agrestis.imputare.enumeration;
 
-import io.varietas.mobile.agrestis.imputare.enumeration.*;
-
 /**
  * <h1>BeanScopes</h1>
  *

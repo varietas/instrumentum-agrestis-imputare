@@ -15,11 +15,11 @@
  */
 package io.varietas.mobile.agrestis.imputare;
 
+import io.varietas.agrestis.imputare.analysis.container.BeanInformation;
 import io.varietas.agrestis.imputare.annotation.Bean;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.mobile.agrestis.imputare.container.BeanDefinition;
-import io.varietas.mobile.agrestis.imputare.container.information.BeanInformation;
 import io.varietas.mobile.agrestis.imputare.utils.BeanDefinitionUtils;
 import io.varietas.mobile.agrestis.imputare.utils.BeanScanUtils;
 import io.varietas.mobile.agrestis.imputare.utils.ReflectionUtils;
@@ -149,11 +149,11 @@ public class AgrestisImputareContextInitialiser {
 
         this.preSortedStorage.entrySet()
                 .parallelStream().forEach(entry -> entry.getValue().stream().forEach(clazz -> {
-                    try {
-                        temp.get(entry.getKey()).add(this.createBeanInformation(entry.getKey(), clazz));
-                    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException ex) {
-                        LOGGER.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
-                    }
+//                    try {
+//                        temp.get(entry.getKey()).add(this.createBeanInformation(entry.getKey(), clazz));
+//                    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException ex) {
+//                        LOGGER.log(Level.SEVERE, ex.getLocalizedMessage(), ex);
+//                    }
                 }));
 
         return temp;
@@ -184,7 +184,7 @@ public class AgrestisImputareContextInitialiser {
             dependencies.add(BeanScanUtils.getBeanIdentifier(field));
         });
 
-        return new BeanInformation(clazz, beanIdentifier, scope, dependencies);
+        return null;
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

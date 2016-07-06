@@ -13,21 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package io.varietas.mobile.agrestis.imputare.contant;
+package io.varietas.agrestis.imputare.contant;
 
 /**
- * <h1>BeanIdentifier</h1>
+ * <h1>AnnotationConstants</h1>
  *
- * This constants are used to specify a file type to extract from a jar.
+ * This class contains all required constants used as default values in annotation types.
  *
  * @author Michael Rhöse
- * @since Do, Nov 5, 2015
+ * @since Sa, Mai 7, 2016
  */
-public class ExtractionFileType {
+public class AnnotationConstants {
 
-    public static final String 
-            TYPE_ALL = "",
-            TYPE_JSON = ".json",
-            TYPE_CLASS = ".class";
+    public static final String //
+            ANNOTATION_BEAN_NAME_DEFAULT = "UseGeneratedIdentifier",
+            ANNOTATION_DB_NAMING_DEFAULT = "UseGeneratedDbNaming";
 }

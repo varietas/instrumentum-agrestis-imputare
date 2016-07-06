@@ -18,36 +18,43 @@ package io.varietas.agrestis.imputare.analysis.container;
 import io.varietas.agrestis.imputare.enumeration.BeanScope;
 
 /**
- * <h1>AbstracInstanceCreationtInformation</h1>
+ * <h1>BeainInformation</h1>
  *
  * @author Michael Rhöse
  * @since Fr, Jul 1, 2016
  */
-public abstract class AbstracInstanceCreationtInformation implements Information, InstanceCreationInformation {
+public class BeanInformation extends AbstractDependencyRequester {
 
-    private final String identifier;
+    private final Object creationInformation;
     private final BeanScope scope;
+    private final String identifier;
     private final Class<?> type;
 
-    public AbstracInstanceCreationtInformation(String identifier, BeanScope scope, Class<?> type) {
-        this.identifier = identifier;
+    public BeanInformation(Object creationInformation, BeanScope scope, String identifier, Class<?> type) {
+        this(creationInformation, scope, identifier, type, null);
+    }
+
+    public BeanInformation(Object creationInformation, BeanScope scope, String identifier, Class<?> type, DependencyInformation... dependencyInformations) {
+        super(dependencyInformations, dependencyInformations.length);
+        this.creationInformation = creationInformation;
         this.scope = scope;
+        this.identifier = identifier;
         this.type = type;
     }
 
-    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    @Override
-    public String identifier() {
-        return this.identifier;
+    public Object getCreationInformation() {
+        return creationInformation;
     }
 
-    @Override
     public BeanScope scope() {
-        return this.scope;
+        return scope;
     }
 
-    @Override
+    public String identifier() {
+        return identifier;
+    }
+
     public Class<?> type() {
-        return this.type;
+        return type;
     }
 }
