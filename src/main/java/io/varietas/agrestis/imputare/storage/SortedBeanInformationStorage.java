@@ -27,6 +27,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <h1>SortedBeanInformationStorage</h1>
@@ -35,6 +37,8 @@ import java.util.stream.Collectors;
  * @since Fr, Jul 1, 2016
  */
 public class SortedBeanInformationStorage implements SortedStorage<Integer, BeanInformation> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SortedBeanInformationStorage.class);
 
     private final Map<Integer, List<BeanInformation>> storage;
     private final Map<Integer, Boolean> emptyFlags;
@@ -121,7 +125,12 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     }
 
     /**
-     * Stores a class in the storage. Returns -1 if the class is not stored otherwise the current number of stored classes will be returned.
+     * Stores a class in the storage. The following list shows the information the return value represents:
+     * <ul>
+     * <li><b>>= 0:</b> Number of currently stored entries.</li>
+     * <li><b>-1:</b> New entry not stored.</li>
+     * <li><b>-2:</b> An bean information with this identifier already exists.</li>
+     * </ul>
      *
      * @param entry Bean information to be stored.
      * @param code Annotation type code where the class should be stored for.
@@ -133,6 +142,10 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
             return -1;
         }
 
+        if(this.isContainsBeanWithIdentifier(entry, code)){
+            return -2;
+        }
+        
         if (!this.storage.get(code).add(entry)) {
             return -1;
         }
@@ -141,17 +154,25 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     }
 
     /**
-     * Stores all classes from a given collection in the storage. Returns -1 if the classes are not stored otherwise the current number of stored classes will be returned.
-     *
+     * Stores all classes from a given collection in the storage. The following list shows the information the return value represents:
+     * <ul>
+     * <li><b>>= 0:</b> Number of currently stored entries.</li>
+     * <li><b>-1:</b> New entry not stored.</li>
+     * <li><b>-2:</b> An bean information with this identifier already exists.</li>
+     * </ul>
+     * 
      * @param entries bean information to be stored.
      * @param code Annotation type code where the class should be stored for.
      * @return Number of stored classes or -1 for an error.
      */
     @Override
-    public int storeAll(Collection<BeanInformation> entries, Integer code) {
+    public int storeAll(final Collection<BeanInformation> entries, Integer code) {
         for (BeanInformation entry : entries) {
-            if (this.store(entry, code) == -1) {
-                return -1;
+            
+            int status = this.store(entry, code);
+            
+            if (status < 0) {
+                return status;
             }
         }
 
@@ -172,6 +193,20 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     @Override
     public Map<Integer, List<BeanInformation>> getStorage() {
         return this.storage;
+    }
+
+    public Boolean isContains(final BeanInformation beanInformation) {
+        Integer code = ClassMetaDataExtractionUtils.getPresentAnnotationCode(beanInformation.type());
+        return this.isContainsBeanWithIdentifier(beanInformation, code);
+    }
+
+    public Boolean isContainsBeanWithIdentifier(final BeanInformation beanInformation, Integer code) {
+        if (this.storage.get(code).stream().filter(entry -> Objects.equals(entry.identifier(), beanInformation.identifier())).findFirst().isPresent()) {
+            LOGGER.info("Bean information for identifier {} already exists.", beanInformation.identifier());
+            return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
     }
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

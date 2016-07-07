@@ -25,6 +25,7 @@ import io.varietas.agrestis.imputare.utils.methods.MethodMetaDataExtractionUtils
 import io.varietas.agrestis.imputare.annotation.Bean;
 import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.agrestis.imputare.enumeration.ConstructorTypes;
+import io.varietas.agrestis.imputare.error.DuplicatedIdentifierException;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
 import io.varietas.agrestis.imputare.utils.ConstructorMetaDataExtractionUtils;
@@ -36,6 +37,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Optional;
 import java8.util.Objects;
+import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,14 +72,27 @@ public class ClassAnalyser {
         return this;
     }
 
-    private ClassAnalyser doMethodBeanAnalysis() {
+    public SortedBeanInformationStorage getStorage() {
+        return this.sortedBeanInformationStorage;
+    }
+    
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    private ClassAnalyser doMethodBeanAnalysis() throws DuplicatedIdentifierException, InternalException{
 
         Optional<Class<?>> next = this.sortedClassesStorage.next(ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
 
         while (next.isPresent()) {
 
             for (Method method : MethodMetaDataExtractionUtils.getAnnotatedMethods(next.get(), Bean.class)) {
-                this.sortedBeanInformationStorage.store(this.createMethodInformation(method, next.get()), ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
+                int status = this.sortedBeanInformationStorage.store(this.createMethodInformation(method, next.get()), ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
+                
+                if(status == -1){
+                    throw new InternalException("An internal error occured while storing a new entry.");
+                }
+                
+                if(status == -2){
+                    throw new DuplicatedIdentifierException("Critical error occured. COntect initialising abourted.");
+                }
             }
 
             next = this.sortedClassesStorage.next(ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
@@ -85,7 +100,7 @@ public class ClassAnalyser {
         return this;
     }
 
-    private ClassAnalyser doBeanAnalysis() throws ToManyInjectedConstructorsException, NoSuchMethodException, IOException {
+    private ClassAnalyser doBeanAnalysis() throws ToManyInjectedConstructorsException, NoSuchMethodException, IOException, DuplicatedIdentifierException, InternalException {
 
         for (Integer annotationType : this.sortedClassesStorage.getStorage().keySet()) {
 
@@ -97,7 +112,16 @@ public class ClassAnalyser {
             Optional<Class<?>> next = this.sortedClassesStorage.next(annotationType);
 
             while (next.isPresent()) {
-                this.sortedBeanInformationStorage.store(this.createClassInformation(next.get(), annotationType), annotationType);
+                int status = this.sortedBeanInformationStorage.store(this.createClassInformation(next.get(), annotationType), annotationType);
+                
+                if(status == -1){
+                    throw new InternalException("An internal error occured while storing a new entry.");
+                }
+                
+                if(status == -2){
+                    throw new DuplicatedIdentifierException("Critical error occured. COntect initialising abourted.");
+                }
+                
                 next = this.sortedClassesStorage.next(annotationType);
             }
         }
