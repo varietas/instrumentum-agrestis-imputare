@@ -17,7 +17,7 @@ package io.varietas.agrestis.imputare.searching;
 
 import io.varietas.agrestis.imputare.storage.UnsortedStorageImpl;
 import io.varietas.agrestis.imputare.storage.UnsortedStorage;
-import io.varietas.agrestis.imputare.utils.classes.ClassLoadUtils;
+import io.varietas.agrestis.imputare.utils.analysis.classes.ClassLoadUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -68,7 +68,7 @@ public class ClassCollector {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    private void doClazzLoading(URL url, final String path) throws RuntimeException{
+    private void doClazzLoading(URL url, final String path) throws RuntimeException {
 
         try {
             if (!url.toString().contains("jar")) {
@@ -81,7 +81,7 @@ public class ClassCollector {
 
             ///< Load all classes from required jar
             this.clazzStorage.storeAll(ClassLoadUtils.visitJar(url));
-            
+
         } catch (URISyntaxException | IOException | ClassNotFoundException ex) {
             throw new RuntimeException(ex);
         }

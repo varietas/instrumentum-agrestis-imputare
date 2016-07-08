@@ -19,7 +19,7 @@ import io.varietas.agrestis.imputare.error.IllegalAnnotationException;
 import io.varietas.agrestis.imputare.storage.UnsortedStorageImpl;
 import io.varietas.agrestis.imputare.storage.SortedStorageImpl;
 import io.varietas.agrestis.imputare.storage.UnsortedStorage;
-import io.varietas.agrestis.imputare.utils.classes.ClassMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,10 +46,10 @@ public class ClassSorter {
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     /**
      * Sorts the located classes for present annotation.
-     * 
-     * @throws IllegalAnnotationException 
+     *
+     * @throws IllegalAnnotationException
      */
-    public ClassSorter sortLocatedClazzes() throws IllegalAnnotationException{
+    public ClassSorter sortLocatedClazzes() throws IllegalAnnotationException {
 
         Optional<Class<?>> next = this.classStorage.next();
 
@@ -65,7 +65,7 @@ public class ClassSorter {
 
             next = this.classStorage.next();
         }
-        
+
         return this;
     }
 
