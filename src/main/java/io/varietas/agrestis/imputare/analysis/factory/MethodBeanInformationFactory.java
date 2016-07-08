@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.agrestis.imputare.analysis.factory;
 
 /**
@@ -24,5 +23,4 @@ package io.varietas.agrestis.imputare.analysis.factory;
  */
 public class MethodBeanInformationFactory {
 
-    
 }

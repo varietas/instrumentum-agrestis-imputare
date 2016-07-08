@@ -37,10 +37,10 @@ public class MethodInformation extends AbstractDependencyRequester {
     }
 
     public Class<?> getParent() {
-        return parent;
+        return this.parent;
     }
 
     public Method getMethod() {
-        return method;
+        return this.method;
     }
 }

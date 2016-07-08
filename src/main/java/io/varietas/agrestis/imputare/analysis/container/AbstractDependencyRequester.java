@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.agrestis.imputare.analysis.container;
 
 /**
@@ -22,8 +21,8 @@ package io.varietas.agrestis.imputare.analysis.container;
  * @author Michael Rhöse
  * @since Mi, Jul 6, 2016
  */
-public class AbstractDependencyRequester implements DependencyRequester{
-    
+public class AbstractDependencyRequester implements DependencyRequester {
+
     private final DependencyInformation[] dependencies;
     private final Integer parameterCount;
 
@@ -35,16 +34,16 @@ public class AbstractDependencyRequester implements DependencyRequester{
     public DependencyInformation[] getDependencies() {
         return dependencies;
     }
-    
+
     public Boolean isDependenciesRequired() {
         return this.parameterCount.intValue() > 0;
     }
-    
+
     public Boolean isDependenciesAvailable() {
-        if(this.dependencies == null){
+        if (this.dependencies == null) {
             return Boolean.TRUE;
         }
-        
+
         return this.dependencies.length == 0;
     }
 }

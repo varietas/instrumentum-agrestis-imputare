@@ -20,18 +20,18 @@ import io.varietas.agrestis.imputare.analysis.container.ConstructorInformation;
 import io.varietas.agrestis.imputare.analysis.container.DependencyInformation;
 import io.varietas.agrestis.imputare.analysis.container.MethodInformation;
 import io.varietas.agrestis.imputare.storage.SortedStorage;
-import io.varietas.agrestis.imputare.utils.classes.ClassMetaDataExtractionUtils;
-import io.varietas.agrestis.imputare.utils.methods.MethodMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.annotation.Bean;
 import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.agrestis.imputare.enumeration.ConstructorTypes;
 import io.varietas.agrestis.imputare.error.DuplicatedIdentifierException;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
-import io.varietas.agrestis.imputare.utils.ConstructorMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.analysis.constructor.ConstructorMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.container.Pair;
-import io.varietas.agrestis.imputare.utils.dependency.DependencyMetaDataExtractionUtils;
-import io.varietas.agrestis.imputare.utils.fields.FieldMetaDataExtractorUtils;
+import io.varietas.agrestis.imputare.utils.analysis.dependency.DependencyMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.analysis.fields.FieldMetaDataExtractorUtils;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -75,9 +75,9 @@ public class ClassAnalyser {
     public SortedBeanInformationStorage getStorage() {
         return this.sortedBeanInformationStorage;
     }
-    
+
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    private ClassAnalyser doMethodBeanAnalysis() throws DuplicatedIdentifierException, InternalException{
+    private ClassAnalyser doMethodBeanAnalysis() throws DuplicatedIdentifierException, InternalException {
 
         Optional<Class<?>> next = this.sortedClassesStorage.next(ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
 
@@ -85,12 +85,12 @@ public class ClassAnalyser {
 
             for (Method method : MethodMetaDataExtractionUtils.getAnnotatedMethods(next.get(), Bean.class)) {
                 int status = this.sortedBeanInformationStorage.store(this.createMethodInformation(method, next.get()), ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
-                
-                if(status == -1){
+
+                if (status == -1) {
                     throw new InternalException("An internal error occured while storing a new entry.");
                 }
-                
-                if(status == -2){
+
+                if (status == -2) {
                     throw new DuplicatedIdentifierException("Critical error occured. COntect initialising abourted.");
                 }
             }
@@ -113,15 +113,15 @@ public class ClassAnalyser {
 
             while (next.isPresent()) {
                 int status = this.sortedBeanInformationStorage.store(this.createClassInformation(next.get(), annotationType), annotationType);
-                
-                if(status == -1){
+
+                if (status == -1) {
                     throw new InternalException("An internal error occured while storing a new entry.");
                 }
-                
-                if(status == -2){
+
+                if (status == -2) {
                     throw new DuplicatedIdentifierException("Critical error occured. COntect initialising abourted.");
                 }
-                
+
                 next = this.sortedClassesStorage.next(annotationType);
             }
         }

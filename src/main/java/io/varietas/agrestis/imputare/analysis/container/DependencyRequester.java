@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.agrestis.imputare.analysis.container;
 
 /**
@@ -24,10 +23,9 @@ package io.varietas.agrestis.imputare.analysis.container;
  */
 public interface DependencyRequester {
 
-    
     public DependencyInformation[] getDependencies();
-    
+
     public Boolean isDependenciesRequired();
-    
+
     public Boolean isDependenciesAvailable();
 }
