@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.agrestis.imputare.utils.classes;
+package io.varietas.agrestis.imputare.utils.analysis.classes;
 
 import io.varietas.agrestis.imputare.annotation.Component;
 import io.varietas.agrestis.imputare.annotation.Configuration;
@@ -27,7 +27,6 @@ import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.agrestis.imputare.error.InvokationException;
 import io.varietas.agrestis.imputare.utils.common.NamingUtils;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
-import io.varietas.mobile.agrestis.imputare.utils.BeanScanUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -106,7 +105,7 @@ public class ClassMetaDataExtractionUtils {
      * @return
      */
     public static Integer getPresentAnnotationCode(Class<?> clazz) {
-        Integer status = BeanScanUtils.AnnotationCodes.NONE;
+        Integer status = ClassMetaDataExtractionUtils.AnnotationCodes.NONE;
 
         boolean isRepository = clazz.isAnnotationPresent(Repository.class);
         boolean isService = clazz.isAnnotationPresent(Service.class);

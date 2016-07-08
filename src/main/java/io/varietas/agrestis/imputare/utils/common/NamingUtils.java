@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.agrestis.imputare.utils.common;
 
 import io.varietas.agrestis.imputare.contant.AnnotationConstants;
@@ -25,6 +24,7 @@ import io.varietas.agrestis.imputare.contant.AnnotationConstants;
  * @since Mo, Jul 4, 2016
  */
 public class NamingUtils {
+
     /**
      * Formats the identifier of a bean to the internal required format. This format follows the java naming conventions.
      *

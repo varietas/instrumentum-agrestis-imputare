@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.agrestis.imputare.utils.methods;
+package io.varietas.agrestis.imputare.utils.analysis.methods;
 
 import io.varietas.agrestis.imputare.annotation.Bean;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 import io.varietas.agrestis.imputare.enumeration.BeanScope;
-import io.varietas.agrestis.imputare.utils.classes.ClassMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.common.NamingUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -59,9 +59,9 @@ public class MethodMetaDataExtractionUtils {
 
     /**
      * Searches for {@link Autowire} annotation on a given method. If is the annotation on the method or on any parameter true will returned.
-     * 
+     *
      * @param method Method where the annotation will searched on.
-     * @return 
+     * @return
      */
     public static Boolean isDependenciesExist(final Method method) {
 
@@ -74,17 +74,17 @@ public class MethodMetaDataExtractionUtils {
 
     /**
      * Searches for {@link Autowire} annotation on a given method. Codes could be:
-     * 
+     *
      * <ul>
      * <li>NONE = 0</li>
      * <li>METHOD_PARAMETER = 2</li>
      * <li>METHOD = 3</li>
      * </ul>
-     * 
+     *
      * A full list of available codes in general could be found on the {@link ClassMetaDataExtractionUtils.AnnotationPosition}.
-     * 
+     *
      * @param method Method where the annotation will searched on.
-     * @return 
+     * @return
      */
     public static Integer getAnnotationPosition(Method method) {
         if (method.isAnnotationPresent(Autowire.class)) {

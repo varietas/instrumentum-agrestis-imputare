@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package io.varietas.agrestis.imputare.utils.fields;
+package io.varietas.agrestis.imputare.utils.analysis.fields;
 
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
-import io.varietas.agrestis.imputare.utils.classes.ClassMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import java.util.Arrays;
 
 /**
@@ -36,22 +35,22 @@ public class FieldMetaDataExtractorUtils {
 
         return Boolean.FALSE;
     }
-    
+
     /**
      * Searches for {@link Autowire} annotation on a given class. Codes could be:
-     * 
+     *
      * <ul>
      * <li>NONE = 0</li>
      * <li>FIEDL = 1</li>
      * </ul>
-     * 
+     *
      * A full list of available codes in general could be found on the {@link ClassMetaDataExtractionUtils.AnnotationPosition}.
-     * 
+     *
      * @param method Method where the annotation will searched on.
-     * @return 
+     * @return
      */
     public static Integer getAnnotationPosition(final Class<?> clazz) {
-        
+
         if (Arrays.asList(clazz.getDeclaredFields()).stream().filter(field -> field.isAnnotationPresent(Autowire.class)).findFirst().isPresent()) {
             return ClassMetaDataExtractionUtils.AnnotationPosition.FIELD;
         }

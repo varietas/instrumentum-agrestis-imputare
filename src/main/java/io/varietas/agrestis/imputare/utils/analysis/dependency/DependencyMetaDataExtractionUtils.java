@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.agrestis.imputare.utils.dependency;
+package io.varietas.agrestis.imputare.utils.analysis.dependency;
 
 import io.varietas.agrestis.imputare.analysis.container.DependencyInformation;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
-import io.varietas.agrestis.imputare.utils.ConstructorMetaDataExtractionUtils;
-import io.varietas.agrestis.imputare.utils.classes.ClassMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.analysis.constructor.ConstructorMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.common.NamingUtils;
-import io.varietas.agrestis.imputare.utils.methods.MethodMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;

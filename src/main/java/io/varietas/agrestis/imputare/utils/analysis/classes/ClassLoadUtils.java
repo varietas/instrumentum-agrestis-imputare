@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.agrestis.imputare.utils.classes;
+package io.varietas.agrestis.imputare.utils.analysis.classes;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -184,13 +184,13 @@ public class ClassLoadUtils {
         return result;
     }
 
-    public static List<URL> getResourceUrls(final List<URL> urls, final ClassLoader classLoader, final String path) throws IOException{
+    public static List<URL> getResourceUrls(final List<URL> urls, final ClassLoader classLoader, final String path) throws IOException {
         Enumeration<URL> resources = classLoader.getResources(path);
         List<URL> tempResourceUrls = new ArrayList<>();
         while (resources.hasMoreElements()) {
             tempResourceUrls.add(resources.nextElement());
         }
-        
+
         return tempResourceUrls.stream().filter(resourceUrl -> !urls.stream().filter(url -> resourceUrl.toString().contains(url.toString())).findFirst().isPresent()).collect(Collectors.toList());
     }
 }

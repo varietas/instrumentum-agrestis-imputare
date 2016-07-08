@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.agrestis.imputare.utils.container;
 
 /**
@@ -22,7 +21,7 @@ package io.varietas.agrestis.imputare.utils.container;
  * @author Michael Rhöse
  * @since Mo, Jul 4, 2016
  */
-public class Pair<Value1,Value2> {
+public class Pair<Value1, Value2> {
 
     private final Value1 value1;
     private final Value2 value2;

@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.agrestis.imputare.utils;
+package io.varietas.agrestis.imputare.utils.analysis.constructor;
 
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 import io.varietas.agrestis.imputare.enumeration.ConstructorTypes;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
-import io.varietas.agrestis.imputare.utils.classes.ClassMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.container.Pair;
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
@@ -35,7 +35,7 @@ public class ConstructorMetaDataExtractionUtils {
 
     /**
      * Chooses a constructor from a given bean class. The result of the method will be {@link Pair} with the type of the constructor and the constructor itself.
-     * 
+     *
      * The possible constructor types are:
      * <ul>
      * <li><b>{@link ConstructorTypes}.PARAMETERISED:</b> Constructor contains parameters. The parameters are dependencies.</li>
@@ -74,20 +74,20 @@ public class ConstructorMetaDataExtractionUtils {
 
         return new Pair<ConstructorTypes, Constructor>(ConstructorTypes.STANDARD, clazz.getConstructor());
     }
-    
+
     /**
      * Searches for {@link Autowire} annotation on a given method. Codes could be:
-     * 
+     *
      * <ul>
      * <li>NONE = 0</li>
      * <li>CONSTRUCTOR = 4</li>
      * <li>CONSTRUCTOR_PARAMETER = 5</li>
      * </ul>
-     * 
+     *
      * A full list of available codes in general could be found on the {@link ClassMetaDataExtractionUtils.AnnotationPosition}.
-     * 
+     *
      * @param method Method where the annotation will searched on.
-     * @return 
+     * @return
      */
     public static Integer getAnnotationPosition(Constructor constructor) {
         if (constructor.isAnnotationPresent(Autowire.class)) {
