@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.agrestis.imputare.error;
 
 /**
@@ -22,7 +21,7 @@ package io.varietas.agrestis.imputare.error;
  * @author Michael Rhöse
  * @since Do, Jun 30, 2016
  */
-public class IllegalAnnotationException extends RuntimeException{
+public class IllegalAnnotationException extends RuntimeException {
 
     private final Integer code;
 
@@ -55,6 +54,5 @@ public class IllegalAnnotationException extends RuntimeException{
         // TODO: implement code message
         return super.getLocalizedMessage();
     }
-    
-    
+
 }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.agrestis.imputare.error;
 
 /**
@@ -22,7 +21,7 @@ package io.varietas.agrestis.imputare.error;
  * @author Michael Rhöse
  * @since Di, Jul 5, 2016
  */
-public class InvokationException extends RuntimeException{
+public class InvokationException extends RuntimeException {
 
     public InvokationException() {
     }
@@ -42,5 +41,5 @@ public class InvokationException extends RuntimeException{
     public InvokationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
-    
+
 }
