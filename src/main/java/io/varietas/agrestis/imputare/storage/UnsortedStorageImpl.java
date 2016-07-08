@@ -90,7 +90,7 @@ public class UnsortedStorageImpl implements UnsortedStorage<Class<?>> {
     public Boolean isEmpty() {
         return this.clazzes.isEmpty();
     }
-    
+
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     /**
      * All stored classes as list.

@@ -15,28 +15,22 @@
  */
 package io.varietas.agrestis.imputare.storage;
 
-import java.util.Optional;
+import io.varietas.agrestis.imputare.analysis.container.DependencyInformation;
+import java.util.List;
 
 /**
- * <h1>Storage</h1>
- *
- * @param <Type> Generic type for the storage.
+ * <h1>DefinitionStorage</h1>
  *
  * @author Michael Rhöse
- * @since Fr, Jul 1, 2016
+ * @since Do, Jul 7, 2016
  */
-public interface Storage<Type> {
+public interface DefinitionStorage<Identifier, Type, Entry> extends UnsortedStorage<Entry> {
 
-    /**
-     * Loads the next entry from the storage. Important is that this entry will be removed from the storage.
-     *
-     * @return Next entry from the storage.
-     */
-    public Optional<Type> next();
+    public Entry findForIdentifier(final Identifier identifier);
 
-    /**
-     *
-     * @return
-     */
-    public Boolean isEmpty();
+    public List<Entry> findForType(final Type type);
+
+    public Entry findForDependency(final DependencyInformation dependency);
+
+    public List<Entry> findForDependencies(final List<DependencyInformation> dependencies);
 }

@@ -15,7 +15,7 @@
  */
 package io.varietas.agrestis.imputare.storage;
 
-import io.varietas.agrestis.imputare.utils.classes.ClassMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -168,7 +168,7 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
     public Map<Integer, List<Class<?>>> getStorage() {
         return this.clazzes;
     }
-    
+
     @Override
     public Boolean isEmpty(Integer code) {
         return this.clazzes.get(code).isEmpty();

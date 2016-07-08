@@ -16,8 +16,8 @@
 package io.varietas.agrestis.imputare.storage;
 
 import io.varietas.agrestis.imputare.analysis.container.BeanInformation;
-import io.varietas.agrestis.imputare.utils.classes.ClassMetaDataExtractionUtils;
-import io.varietas.agrestis.imputare.utils.methods.MethodMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -142,10 +142,10 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
             return -1;
         }
 
-        if(this.isContainsBeanWithIdentifier(entry, code)){
+        if (this.isContainsBeanWithIdentifier(entry, code)) {
             return -2;
         }
-        
+
         if (!this.storage.get(code).add(entry)) {
             return -1;
         }
@@ -160,7 +160,7 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
      * <li><b>-1:</b> New entry not stored.</li>
      * <li><b>-2:</b> An bean information with this identifier already exists.</li>
      * </ul>
-     * 
+     *
      * @param entries bean information to be stored.
      * @param code Annotation type code where the class should be stored for.
      * @return Number of stored classes or -1 for an error.
@@ -168,9 +168,9 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     @Override
     public int storeAll(final Collection<BeanInformation> entries, Integer code) {
         for (BeanInformation entry : entries) {
-            
+
             int status = this.store(entry, code);
-            
+
             if (status < 0) {
                 return status;
             }
