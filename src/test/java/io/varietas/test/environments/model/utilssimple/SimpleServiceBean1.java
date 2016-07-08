@@ -32,7 +32,7 @@ public class SimpleServiceBean1 {
     public SimpleServiceBean1() {
         this.intValue = (new Random().nextInt(100));
     }
-    
+
     public int getIntValue() {
         return intValue;
     }

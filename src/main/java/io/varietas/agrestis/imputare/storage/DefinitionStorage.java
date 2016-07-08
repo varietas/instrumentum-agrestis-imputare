@@ -33,4 +33,6 @@ public interface DefinitionStorage<Identifier, Type, Entry> extends UnsortedStor
     public Entry findForDependency(final DependencyInformation dependency);
 
     public List<Entry> findForDependencies(final List<DependencyInformation> dependencies);
+
+    public Boolean contains(final Identifier identifier);
 }

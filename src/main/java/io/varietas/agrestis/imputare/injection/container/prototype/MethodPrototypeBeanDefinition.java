@@ -33,8 +33,8 @@ public class MethodPrototypeBeanDefinition extends AbstractPrototypeBeanDefiniti
 
     private final Class<?> parent;
 
-    public MethodPrototypeBeanDefinition(Class<?> parent, Method activtionTarget, Object[] activationTargetParam, String beanIdentifier, BeanScope beanScope, Class beanClazz) {
-        super(activtionTarget, activationTargetParam, beanIdentifier, beanScope, beanClazz);
+    public MethodPrototypeBeanDefinition(Class<?> parent, Method activationTarget, Object[] activationTargetParam, String beanIdentifier, BeanScope beanScope, Class beanClazz) {
+        super(activationTarget, activationTargetParam, beanIdentifier, beanScope, beanClazz);
         this.parent = parent;
     }
 

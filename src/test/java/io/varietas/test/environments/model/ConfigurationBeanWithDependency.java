@@ -45,7 +45,7 @@ public class ConfigurationBeanWithDependency {
     public Pojo pojoBean(@Autowire Pojo pojoBean) {
         return new Pojo(pojoBean.getIntValue());
     }
-    
+
     @Bean
     public Pojo pojoBean(@Autowire Pojo pojoBean1, @Autowire Pojo pojoBean2) {
         return new Pojo(pojoBean1.getIntValue());

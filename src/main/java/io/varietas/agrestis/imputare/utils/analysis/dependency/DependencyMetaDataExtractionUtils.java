@@ -16,6 +16,7 @@
 package io.varietas.agrestis.imputare.utils.analysis.dependency;
 
 import io.varietas.agrestis.imputare.analysis.container.DependencyInformation;
+import io.varietas.agrestis.imputare.analysis.container.FieldDependencyInformation;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 import io.varietas.agrestis.imputare.utils.analysis.constructor.ConstructorMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
@@ -102,7 +103,7 @@ public class DependencyMetaDataExtractionUtils {
 
         Arrays.asList(clazz.getDeclaredFields()).stream().filter(field -> field.isAnnotationPresent(Autowire.class)).collect(Collectors.toList()).forEach(field -> {
             String identifier = NamingUtils.formatIdentifier(((Autowire) field.getAnnotation(Autowire.class)).value()[0], field.getName());
-            res.add(new DependencyInformation(identifier, field.getType()));
+            res.add(new FieldDependencyInformation(field, identifier, field.getType()));
         });
 
         return (DependencyInformation[]) res.toArray();

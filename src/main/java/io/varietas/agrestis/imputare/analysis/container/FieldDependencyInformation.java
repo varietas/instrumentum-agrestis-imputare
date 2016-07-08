@@ -13,21 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.mobile.agrestis.imputare;
+package io.varietas.agrestis.imputare.analysis.container;
 
-import java.util.Optional;
+import java.lang.reflect.Field;
 
 /**
- * <h1>AgrestisImputareContext</h1>
+ * <h1>FieldDependencyInformation</h1>
  *
  * @author Michael Rhöse
- * @since Sa, Mai 7, 2016
+ * @since Fr, Jul 8, 2016
  */
-public interface AgrestisImputareContext {
+public class FieldDependencyInformation extends DependencyInformation {
 
-    public <T> Optional<T> getBean(Class<T> beanClazz);
+    private final Field field;
 
-    public <T> Optional<T> getBean(String beanIdentifier, Class<T> targetType);
+    public FieldDependencyInformation(Field field, String identifier, Class<?> type) {
+        super(identifier, type);
+        this.field = field;
+    }
 
-    public Optional<AgrestisImputareContext> getContext();
+    public Field field() {
+        return this.field;
+    }
 }

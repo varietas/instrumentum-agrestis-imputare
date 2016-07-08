@@ -13,23 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.test.environments.model;
+package io.varietas.agrestis.imputare.error;
 
 /**
- * <h1>PojoWithoutConstructor</h1>
+ * <h1>SortingException</h1>
  *
  * @author Michael Rhöse
- * @since Mo, Mai 9, 2016
+ * @since Fr, Jul 8, 2016
  */
-public class PojoWithoutConstructor {
+public class SortingException extends RuntimeException {
 
-    private String stringValue;
-
-    public String getStringValue() {
-        return stringValue;
+    public SortingException() {
     }
 
-    public void setStringValue(String stringValue) {
-        this.stringValue = stringValue;
+    public SortingException(String message) {
+        super(message);
+    }
+
+    public SortingException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public SortingException(Throwable cause) {
+        super(cause);
+    }
+
+    public SortingException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

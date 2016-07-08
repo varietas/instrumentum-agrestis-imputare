@@ -12,7 +12,7 @@
     <logger name="io.varietas.agrestis.imputare" level="TRACE">
         <appender-ref ref="STDOUT" />
     </logger>
-<!--    <logger name="de.freecossack.core.configuration" level="TRACE">
+    <!--    <logger name="de.freecossack.core.configuration" level="TRACE">
         <appender-ref ref="STDOUT" />
     </logger>-->
 </configuration>

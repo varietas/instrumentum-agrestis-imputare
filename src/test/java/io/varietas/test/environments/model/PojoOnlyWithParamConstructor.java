@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.test.environments.model;
 
 /**
@@ -23,12 +22,13 @@ package io.varietas.test.environments.model;
  * @since Mo, Mai 9, 2016
  */
 public class PojoOnlyWithParamConstructor {
+
     private String stringValue;
 
     public PojoOnlyWithParamConstructor(String stringValue) {
         this.stringValue = stringValue;
     }
-    
+
     public String getStringValue() {
         return stringValue;
     }

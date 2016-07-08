@@ -32,8 +32,8 @@ public class ConstructorPrototypeBeanDefinition extends AbstractPrototypeBeanDef
 
     private final List<Pair<Field, Object>> beanDependencies;
 
-    public ConstructorPrototypeBeanDefinition(List<Pair<Field, Object>> beanDependencies, Constructor activtionTarget, Object[] activationTargetParam, String beanIdentifier, BeanScope beanScope, Class beanClazz) {
-        super(activtionTarget, activationTargetParam, beanIdentifier, beanScope, beanClazz);
+    public ConstructorPrototypeBeanDefinition(List<Pair<Field, Object>> beanDependencies, Constructor activationTarget, Object[] activationTargetParam, String beanIdentifier, BeanScope beanScope, Class beanClazz) {
+        super(activationTarget, activationTargetParam, beanIdentifier, beanScope, beanClazz);
         this.beanDependencies = beanDependencies;
     }
 

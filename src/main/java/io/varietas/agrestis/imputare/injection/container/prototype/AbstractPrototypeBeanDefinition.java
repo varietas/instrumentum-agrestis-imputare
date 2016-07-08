@@ -18,7 +18,7 @@ package io.varietas.agrestis.imputare.injection.container.prototype;
 import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.agrestis.imputare.injection.container.AbstractBeanDefinition;
 import io.varietas.agrestis.imputare.utils.container.Pair;
-import io.varietas.agrestis.imputare.utils.injection.PrototypeInjectionUtils;
+import io.varietas.agrestis.imputare.utils.injection.InjectionUtils;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -35,18 +35,18 @@ public abstract class AbstractPrototypeBeanDefinition<ActivationTarget extends E
     private final ActivationTarget activationTarget;
     private final Object[] activationTargetParam;
 
-    public AbstractPrototypeBeanDefinition(ActivationTarget activtionTarget, Object[] activationTargetParam, String beanIdentifier, BeanScope beanScope, Class beanClazz) {
+    public AbstractPrototypeBeanDefinition(ActivationTarget activationTarget, Object[] activationTargetParam, String beanIdentifier, BeanScope beanScope, Class beanClazz) {
         super(beanIdentifier, beanScope, beanClazz);
-        this.activationTarget = activtionTarget;
+        this.activationTarget = activationTarget;
         this.activationTargetParam = activationTargetParam;
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public Object get() {
-        Object res = PrototypeInjectionUtils.invoke(this.activationTarget, this.activationTargetParam, this.beanIdentifier, this.targetParent());
+        Object res = InjectionUtils.invoke(this.activationTarget, this.activationTargetParam, this.beanIdentifier, this.targetParent());
 
-        PrototypeInjectionUtils.addDependenciesToBean(res, this.beanDependencies());
+        InjectionUtils.addDependenciesToBean(res, this.beanDependencies());
 
         return res;
     }

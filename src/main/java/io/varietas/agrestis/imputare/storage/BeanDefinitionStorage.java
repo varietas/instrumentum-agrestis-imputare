@@ -15,11 +15,14 @@
  */
 package io.varietas.agrestis.imputare.storage;
 
-import io.varietas.agrestis.imputare.analysis.container.BeanInformation;
 import io.varietas.agrestis.imputare.analysis.container.DependencyInformation;
+import io.varietas.agrestis.imputare.injection.container.BeanDefinition;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * <h1>BeanDefinitionStorage</h1>
@@ -27,50 +30,85 @@ import java.util.Optional;
  * @author Michael Rhöse
  * @since Do, Jul 7, 2016
  */
-public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>, BeanInformation> {
+public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>, BeanDefinition> {
 
-    @Override
-    public BeanInformation findForIdentifier(String identifier) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private final List<BeanDefinition> storage;
+
+    public BeanDefinitionStorage() {
+        this.storage = new ArrayList<>();
     }
 
     @Override
-    public List<BeanInformation> findForType(Class<?> type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public BeanDefinition findForIdentifier(String identifier) {
+        return this.storage.stream().filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst().get();
     }
 
     @Override
-    public BeanInformation findForDependency(DependencyInformation dependency) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<BeanDefinition> findForType(Class<?> type) {
+        return this.storage.stream().filter(entry -> Objects.equals(entry.type(), type)).collect(Collectors.toList());
     }
 
     @Override
-    public List<BeanInformation> findForDependencies(List<DependencyInformation> dependencies) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public BeanDefinition findForDependency(DependencyInformation dependency) {
+        return this.findForIdentifier(dependency.identifier());
     }
 
     @Override
-    public int store(BeanInformation entry) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<BeanDefinition> findForDependencies(List<DependencyInformation> dependencies) {
+        List<BeanDefinition> res = new ArrayList<>();
+
+        for (DependencyInformation dependencyInformation : dependencies) {
+            res.add(this.findForDependency(dependencyInformation));
+        }
+
+        return res;
     }
 
     @Override
-    public int storeAll(Collection<BeanInformation> entries) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int store(BeanDefinition entry) {
+        if (this.storage.add(entry)) {
+            return this.storage.size();
+        }
+
+        return -1;
     }
 
     @Override
-    public List<BeanInformation> getStorage() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int storeAll(Collection<BeanDefinition> entries) {
+        for (BeanDefinition beanDefinition : entries) {
+            if (this.store(beanDefinition) == -1) {
+                return -1;
+            }
+        }
+
+        return this.storage.size();
     }
 
     @Override
-    public Optional<BeanInformation> next() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<BeanDefinition> getStorage() {
+        return this.storage;
+    }
+
+    @Override
+    public Optional<BeanDefinition> next() {
+
+        if (this.isEmpty()) {
+            return Optional.empty();
+        }
+
+        BeanDefinition res = this.storage.get(this.storage.size() - 1);
+        this.storage.remove(res);
+
+        return Optional.ofNullable(res);
     }
 
     @Override
     public Boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.storage.isEmpty();
+    }
+
+    @Override
+    public Boolean contains(String identifier) {
+        return this.storage.stream().filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst().isPresent();
     }
 }

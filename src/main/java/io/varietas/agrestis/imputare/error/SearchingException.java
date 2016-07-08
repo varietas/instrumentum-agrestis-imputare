@@ -13,23 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.test.environments.model;
+package io.varietas.agrestis.imputare.error;
 
 /**
- * <h1>PojoWithoutConstructor</h1>
+ * <h1>SearchingException</h1>
  *
  * @author Michael Rhöse
- * @since Mo, Mai 9, 2016
+ * @since Fr, Jul 8, 2016
  */
-public class PojoWithoutConstructor {
+public class SearchingException extends RuntimeException {
 
-    private String stringValue;
-
-    public String getStringValue() {
-        return stringValue;
+    public SearchingException() {
     }
 
-    public void setStringValue(String stringValue) {
-        this.stringValue = stringValue;
+    public SearchingException(String message) {
+        super(message);
+    }
+
+    public SearchingException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public SearchingException(Throwable cause) {
+        super(cause);
+    }
+
+    public SearchingException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

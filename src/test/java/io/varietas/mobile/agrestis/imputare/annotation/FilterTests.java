@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.mobile.agrestis.imputare.annotation;
 
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
@@ -35,54 +34,54 @@ import org.junit.runners.JUnit4;
  */
 @RunWith(JUnit4.class)
 public class FilterTests {
-    
+
     private static final Logger LOGGER = Logger.getLogger(FilterTests.class.getName());
-    
+
     @Test
-    public void getAllConstructors(){
+    public void getAllConstructors() {
         int constructorCount = ComponentBeanWithoutDependencies.class.getConstructors().length;
-        
+
         LOGGER.info(String.format("Class '%s' contains %d contructors.", ComponentBeanWithoutDependencies.class.getSimpleName(), constructorCount));
-        
-        for(Constructor constructor : ComponentBeanWithoutDependencies.class.getConstructors()){
+
+        for (Constructor constructor : ComponentBeanWithoutDependencies.class.getConstructors()) {
             LOGGER.info(String.format("  -> [%s] with %d parameters", constructor.getName().substring(constructor.getName().lastIndexOf('.') + 1), constructor.getParameterCount()));
-            LOGGER.info(String.format("Autowire annotation is%spresent", (constructor.isAnnotationPresent(Autowire.class))? " " : " not "));
+            LOGGER.info(String.format("Autowire annotation is%spresent", (constructor.isAnnotationPresent(Autowire.class)) ? " " : " not "));
         }
     }
-    
+
     @Test
-    public void getAllConstructorsWithOneAutowire(){
+    public void getAllConstructorsWithOneAutowire() {
         int constructorCount = ComponentBeanWithConstructorDependency.class.getConstructors().length;
-        
+
         LOGGER.info(String.format("Class '%s' contains %d contructors.", ComponentBeanWithConstructorDependency.class.getSimpleName(), constructorCount));
-        
-        for(Constructor constructor : ComponentBeanWithConstructorDependency.class.getConstructors()){
+
+        for (Constructor constructor : ComponentBeanWithConstructorDependency.class.getConstructors()) {
             LOGGER.info(String.format("  -> [%s] with %d parameters", constructor.getName().substring(constructor.getName().lastIndexOf('.') + 1), constructor.getParameterCount()));
-            LOGGER.info(String.format("Autowire annotation is%spresent", (constructor.isAnnotationPresent(Autowire.class))? " " : " not "));
+            LOGGER.info(String.format("Autowire annotation is%spresent", (constructor.isAnnotationPresent(Autowire.class)) ? " " : " not "));
         }
     }
-    
+
     @Test
-    public void getAllConstructorsWithoutExplisitConstructor(){
+    public void getAllConstructorsWithoutExplisitConstructor() {
         int constructorCount = PojoWithoutConstructor.class.getConstructors().length;
-        
+
         LOGGER.info(String.format("Class '%s' contains %d contructors.", PojoWithoutConstructor.class.getSimpleName(), constructorCount));
-        
-        for(Constructor constructor : PojoWithoutConstructor.class.getConstructors()){
+
+        for (Constructor constructor : PojoWithoutConstructor.class.getConstructors()) {
             LOGGER.info(String.format("  -> [%s] with %d parameters", constructor.getName().substring(constructor.getName().lastIndexOf('.') + 1), constructor.getParameterCount()));
-            LOGGER.info(String.format("Autowire annotation is%spresent", (constructor.isAnnotationPresent(Autowire.class))? " " : " not "));
+            LOGGER.info(String.format("Autowire annotation is%spresent", (constructor.isAnnotationPresent(Autowire.class)) ? " " : " not "));
         }
     }
-    
+
     @Test
-    public void getAllConstructorsWithOnlyParamConstructor(){
+    public void getAllConstructorsWithOnlyParamConstructor() {
         int constructorCount = PojoOnlyWithParamConstructor.class.getConstructors().length;
-        
+
         LOGGER.info(String.format("Class '%s' contains %d contructors.", PojoOnlyWithParamConstructor.class.getSimpleName(), constructorCount));
-        
-        for(Constructor constructor : PojoOnlyWithParamConstructor.class.getConstructors()){
+
+        for (Constructor constructor : PojoOnlyWithParamConstructor.class.getConstructors()) {
             LOGGER.info(String.format("  -> [%s] with %d parameters", constructor.getName().substring(constructor.getName().lastIndexOf('.') + 1), constructor.getParameterCount()));
-            LOGGER.info(String.format("Autowire annotation is%spresent", (constructor.isAnnotationPresent(Autowire.class))? " " : " not "));
+            LOGGER.info(String.format("Autowire annotation is%spresent", (constructor.isAnnotationPresent(Autowire.class)) ? " " : " not "));
         }
     }
 }

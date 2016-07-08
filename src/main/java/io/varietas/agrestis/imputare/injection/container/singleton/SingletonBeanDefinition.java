@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.agrestis.imputare.injection.container.singleton;
 
 import io.varietas.agrestis.imputare.enumeration.BeanScope;
@@ -25,7 +24,7 @@ import io.varietas.agrestis.imputare.injection.container.AbstractBeanDefinition;
  * @author Michael Rhöse
  * @since Fr, Jul 8, 2016
  */
-public class SingletonBeanDefinition extends AbstractBeanDefinition{
+public class SingletonBeanDefinition extends AbstractBeanDefinition {
 
     private final Object beanInstance;
 

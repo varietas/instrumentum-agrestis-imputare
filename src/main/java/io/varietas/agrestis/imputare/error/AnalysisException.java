@@ -13,23 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.test.environments.model;
+package io.varietas.agrestis.imputare.error;
 
 /**
- * <h1>PojoWithoutConstructor</h1>
+ * <h1>AnalysisException</h1>
  *
  * @author Michael Rhöse
- * @since Mo, Mai 9, 2016
+ * @since Fr, Jul 8, 2016
  */
-public class PojoWithoutConstructor {
+public class AnalysisException extends RuntimeException {
 
-    private String stringValue;
-
-    public String getStringValue() {
-        return stringValue;
+    public AnalysisException() {
     }
 
-    public void setStringValue(String stringValue) {
-        this.stringValue = stringValue;
+    public AnalysisException(String message) {
+        super(message);
+    }
+
+    public AnalysisException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public AnalysisException(Throwable cause) {
+        super(cause);
+    }
+
+    public AnalysisException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

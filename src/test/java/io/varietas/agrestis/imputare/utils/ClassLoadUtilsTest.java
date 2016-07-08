@@ -15,7 +15,7 @@
  */
 package io.varietas.agrestis.imputare.utils;
 
-import io.varietas.agrestis.imputare.utils.classes.ClassLoadUtils;
+import io.varietas.agrestis.imputare.utils.analysis.classes.ClassLoadUtils;
 import io.varietas.test.TestHelper;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

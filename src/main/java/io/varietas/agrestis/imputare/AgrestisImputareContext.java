@@ -13,15 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.varietas.agrestis.imputare;
 
-package io.varietas.agrestis.imputare.injection.container;
+import java.util.Optional;
 
 /**
- * <h1>SingletonBeanDefinition</h1>
+ * <h1>AgrestisImputareContext</h1>
  *
  * @author Michael Rhöse
- * @since Do, Jul 7, 2016
+ * @since Sa, Mai 7, 2016
  */
-public class SingletonBeanDefinition {
+public interface AgrestisImputareContext {
 
+    public <T> Optional<T> getBean(Class<T> beanClazz);
+
+    public <T> Optional<T> getBean(String beanIdentifier, Class<T> targetType);
+
+    public Optional<AgrestisImputareContext> getContext();
 }

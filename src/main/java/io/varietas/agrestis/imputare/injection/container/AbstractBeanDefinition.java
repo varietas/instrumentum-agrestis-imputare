@@ -54,15 +54,15 @@ public abstract class AbstractBeanDefinition implements BeanDefinition {
 
     @Override
     public abstract Object get();
-    
+
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    protected Object[] convertToArgs(List<BeanDefinition> beanDefinitions) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException{
+    protected Object[] convertToArgs(List<BeanDefinition> beanDefinitions) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException {
         Object[] res = new Object[beanDefinitions.size()];
-        
-        for(int index = 0; index < beanDefinitions.size(); ++index){
+
+        for (int index = 0; index < beanDefinitions.size(); ++index) {
             res[index] = beanDefinitions.get(index).get();
         }
-        
+
         return res;
     }
 }

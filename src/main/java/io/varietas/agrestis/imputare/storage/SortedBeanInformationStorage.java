@@ -84,6 +84,15 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
         return res;
     }
 
+    public Optional<BeanInformation> findByIdentifier(final String identifier) {
+        Optional<BeanInformation> res = Optional.empty();
+        for (Map.Entry<Integer, List<BeanInformation>> set : this.storage.entrySet()) {
+            res = set.getValue().parallelStream().filter(bean -> Objects.equals(bean.identifier(), identifier)).findFirst();
+        }
+
+        return res;
+    }
+
     @Override
     public Optional<BeanInformation> next() {
 
@@ -195,9 +204,19 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
         return this.storage;
     }
 
-    public Boolean isContains(final BeanInformation beanInformation) {
+    public Boolean contains(final BeanInformation beanInformation) {
         Integer code = ClassMetaDataExtractionUtils.getPresentAnnotationCode(beanInformation.type());
         return this.isContainsBeanWithIdentifier(beanInformation, code);
+    }
+
+    public Boolean contains(final String identifier) {
+        for (Map.Entry<Integer, List<BeanInformation>> set : this.storage.entrySet()) {
+            if (set.getValue().stream().filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst().isPresent()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public Boolean isContainsBeanWithIdentifier(final BeanInformation beanInformation, Integer code) {
