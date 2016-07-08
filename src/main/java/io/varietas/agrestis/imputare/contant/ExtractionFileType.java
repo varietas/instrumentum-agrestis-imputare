@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package io.varietas.agrestis.imputare.contant;
 
 /**
@@ -26,7 +25,7 @@ package io.varietas.agrestis.imputare.contant;
  */
 public class ExtractionFileType {
 
-    public static final String 
+    public static final String //
             TYPE_ALL = "",
             TYPE_JSON = ".json",
             TYPE_CLASS = ".class";
