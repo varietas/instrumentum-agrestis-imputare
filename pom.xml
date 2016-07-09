@@ -37,22 +37,22 @@
         <dependency>
             <groupId>net.sourceforge.streamsupport</groupId>
             <artifactId>streamsupport</artifactId>
-            <version>1.4.3</version>
+            <version>1.5</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.streamsupport</groupId>
             <artifactId>streamsupport-atomic</artifactId>
-            <version>1.4.3</version>
+            <version>1.5</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.streamsupport</groupId>
             <artifactId>streamsupport-cfuture</artifactId>
-            <version>1.4.3</version>
+            <version>1.5</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.streamsupport</groupId>
             <artifactId>streamsupport-flow</artifactId>
-            <version>1.4.3</version>
+            <version>1.5</version>
         </dependency>
         
         <!-- Dependency for byte code analysis. The internal used asm classes couldn't be used. -->

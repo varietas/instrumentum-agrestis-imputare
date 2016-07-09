@@ -22,7 +22,7 @@ import io.varietas.agrestis.imputare.utils.injection.InjectionUtils;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Optional;
+import java8.util.Optional;
 
 /**
  * <h1>AbstractPrototypeBeanDefinition</h1>

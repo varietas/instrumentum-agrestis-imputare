@@ -35,7 +35,7 @@ import io.varietas.agrestis.imputare.utils.analysis.fields.FieldMetaDataExtracto
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.Optional;
+import java8.util.Optional;
 import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -137,13 +137,11 @@ public class ClassAnalyser {
         MethodInformation methodInformation = null;
 
         ///< Depednency meta data
-        if (MethodMetaDataExtractionUtils.isDependenciesExist(method)) {
-            try {
-                ///< Collect Dependencies
-                methodInformation = new MethodInformation(parent, method, DependencyMetaDataExtractionUtils.getDependenciesWithIdentifier(method));
-            } catch (IOException ex) {
-                LOGGER.error(ex.getLocalizedMessage(), ex);
-            }
+        try {
+            ///< Collect Dependencies
+            methodInformation = new MethodInformation(parent, method, DependencyMetaDataExtractionUtils.getDependenciesWithIdentifier(method));
+        } catch (IOException ex) {
+            LOGGER.error(ex.getLocalizedMessage(), ex);
         }
 
         return new BeanInformation(methodInformation, scope, identifier, beanType);
@@ -159,14 +157,12 @@ public class ClassAnalyser {
 
         ConstructorInformation constructorInformation = null;
 
-//        if (!Objects.equals(chosenConstructor.getValue1(), ConstructorTypes.STANDARD)) {
         try {
             ///< Constructor parameter analysis
             constructorInformation = new ConstructorInformation(chosenConstructor.getValue2(), DependencyMetaDataExtractionUtils.getDependenciesWithIdentifier(chosenConstructor.getValue2()));
         } catch (IOException ex) {
             LOGGER.error(ex.getLocalizedMessage(), ex);
         }
-//        }
 
         DependencyInformation[] dependencies = null;
         ///< Bean field analysis

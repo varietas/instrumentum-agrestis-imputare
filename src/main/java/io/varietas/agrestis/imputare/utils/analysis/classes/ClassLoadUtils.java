@@ -35,7 +35,8 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarInputStream;
-import java.util.stream.Collectors;
+import java8.util.stream.Collectors;
+import java8.util.stream.StreamSupport;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -198,6 +199,6 @@ public class ClassLoadUtils {
             tempResourceUrls.add(resources.nextElement());
         }
 
-        return tempResourceUrls.stream().filter(resourceUrl -> !urls.stream().filter(url -> resourceUrl.toString().contains(url.toString())).findFirst().isPresent()).collect(Collectors.toList());
+        return StreamSupport.stream(tempResourceUrls).filter(resourceUrl -> !StreamSupport.stream(urls).filter(url -> resourceUrl.toString().contains(url.toString())).findFirst().isPresent()).collect(Collectors.toList());
     }
 }

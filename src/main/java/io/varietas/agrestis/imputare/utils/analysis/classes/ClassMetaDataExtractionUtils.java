@@ -33,8 +33,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java8.util.Optional;
+import java8.util.stream.Collectors;
+import java8.util.stream.StreamSupport;
 
 /**
  * <h1>ClassMetaDataExtractionUtils</h1>
@@ -60,7 +61,7 @@ public class ClassMetaDataExtractionUtils {
      */
     public static final Constructor getConstructor(Class<?> clazz) throws ToManyInjectedConstructorsException, NoSuchMethodException {
         ///< Constructor dependencies
-        List<Constructor> injectedConstructors = Arrays.asList(clazz.getConstructors()).stream().filter(constructor -> constructor.isAnnotationPresent(Autowire.class)).collect(Collectors.toList());
+        List<Constructor> injectedConstructors = StreamSupport.stream(Arrays.asList(clazz.getConstructors())).filter(constructor -> constructor.isAnnotationPresent(Autowire.class)).collect(Collectors.toList());
 
         if (injectedConstructors.size() > 1) {
             throw new ToManyInjectedConstructorsException(String.format("There are %d constructors injected. Only one is allowed.", injectedConstructors.size()));
@@ -70,9 +71,9 @@ public class ClassMetaDataExtractionUtils {
             return injectedConstructors.get(0);
         }
 
-        List<Constructor> annotatedParamsConstructor = Arrays.asList(clazz.getConstructors())
-                .stream().filter(constructor -> Arrays.asList(constructor.getParameters())
-                        .stream().filter(parameter -> parameter.isAnnotationPresent(Autowire.class)).findFirst().isPresent())
+        List<Constructor> annotatedParamsConstructor = StreamSupport
+                .stream(Arrays.asList(clazz.getConstructors())).filter(constructor -> StreamSupport
+                .stream(Arrays.asList(constructor.getParameters())).filter(parameter -> parameter.isAnnotationPresent(Autowire.class)).findFirst().isPresent())
                 .collect(Collectors.toList());
 
         if (annotatedParamsConstructor.size() > 1) {
@@ -231,7 +232,7 @@ public class ClassMetaDataExtractionUtils {
      */
     public static Boolean isFieldDependenciesExist(final Class<?> clazz) {
 
-        return Arrays.asList(clazz.getDeclaredFields()).stream().filter(field -> field.isAnnotationPresent(Autowire.class)).findFirst().isPresent();
+        return StreamSupport.stream(Arrays.asList(clazz.getDeclaredFields())).filter(field -> field.isAnnotationPresent(Autowire.class)).findFirst().isPresent();
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

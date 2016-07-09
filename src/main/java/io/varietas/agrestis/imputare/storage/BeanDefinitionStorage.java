@@ -21,8 +21,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java8.util.Optional;
+import java8.util.stream.Collectors;
+import java8.util.stream.StreamSupport;
 
 /**
  * <h1>BeanDefinitionStorage</h1>
@@ -40,12 +41,12 @@ public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>
 
     @Override
     public BeanDefinition findForIdentifier(String identifier) {
-        return this.storage.stream().filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst().get();
+        return StreamSupport.stream(this.storage).filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst().get();
     }
 
     @Override
     public List<BeanDefinition> findForType(Class<?> type) {
-        return this.storage.stream().filter(entry -> Objects.equals(entry.type(), type)).collect(Collectors.toList());
+        return StreamSupport.stream(this.storage).filter(entry -> Objects.equals(entry.type(), type)).collect(Collectors.toList());
     }
 
     @Override
@@ -109,6 +110,6 @@ public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>
 
     @Override
     public Boolean contains(String identifier) {
-        return this.storage.stream().filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst().isPresent();
+        return StreamSupport.stream(this.storage).filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst().isPresent();
     }
 }

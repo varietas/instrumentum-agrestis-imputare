@@ -24,7 +24,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.rmi.UnexpectedException;
-import java.util.Optional;
+import java8.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,13 +61,13 @@ public class ClassCollectorTest {
         ClassCollector classCollector = new ClassCollector(TestHelper.class.getPackage());
 
         UnsortedStorage storage = classCollector.collectAnnotatedClazzes().getStorage();
-        
+
         int count = storage.getStorage().size();
-        
+
         LOGGER.info("Located classes: {}", count);
-        
+
         Assertions.assertThat(count).isEqualTo(17);
-        
+
         for (Object clazz : classCollector.collectAnnotatedClazzes().getStorage().getStorage()) {
             LOGGER.info("Class: {}", ((Class<?>) clazz).getName());
         }

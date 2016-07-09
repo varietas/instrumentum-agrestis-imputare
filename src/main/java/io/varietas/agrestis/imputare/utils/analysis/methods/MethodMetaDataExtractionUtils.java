@@ -24,7 +24,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java8.util.stream.Collectors;
+import java8.util.stream.StreamSupport;
 
 /**
  * <h1>MethodMetaDataExtractionUtils</h1>
@@ -44,7 +45,7 @@ public class MethodMetaDataExtractionUtils {
      * @return
      */
     public static List<Method> getAnnotatedMethods(Class<?> clazz, Class<? extends Annotation> annotationType) {
-        return Arrays.asList(clazz.getDeclaredMethods()).stream().filter(method -> method.isAnnotationPresent(annotationType)).collect(Collectors.toList());
+        return StreamSupport.stream(Arrays.asList(clazz.getDeclaredMethods())).filter(method -> method.isAnnotationPresent(annotationType)).collect(Collectors.toList());
     }
 
     public static BeanScope getBeanScope(final Method method) {
@@ -91,7 +92,7 @@ public class MethodMetaDataExtractionUtils {
             return ClassMetaDataExtractionUtils.AnnotationPosition.METHOD;
         }
 
-        if (Arrays.asList(method.getParameters()).stream().filter(param -> param.isAnnotationPresent(Autowire.class)).findFirst().isPresent()) {
+        if (StreamSupport.stream(Arrays.asList(method.getParameters())).filter(param -> param.isAnnotationPresent(Autowire.class)).findFirst().isPresent()) {
             return ClassMetaDataExtractionUtils.AnnotationPosition.METHOD_PARAMETER;
         }
 

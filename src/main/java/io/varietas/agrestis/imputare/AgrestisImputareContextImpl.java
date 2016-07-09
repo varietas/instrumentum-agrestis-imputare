@@ -19,9 +19,9 @@ import io.varietas.agrestis.imputare.injection.container.BeanDefinition;
 import io.varietas.agrestis.imputare.error.BeanLoadException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java8.util.Optional;
+import java8.util.stream.Collectors;
+import java8.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +49,7 @@ public class AgrestisImputareContextImpl implements AgrestisImputareContext {
 
     @Override
     public <T> Optional<T> getBean(String beanIdentifier, Class<T> targetType) {
+
         return this.getBean(bean -> bean.identifier().equals(beanIdentifier), targetType, beanIdentifier, "identifier");
     }
 
@@ -69,8 +70,9 @@ public class AgrestisImputareContextImpl implements AgrestisImputareContext {
         return this.store.length;
     }
 
-    private <T> Optional<T> getBean(Predicate<BeanDefinition> predicate, Class<T> targetType, String logObject, String logObjectType) {
-        List<BeanDefinition> res = Arrays.asList(this.store).stream().filter(predicate).collect(Collectors.toList());
+    private <T> Optional<T> getBean(java8.util.function.Predicate<BeanDefinition> predicate, Class<T> targetType, String logObject, String logObjectType) {
+
+        List<BeanDefinition> res = StreamSupport.stream(Arrays.asList(this.store)).filter(predicate).collect(Collectors.toList());
 
         try {
             if (res.size() > 1) {

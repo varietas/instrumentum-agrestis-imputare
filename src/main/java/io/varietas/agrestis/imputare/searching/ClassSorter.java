@@ -20,7 +20,7 @@ import io.varietas.agrestis.imputare.storage.SortedStorage;
 import io.varietas.agrestis.imputare.storage.SortedStorageImpl;
 import io.varietas.agrestis.imputare.storage.UnsortedStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
-import java.util.Optional;
+import java8.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

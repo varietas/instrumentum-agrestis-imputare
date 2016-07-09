@@ -24,7 +24,8 @@ import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java8.util.stream.Collectors;
+import java8.util.stream.StreamSupport;
 import org.assertj.core.api.Assertions;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -48,7 +49,7 @@ public class MethodMetaDataExtractionUtilsTest {
     public static void ontimeSetUp() throws IOException, ClassNotFoundException, URISyntaxException, IllegalArgumentException, IllegalAccessException, InstantiationException {
 
         MethodMetaDataExtractionUtilsTest.type = ConfigurationBeanWithDependency.class;
-        MethodMetaDataExtractionUtilsTest.methods = Arrays.asList(MethodMetaDataExtractionUtilsTest.type.getMethods()).stream().filter(meth -> meth.isAnnotationPresent(Bean.class)).collect(Collectors.toList());
+        MethodMetaDataExtractionUtilsTest.methods = StreamSupport.stream(Arrays.asList(MethodMetaDataExtractionUtilsTest.type.getMethods())).filter(meth -> meth.isAnnotationPresent(Bean.class)).collect(Collectors.toList());
     }
 
     @Test
@@ -91,11 +92,11 @@ public class MethodMetaDataExtractionUtilsTest {
     public void isDependenciesExist() {
         boolean exists = MethodMetaDataExtractionUtils.isDependenciesExist(MethodMetaDataExtractionUtilsTest.methods.get(0));
         Assertions.assertThat(exists).isTrue();
-        LOGGER.info("Annotation dependency{}required.", (exists)? " is ":" is not ");
-        
+        LOGGER.info("Annotation dependency{}required.", (exists) ? " is " : " is not ");
+
         exists = MethodMetaDataExtractionUtils.isDependenciesExist(MethodMetaDataExtractionUtilsTest.methods.get(1));
         Assertions.assertThat(exists).isTrue();
-        LOGGER.info("Annotation dependency{}required.", (exists)? " is ":" is not ");
+        LOGGER.info("Annotation dependency{}required.", (exists) ? " is " : " is not ");
     }
 
     @Test
@@ -103,7 +104,7 @@ public class MethodMetaDataExtractionUtilsTest {
         int code = MethodMetaDataExtractionUtils.getAnnotationPosition(MethodMetaDataExtractionUtilsTest.methods.get(0));
         Assertions.assertThat(code).isEqualTo(2);
         LOGGER.info("Annotation position expected: {} | located: {}", 2, code);
-        
+
         code = MethodMetaDataExtractionUtils.getAnnotationPosition(MethodMetaDataExtractionUtilsTest.methods.get(1));
         Assertions.assertThat(code).isEqualTo(2);
         LOGGER.info("Annotation position expected: {} | located: {}", 2, code);

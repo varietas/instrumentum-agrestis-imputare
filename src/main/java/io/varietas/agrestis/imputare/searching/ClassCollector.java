@@ -25,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java8.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,7 +64,7 @@ public class ClassCollector {
 
         urls.addAll(ClassLoadUtils.getResourceUrls(urls, classLoader, path));
 
-        urls.stream().forEach(url -> this.doClazzLoading(url, path));
+        StreamSupport.stream(urls).forEach(url -> this.doClazzLoading(url, path));
 
         String projectPath = System.getProperty("user.dir");
 

@@ -18,6 +18,7 @@ package io.varietas.agrestis.imputare.utils.analysis.fields;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import java.util.Arrays;
+import java8.util.stream.StreamSupport;
 
 /**
  * <h1>FieldMetaDataExtractorUtils</h1>
@@ -51,7 +52,7 @@ public class FieldMetaDataExtractorUtils {
      */
     public static Integer getAnnotationPosition(final Class<?> clazz) {
 
-        if (Arrays.asList(clazz.getDeclaredFields()).stream().filter(field -> field.isAnnotationPresent(Autowire.class)).findFirst().isPresent()) {
+        if (StreamSupport.stream(Arrays.asList(clazz.getDeclaredFields())).filter(field -> field.isAnnotationPresent(Autowire.class)).findFirst().isPresent()) {
             return ClassMetaDataExtractionUtils.AnnotationPosition.FIELD;
         }
 

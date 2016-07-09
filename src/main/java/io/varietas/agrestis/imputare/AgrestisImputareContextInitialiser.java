@@ -67,7 +67,11 @@ public class AgrestisImputareContextInitialiser {
 
         final AgrestisImputareContextImpl agrestisImputareContext = new AgrestisImputareContextImpl();
 
-        this.beanStorage.getStorage().parallelStream().forEach((BeanDefinition entry) -> agrestisImputareContext.addBeanDefinitions(entry));
+        BeanDefinition[] definitions = new BeanDefinition[this.beanStorage.getStorage().size()];
+        for (int index = 0; index < this.beanStorage.getStorage().size(); ++index) {
+            definitions[index] = this.beanStorage.getStorage().get(index);
+        }
+        agrestisImputareContext.addBeanDefinitions(definitions);
 
         agrestisImputareContext.addContextDefinition(new SingletonBeanDefinition(agrestisImputareContext, AgrestisImputareContext.class.getSimpleName(), BeanScope.SINGELTON, AgrestisImputareContext.class));
 
