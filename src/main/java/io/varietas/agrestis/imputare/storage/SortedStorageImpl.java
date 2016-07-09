@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -37,12 +36,10 @@ import java.util.stream.Collectors;
 public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
 
     private final Map<Integer, List<Class<?>>> clazzes;
-    private final Map<Integer, Boolean> emptyFlags;
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     public SortedStorageImpl() throws IllegalArgumentException, IllegalAccessException, InstantiationException {
         this.clazzes = new HashMap<>();
-        this.emptyFlags = new HashMap<>();
 
         this.initialiseStorage();
     }
@@ -51,21 +48,14 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
     @Override
     public Optional<Class<?>> next() {
 
-        Optional<Map.Entry<Integer, Boolean>> nextListIndex = this.emptyFlags.entrySet().stream().filter(entry -> !entry.getValue()).findFirst();
+        final Optional<List<Class<?>>> nextList = this.clazzes.values().stream().filter(list -> !list.isEmpty()).findFirst();
 
-        if (!nextListIndex.isPresent()) {
+        if (!nextList.isPresent()) {
             return Optional.empty();
         }
 
-        if (nextListIndex.get().getValue()) {
-            return Optional.empty();
-        }
-
-        final List<Class<?>> nextList = this.clazzes.get(nextListIndex.get().getKey());
-        Class<?> res = nextList.get(nextList.size() - 1);
-        nextList.remove(res);
-
-        nextListIndex.get().setValue(nextList.isEmpty());
+        Class<?> res = nextList.get().get(nextList.get().size() - 1);
+        nextList.get().remove(res);
 
         return Optional.of(res);
     }
@@ -73,17 +63,14 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
     @Override
     public Optional<Class<?>> next(final Integer code) {
 
-        Boolean listFlag = this.emptyFlags.get(code);
+        final List<Class<?>> nextList = this.clazzes.get(code);
 
-        if (listFlag) {
+        if (nextList.isEmpty()) {
             return Optional.empty();
         }
 
-        final List<Class<?>> nextList = this.clazzes.get(code);
         Class<?> res = nextList.get(nextList.size() - 1);
         nextList.remove(res);
-
-        this.emptyFlags.entrySet().stream().filter(entry -> Objects.equals(entry.getKey(), code)).findFirst().get().setValue(nextList.isEmpty());
 
         return Optional.of(res);
     }
@@ -186,11 +173,8 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
         Field[] annotationCodesFields = ClassMetaDataExtractionUtils.AnnotationCodes.class.getDeclaredFields();
 
         for (int index = 1; index < annotationCodesFields.length; ++index) {
-            
             Integer code = (Integer) annotationCodesFields[index].get(annotationCodesInstance);
-            
             this.clazzes.put(code, new ArrayList<>(0));
-            this.emptyFlags.put(code, true);
         }
     }
 }

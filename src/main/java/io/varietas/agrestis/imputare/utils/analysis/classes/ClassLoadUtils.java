@@ -79,7 +79,10 @@ public class ClassLoadUtils {
                     }
 
                     LOGGER.trace("[ACCEPTED] Annotation located.");
-                    clazzList.add(Class.forName(ClassLoadUtils.clazzName(scannedPackage, file.toString())));
+                    String clazzName = ClassLoadUtils.clazzName(scannedPackage, file.toString());
+                    if (!clazzName.isEmpty()) {
+                        clazzList.add(Class.forName(clazzName));
+                    }
                 } catch (ClassNotFoundException ex) {
                     LOGGER.error(ex.getLocalizedMessage(), ex);
                     return FileVisitResult.CONTINUE;
@@ -166,6 +169,10 @@ public class ClassLoadUtils {
     public static String clazzName(final String scannedPackage, String relativeFilePath) {
         String convertedFileName = ClassLoadUtils.cleanFileName(relativeFilePath);
         int index = convertedFileName.indexOf(scannedPackage.replace('/', '.'));
+
+        if (index < 0) {
+            return "";
+        }
 
         return convertedFileName.substring(index);
     }

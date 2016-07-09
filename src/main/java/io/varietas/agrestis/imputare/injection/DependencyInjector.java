@@ -67,11 +67,11 @@ public class DependencyInjector {
 
             next = this.informationStorage.next();
         }
-        
+
         return this;
     }
-    
-    public DefinitionStorage<String, Class<?>, BeanDefinition> getStorage(){
+
+    public DefinitionStorage<String, Class<?>, BeanDefinition> getStorage() {
         return this.definitionStorage;
     }
 
@@ -141,7 +141,7 @@ public class DependencyInjector {
             Object instance = InjectionUtils.invoke(activationTarget, activationTargetPara, beanIdentifier, targetParent);
 
             InjectionUtils.addDependenciesToBean(instance, dependencies);
-            
+
             return new SingletonBeanDefinition(instance, beanIdentifier, beanInformation.scope(), beanInformation.type());
         }
 

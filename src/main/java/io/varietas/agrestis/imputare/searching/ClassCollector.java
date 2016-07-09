@@ -21,9 +21,12 @@ import io.varietas.agrestis.imputare.utils.analysis.classes.ClassLoadUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <h1>ClassCollector</h1>
@@ -34,6 +37,8 @@ import java.util.List;
  * @since Di, Jun 28, 2016
  */
 public class ClassCollector {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(ClassCollector.class);
 
     private final String applicationPackage;
     private final UnsortedStorage clazzStorage;
@@ -60,22 +65,33 @@ public class ClassCollector {
 
         urls.stream().forEach(url -> this.doClazzLoading(url, path));
 
+        String projectPath = System.getProperty("user.dir");
+
+        this.doClazzLoading(Paths.get(projectPath), projectPath);
+
         return this;
     }
 
-    public UnsortedStorage getClazzStorage() {
+    public UnsortedStorage getStorage() {
         return this.clazzStorage;
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    private void doClazzLoading(final Path root, final String path) throws IOException {
+        if (!Files.exists(root)) {
+            LOGGER.debug("File or folder {} not exists.", root.toString());
+            return;
+        }
+        ///< Load all classes from the given package
+        this.clazzStorage.storeAll(ClassLoadUtils.visitPackage(ClassLoadUtils.modifyPackageName(path), root));
+    }
+
     private void doClazzLoading(URL url, final String path) throws RuntimeException {
 
         try {
             if (!url.toString().contains("jar")) {
                 Path root = Paths.get(url.toURI());
-                ///< Load all classes from the given package
-                this.clazzStorage.storeAll(ClassLoadUtils.visitPackage(ClassLoadUtils.modifyPackageName(path), root));
-
+                this.doClazzLoading(root, path);
                 return;
             }
 

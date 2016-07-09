@@ -77,7 +77,7 @@ public class AgrestisImputareContextInitialiser {
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private UnsortedStorage initSearching(final Package applicationPackage) {
         try {
-            return new ClassCollector(applicationPackage).collectAnnotatedClazzes().getClazzStorage();
+            return new ClassCollector(applicationPackage).collectAnnotatedClazzes().getStorage();
         } catch (IOException | ClassNotFoundException | URISyntaxException ex) {
             throw new SearchingException("Something goes wrong while searching annotated classes.", ex);
         }

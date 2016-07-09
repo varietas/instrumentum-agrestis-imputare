@@ -119,7 +119,7 @@ public class ClassMetaDataExtractionUtils {
 
         return status;
     }
-    
+
     /**
      * Scans the given class for annotations and return a status code. The code will represent the number of annotations and the type.
      *

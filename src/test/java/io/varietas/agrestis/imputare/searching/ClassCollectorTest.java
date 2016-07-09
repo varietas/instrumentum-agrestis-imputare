@@ -58,7 +58,7 @@ public class ClassCollectorTest {
 
         ClassCollector classCollector = new ClassCollector(TestHelper.class.getPackage());
 
-        for (Object clazz : classCollector.collectAnnotatedClazzes().getClazzStorage().getStorage()) {
+        for (Object clazz : classCollector.collectAnnotatedClazzes().getStorage().getStorage()) {
             LOGGER.info("Class: {}", ((Class<?>) clazz).getName());
         }
     }

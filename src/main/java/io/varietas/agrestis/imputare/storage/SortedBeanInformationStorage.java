@@ -41,11 +41,9 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     private static final Logger LOGGER = LoggerFactory.getLogger(SortedBeanInformationStorage.class);
 
     private final Map<Integer, List<BeanInformation>> storage;
-    private final Map<Integer, Boolean> emptyFlags;
 
     public SortedBeanInformationStorage() throws IllegalArgumentException, IllegalAccessException, InstantiationException {
         this.storage = new HashMap<>();
-        this.emptyFlags = new HashMap<>();
 
         this.initialiseStorage();
     }
@@ -96,21 +94,14 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     @Override
     public Optional<BeanInformation> next() {
 
-        Optional<Map.Entry<Integer, Boolean>> nextListIndex = this.emptyFlags.entrySet().stream().filter(entry -> !entry.getValue()).findFirst();
+        final Optional<List<BeanInformation>> nextList = this.storage.values().stream().filter(list -> !list.isEmpty()).findFirst();
 
-        if (!nextListIndex.isPresent()) {
+        if (!nextList.isPresent()) {
             return Optional.empty();
         }
 
-        if (nextListIndex.get().getValue()) {
-            return Optional.empty();
-        }
-
-        final List<BeanInformation> nextList = this.storage.get(nextListIndex.get().getKey());
-        BeanInformation res = nextList.get(nextList.size() - 1);
-        nextList.remove(res);
-
-        nextListIndex.get().setValue(nextList.isEmpty());
+        BeanInformation res = nextList.get().get(nextList.get().size() - 1);
+        nextList.get().remove(res);
 
         return Optional.of(res);
     }
@@ -118,17 +109,14 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     @Override
     public Optional<BeanInformation> next(final Integer code) {
 
-        Boolean listFlag = this.emptyFlags.get(code);
+        final List<BeanInformation> nextList = this.storage.get(code);
 
-        if (listFlag) {
+        if (nextList.isEmpty()) {
             return Optional.empty();
         }
 
-        final List<BeanInformation> nextList = this.storage.get(code);
         BeanInformation res = nextList.get(nextList.size() - 1);
         nextList.remove(res);
-
-        this.emptyFlags.entrySet().stream().filter(entry -> Objects.equals(entry.getKey(), code)).findFirst().get().setValue(nextList.isEmpty());
 
         return Optional.of(res);
     }
@@ -220,6 +208,11 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     }
 
     public Boolean isContainsBeanWithIdentifier(final BeanInformation beanInformation, Integer code) {
+
+        if (this.isEmpty(code)) {
+            return Boolean.FALSE;
+        }
+
         if (this.storage.get(code).stream().filter(entry -> Objects.equals(entry.identifier(), beanInformation.identifier())).findFirst().isPresent()) {
             LOGGER.info("Bean information for identifier {} already exists.", beanInformation.identifier());
             return Boolean.TRUE;
@@ -232,14 +225,14 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     private void initialiseStorage() throws IllegalArgumentException, IllegalAccessException, InstantiationException {
 
         Object annotationCodesInstance = MethodMetaDataExtractionUtils.AnnotationCodes.class.newInstance();
-        Field[] annotationCodesFields = MethodMetaDataExtractionUtils.AnnotationCodes.class.getDeclaredFields();
+        Field[] annotationCodesFields = MethodMetaDataExtractionUtils.AnnotationCodes.class.getFields();
 
-        for (int index = 1; index < annotationCodesFields.length; ++index) {
-
+        for (int index = 0; index < annotationCodesFields.length; ++index) {
+            if (Objects.equals(annotationCodesFields[index].getName(), ClassMetaDataExtractionUtils.AnnotationCodes.NONE)) {
+                continue;
+            }
             Integer code = (Integer) annotationCodesFields[index].get(annotationCodesInstance);
-
             this.storage.put(code, new ArrayList<>(0));
-            this.emptyFlags.put(code, true);
         }
     }
 }

@@ -16,6 +16,7 @@
 package io.varietas.agrestis.imputare.analysis.container;
 
 import io.varietas.agrestis.imputare.enumeration.BeanScope;
+import java.util.Objects;
 
 /**
  * <h1>BeainInformation</h1>
@@ -35,7 +36,7 @@ public class BeanInformation extends AbstractDependencyRequester {
     }
 
     public BeanInformation(Object creationInformation, BeanScope scope, String identifier, Class<?> type, DependencyInformation... dependencyInformations) {
-        super(dependencyInformations, dependencyInformations.length);
+        super(dependencyInformations, (Objects.nonNull(dependencyInformations)) ? dependencyInformations.length : 0);
         this.creationInformation = creationInformation;
         this.scope = scope;
         this.identifier = identifier;

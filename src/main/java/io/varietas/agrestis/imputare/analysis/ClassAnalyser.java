@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Optional;
-import java8.util.Objects;
 import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -160,14 +159,14 @@ public class ClassAnalyser {
 
         ConstructorInformation constructorInformation = null;
 
-        if (!Objects.equals(chosenConstructor.getValue1(), ConstructorTypes.STANDARD)) {
-            try {
-                ///< Constructor parameter analysis
-                constructorInformation = new ConstructorInformation(chosenConstructor.getValue2(), DependencyMetaDataExtractionUtils.getDependenciesWithIdentifier(chosenConstructor.getValue2()));
-            } catch (IOException ex) {
-                LOGGER.error(ex.getLocalizedMessage(), ex);
-            }
+//        if (!Objects.equals(chosenConstructor.getValue1(), ConstructorTypes.STANDARD)) {
+        try {
+            ///< Constructor parameter analysis
+            constructorInformation = new ConstructorInformation(chosenConstructor.getValue2(), DependencyMetaDataExtractionUtils.getDependenciesWithIdentifier(chosenConstructor.getValue2()));
+        } catch (IOException ex) {
+            LOGGER.error(ex.getLocalizedMessage(), ex);
         }
+//        }
 
         DependencyInformation[] dependencies = null;
         ///< Bean field analysis

@@ -17,8 +17,10 @@ package io.varietas.agrestis.imputare.storage;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * <h1>UnsortedStorageImpl</h1>
@@ -30,7 +32,7 @@ import java.util.Optional;
  */
 public class UnsortedStorageImpl implements UnsortedStorage<Class<?>> {
 
-    private final List<Class<?>> clazzes;
+    private final Set<Class<?>> clazzes;
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     public UnsortedStorageImpl() {
@@ -38,7 +40,7 @@ public class UnsortedStorageImpl implements UnsortedStorage<Class<?>> {
     }
 
     public UnsortedStorageImpl(int listSize) {
-        this.clazzes = new ArrayList<>(listSize);
+        this.clazzes = new HashSet<>(listSize);
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -52,7 +54,8 @@ public class UnsortedStorageImpl implements UnsortedStorage<Class<?>> {
         if (this.clazzes.isEmpty()) {
             return Optional.empty();
         }
-        Class<?> res = this.clazzes.get(this.clazzes.size() - 1);
+
+        Class<?> res = this.clazzes.iterator().next();
         this.clazzes.remove(res);
         return Optional.of(res);
     }
@@ -99,6 +102,6 @@ public class UnsortedStorageImpl implements UnsortedStorage<Class<?>> {
      */
     @Override
     public List<Class<?>> getStorage() {
-        return clazzes;
+        return new ArrayList<>(this.clazzes);
     }
 }
