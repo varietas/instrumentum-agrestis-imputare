@@ -234,9 +234,12 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
         Object annotationCodesInstance = MethodMetaDataExtractionUtils.AnnotationCodes.class.newInstance();
         Field[] annotationCodesFields = MethodMetaDataExtractionUtils.AnnotationCodes.class.getDeclaredFields();
 
-        for (int index = 1; index < annotationCodesFields.length - 1; ++index) {
-            this.storage.put(annotationCodesFields[index].getInt(annotationCodesInstance), new ArrayList<>(0));
-            this.emptyFlags.put(annotationCodesFields[index].getInt(annotationCodesInstance), true);
+        for (int index = 1; index < annotationCodesFields.length; ++index) {
+
+            Integer code = (Integer) annotationCodesFields[index].get(annotationCodesInstance);
+
+            this.storage.put(code, new ArrayList<>(0));
+            this.emptyFlags.put(code, true);
         }
     }
 }

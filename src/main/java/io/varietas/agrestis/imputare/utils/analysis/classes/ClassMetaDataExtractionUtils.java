@@ -87,24 +87,7 @@ public class ClassMetaDataExtractionUtils {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    /**
-     * Scans the given class for annotations and return a status code. The code will represent the number of annotations and the type.
-     *
-     * <ul>
-     * <li>[0] No agrestis imputare annotation present</li>
-     * <li>[1] Repository</li>
-     * <li>[2] Service</li>
-     * <li>[4] Controller</li>
-     * <li>[8] Component</li>
-     * <li>[16] Configuration</li>
-     * </ul>
-     *
-     * All other numbers are additions of the types above. For better use the available codes are stored in the {@link AnnotationCodes}.
-     *
-     * @param clazz Where annotations are searched.
-     * @return
-     */
-    public static Integer getPresentAnnotationCode(Class<?> clazz) {
+    public static Integer getPresentAnnotationCodeSum(Class<?> clazz) {
         Integer status = ClassMetaDataExtractionUtils.AnnotationCodes.NONE;
 
         boolean isRepository = clazz.isAnnotationPresent(Repository.class);
@@ -135,6 +118,47 @@ public class ClassMetaDataExtractionUtils {
         }
 
         return status;
+    }
+    
+    /**
+     * Scans the given class for annotations and return a status code. The code will represent the number of annotations and the type.
+     *
+     * <ul>
+     * <li>[0] No agrestis imputare annotation present</li>
+     * <li>[1] Repository</li>
+     * <li>[2] Service</li>
+     * <li>[4] Controller</li>
+     * <li>[8] Component</li>
+     * <li>[16] Configuration</li>
+     * </ul>
+     *
+     * All other numbers are additions of the types above. For better use the available codes are stored in the {@link AnnotationCodes}.
+     *
+     * @param clazz Where annotations are searched.
+     * @return
+     */
+    public static Integer getPresentAnnotationCode(Class<?> clazz) {
+        if (clazz.isAnnotationPresent(Repository.class)) {
+            return ClassMetaDataExtractionUtils.AnnotationCodes.REPOSITORY;
+        }
+
+        if (clazz.isAnnotationPresent(Service.class)) {
+            return ClassMetaDataExtractionUtils.AnnotationCodes.SERVICE;
+        }
+
+        if (clazz.isAnnotationPresent(Controller.class)) {
+            return ClassMetaDataExtractionUtils.AnnotationCodes.CONTROLLER;
+        }
+
+        if (clazz.isAnnotationPresent(Component.class)) {
+            return ClassMetaDataExtractionUtils.AnnotationCodes.COMPONENT;
+        }
+
+        if (clazz.isAnnotationPresent(Configuration.class)) {
+            return ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION;
+        }
+
+        return ClassMetaDataExtractionUtils.AnnotationCodes.NONE;
     }
 
     public static Integer getPresentAnnotationCodeForAnnotationAsString(final String anntationAsString) {

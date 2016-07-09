@@ -185,9 +185,12 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
         Object annotationCodesInstance = ClassMetaDataExtractionUtils.AnnotationCodes.class.newInstance();
         Field[] annotationCodesFields = ClassMetaDataExtractionUtils.AnnotationCodes.class.getDeclaredFields();
 
-        for (int index = 1; index < annotationCodesFields.length - 1; ++index) {
-            this.clazzes.put(annotationCodesFields[index].getInt(annotationCodesInstance), new ArrayList<>(0));
-            this.emptyFlags.put(annotationCodesFields[index].getInt(annotationCodesInstance), true);
+        for (int index = 1; index < annotationCodesFields.length; ++index) {
+            
+            Integer code = (Integer) annotationCodesFields[index].get(annotationCodesInstance);
+            
+            this.clazzes.put(code, new ArrayList<>(0));
+            this.emptyFlags.put(code, true);
         }
     }
 }
