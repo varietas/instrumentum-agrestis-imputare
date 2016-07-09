@@ -9,7 +9,10 @@
     </appender>
     
     <root level="INFO" />
-    <logger name="io.varietas.agrestis.imputare" level="TRACE">
+    <logger name="io.varietas.agrestis.imputare.searching" level="TRACE">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="io.varietas.agrestis.imputare.utils" level="DEBUG">
         <appender-ref ref="STDOUT" />
     </logger>
     <!--    <logger name="de.freecossack.core.configuration" level="TRACE">

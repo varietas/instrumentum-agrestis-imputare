@@ -97,7 +97,7 @@ public class ClassLoadUtils {
     public static List<Class<?>> visitJar(URL url) throws IOException, URISyntaxException, ClassNotFoundException {
         LOGGER.trace("[TRAVERSE URL] {}", url.toString());
         ClassLoader jarClassLoader = URLClassLoader.newInstance(new URL[]{url}, Thread.currentThread().getContextClassLoader());
-        List<Class<?>> clazzList = new ArrayList<>();
+        final List<Class<?>> clazzList = new ArrayList<>();
 
         try (InputStream urlIn = url.openStream(); JarInputStream jarIn = new JarInputStream(urlIn)) {
             JarEntry entry;

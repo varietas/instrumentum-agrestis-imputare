@@ -85,7 +85,7 @@ public class AgrestisImputareContextInitialiser {
 
     private SortedStorage initSorting(final UnsortedStorage unsortedStorage) throws SortingException {
         try {
-            return new ClassSorter(unsortedStorage).sortLocatedClazzes().getSortedClassStorage();
+            return new ClassSorter(unsortedStorage).sortLocatedClazzes().getStorage();
         } catch (IllegalArgumentException | IllegalAccessException | InstantiationException | IllegalAnnotationException ex) {
             throw new SortingException("Something goes wrong while sorting located classes.", ex);
         }
