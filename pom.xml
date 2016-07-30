@@ -12,7 +12,7 @@
     </properties>
     
     <name>agrestis imputare - The smart Dependency Injection</name>
-    <description>The agrestis imputare - DI is a smart library to get dependency injection to android or multiple applications (means gnenerated multiple platform applications for example build by gluon).</description>
+    <description>The agrestis imputare - DI is a smart library to get dependency injection to android or cross-platform applications (means gnenerated cross-platform applications for example build by gluon).</description>
     
     <developers>
         <developer>
@@ -95,7 +95,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <version>3.5.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -104,7 +104,7 @@
             <plugin>
                 <groupId>net.orfjackal.retrolambda</groupId>
                 <artifactId>retrolambda-maven-plugin</artifactId>
-                <version>1.8.0</version>
+                <version>2.3.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -113,14 +113,13 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <!--<java8home>F:/Java/sun-jdk1.8.0_77-64bit/</java8home>-->
                     <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.0.2</version>
                 <configuration>
                     <archive>
                         <addMavenDescriptor>false</addMavenDescriptor>
