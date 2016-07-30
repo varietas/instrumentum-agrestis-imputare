@@ -15,6 +15,12 @@
  */
 package io.varietas.agrestis.imputare.error;
 
+import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
+import java.lang.reflect.Field;
+import java8.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * <h1>IllegalAnnotationException</h1>
  *
@@ -23,7 +29,13 @@ package io.varietas.agrestis.imputare.error;
  */
 public class IllegalAnnotationException extends RuntimeException {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(IllegalAnnotationException.class);
+
     private final Integer code;
+
+    public IllegalAnnotationException(String message) {
+        this(MethodMetaDataExtractionUtils.AnnotationCodes.NONE, message);
+    }
 
     public IllegalAnnotationException(Integer code) {
         this.code = code;
@@ -51,8 +63,32 @@ public class IllegalAnnotationException extends RuntimeException {
 
     @Override
     public String getLocalizedMessage() {
-        // TODO: implement code message
-        return super.getLocalizedMessage();
+
+        StringBuilder builder = new StringBuilder();
+
+        if (this.getLocalizedMessage().isEmpty()) {
+            builder.append("An annotation error occured. ");
+        } else {
+            builder.append(this.getLocalizedMessage()).append(" ");
+        }
+
+        try {
+            Object annotationCodesInstance = MethodMetaDataExtractionUtils.AnnotationCodes.class.newInstance();
+            Field[] annotationCodesFields = MethodMetaDataExtractionUtils.AnnotationCodes.class.getDeclaredFields();
+
+            for (int index = 1; index < annotationCodesFields.length; ++index) {
+                Integer code = (Integer) annotationCodesFields[index].get(annotationCodesInstance);
+
+                if (Objects.equals(this.code, code)) {
+                    builder.append("Error code ").append(this.code).append(" [").append(annotationCodesFields[index].getName()).append("] located.");
+                    break;
+                }
+            }
+        } catch (IllegalArgumentException | IllegalAccessException | InstantiationException ex) {
+            LOGGER.error("Error on field access at message building process for IllegalAnnotationException. Thrown exception: " + ex.getLocalizedMessage());
+        }
+
+        return builder.toString();
     }
 
 }
