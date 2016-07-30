@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.analysis.factory;
 
 /**
- * <h1>MethodBeanInformationFactory</h1>
+ * <h2>MethodBeanInformationFactory</h2>
  *
  * @author Michael Rhöse
  * @since Mo, Jul 4, 2016

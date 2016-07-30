@@ -38,7 +38,7 @@ import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
 
 /**
- * <h1>ClassMetaDataExtractionUtils</h1>
+ * <h2>ClassMetaDataExtractionUtils</h2>
  *
  * This class is a collection of useful methods to collect information from classes.
  *

@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.analysis.container;
 
 /**
- * <h1>DependencyRequester</h1>
+ * <h2>DependencyRequester</h2>
  *
  * @author Michael Rhöse
  * @since Mi, Jul 6, 2016

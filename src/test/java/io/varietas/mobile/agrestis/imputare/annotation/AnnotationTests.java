@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * <h1>AnnotationTests</h1>
+ * <h2>AnnotationTests</h2>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016

@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.utils.container;
 
 /**
- * <h1>Pair</h1>
+ * <h2>Pair</h2>
  *
  * @author Michael Rhöse
  * @since Mo, Jul 4, 2016

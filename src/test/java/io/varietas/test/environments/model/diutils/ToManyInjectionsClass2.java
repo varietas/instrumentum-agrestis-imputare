@@ -18,7 +18,7 @@ package io.varietas.test.environments.model.diutils;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 
 /**
- * <h1>ToManyInjectionsClass1</h1>
+ * <h2>ToManyInjectionsClass1</h2>
  *
  * @author Michael Rhöse
  * @since So, Mai 22, 2016

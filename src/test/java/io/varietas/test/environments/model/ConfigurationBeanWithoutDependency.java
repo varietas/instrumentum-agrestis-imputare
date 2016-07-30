@@ -19,7 +19,7 @@ import io.varietas.agrestis.imputare.annotation.Bean;
 import io.varietas.agrestis.imputare.annotation.Configuration;
 
 /**
- * <h1>ConfigurationBeanWithoutDependency</h1>
+ * <h2>ConfigurationBeanWithoutDependency</h2>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016

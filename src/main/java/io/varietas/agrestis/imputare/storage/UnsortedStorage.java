@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * <h1>UnsortedStorage</h1>
+ * <h2>UnsortedStorage</h2>
  *
  * @author Michael Rhöse
  * @since So, Jul 3, 2016

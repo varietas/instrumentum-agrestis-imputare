@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.error;
 
 /**
- * <h1>AnalysisException</h1>
+ * <h2>AnalysisException</h2>
  *
  * @author Michael Rhöse
  * @since Fr, Jul 8, 2016

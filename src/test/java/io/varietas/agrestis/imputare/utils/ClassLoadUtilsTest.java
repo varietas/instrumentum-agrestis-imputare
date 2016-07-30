@@ -31,7 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <h1>ClassLoadUtilsTest</h1>
+ * <h2>ClassLoadUtilsTest</h2>
  *
  * @author Michael Rhöse
  * @since Di, Jun 28, 2016

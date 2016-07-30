@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.enumeration;
 
 /**
- * <h1>ConstructorTypes</h1>
+ * <h2>ConstructorTypes</h2>
  *
  * @author Michael Rhöse
  * @since Di, Mai 17, 2016

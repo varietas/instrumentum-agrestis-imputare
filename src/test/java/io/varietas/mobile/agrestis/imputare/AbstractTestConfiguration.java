@@ -16,7 +16,7 @@
 package io.varietas.mobile.agrestis.imputare;
 
 /**
- * <h1>AbstractTestConfiguration</h1>
+ * <h2>AbstractTestConfiguration</h2>
  *
  * @author Michael Rhöse
  * @since Di, Mai 10, 2016

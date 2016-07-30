@@ -16,7 +16,7 @@
 package io.varietas.test.environments.model.diutils;
 
 /**
- * <h1>NoInjectedConstructorClass1</h1>
+ * <h2>NoInjectedConstructorClass1</h2>
  *
  * @author Michael Rhöse
  * @since So, Mai 22, 2016

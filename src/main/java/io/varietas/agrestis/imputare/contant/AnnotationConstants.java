@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.contant;
 
 /**
- * <h1>AnnotationConstants</h1>
+ * <h2>AnnotationConstants</h2>
  *
  * This class contains all required constants used as default values in annotation types.
  *

@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.utils.analysis.classes;
 
 /**
- * <h1>ClassFilterUtils</h1>
+ * <h2>ClassFilterUtils</h2>
  *
  * @author Michael Rhöse
  * @since Di, Jun 28, 2016

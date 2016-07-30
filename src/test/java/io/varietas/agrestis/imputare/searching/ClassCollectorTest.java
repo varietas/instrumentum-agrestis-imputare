@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <h1>ClassCollectorTest</h1>
+ * <h2>ClassCollectorTest</h2>
  *
  * @author Michael Rhöse
  * @since Di, Jun 28, 2016

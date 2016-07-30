@@ -41,7 +41,7 @@ import java.util.Objects;
 import java8.util.Optional;
 
 /**
- * <h1>DependencyInjector</h1>
+ * <h2>DependencyInjector</h2>
  *
  * @author Michael Rhöse
  * @since Do, Jul 7, 2016

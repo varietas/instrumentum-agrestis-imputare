@@ -18,7 +18,7 @@ package io.varietas.agrestis.imputare.analysis.container;
 import java.lang.reflect.Method;
 
 /**
- * <h1>MethodInformation</h1>
+ * <h2>MethodInformation</h2>
  *
  * The method information contains all information about the creation of an instance for a bean. The dependencies represents the required parameters if the method needs parameters.
  *

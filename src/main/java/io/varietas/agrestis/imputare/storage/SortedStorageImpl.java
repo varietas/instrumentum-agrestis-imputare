@@ -27,7 +27,7 @@ import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
 
 /**
- * <h1>SortedStorageImpl</h1>
+ * <h2>SortedStorageImpl</h2>
  *
  * This class represents a container to store all classes sorted by {@link ClassMetaDataExtractionUtils.AnnotationCodes}. Additionally there are a number of useful methods.
  *

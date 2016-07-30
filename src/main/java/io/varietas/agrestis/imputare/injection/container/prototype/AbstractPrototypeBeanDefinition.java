@@ -25,7 +25,7 @@ import java.util.List;
 import java8.util.Optional;
 
 /**
- * <h1>AbstractPrototypeBeanDefinition</h1>
+ * <h2>AbstractPrototypeBeanDefinition</h2>
  *
  * @author Michael Rhöse
  * @since Do, Jul 7, 2016

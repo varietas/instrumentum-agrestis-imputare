@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <h1>TestHelper</h1>
+ * <h2>TestHelper</h2>
  *
  * @author Michael Rhöse
  * @since Di, Jun 28, 2016

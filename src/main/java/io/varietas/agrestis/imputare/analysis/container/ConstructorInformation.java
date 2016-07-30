@@ -18,7 +18,7 @@ package io.varietas.agrestis.imputare.analysis.container;
 import java.lang.reflect.Constructor;
 
 /**
- * <h1>ConstructorInformation</h1>
+ * <h2>ConstructorInformation</h2>
  *
  * @author Michael Rhöse
  * @since Fr, Jul 1, 2016

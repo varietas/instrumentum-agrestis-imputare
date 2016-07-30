@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.contant;
 
 /**
- * <h1>BeanIdentifier</h1>
+ * <h2>BeanIdentifier</h2>
  *
  * This constants are used to specify a file type to extract from a jar.
  *

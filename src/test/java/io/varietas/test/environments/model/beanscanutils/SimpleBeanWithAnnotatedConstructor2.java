@@ -18,7 +18,7 @@ package io.varietas.test.environments.model.beanscanutils;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 
 /**
- * <h1>SimpleBeanWithAnnotatedConstructor1</h1>
+ * <h2>SimpleBeanWithAnnotatedConstructor1</h2>
  *
  * @author Michael Rhöse
  * @since So, Mai 22, 2016

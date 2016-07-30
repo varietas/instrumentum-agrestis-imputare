@@ -36,7 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <h1>DependencyMetaDataExtractionUtils</h1>
+ * <h2>DependencyMetaDataExtractionUtils</h2>
  *
  * @author Michael Rhöse
  * @since Mo, Jul 4, 2016

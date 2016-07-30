@@ -19,7 +19,7 @@ import io.varietas.agrestis.imputare.annotation.Component;
 import java.util.Random;
 
 /**
- * <h1>PrototypeBeanWithoutDependencies</h1>
+ * <h2>PrototypeBeanWithoutDependencies</h2>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016

@@ -23,7 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <h1>Component</h1>
+ * <h2>Component</h2>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016

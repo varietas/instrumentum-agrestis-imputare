@@ -19,7 +19,7 @@ import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import java.util.Objects;
 
 /**
- * <h1>BeainInformation</h1>
+ * <h2>BeainInformation</h2>
  *
  * @author Michael Rhöse
  * @since Fr, Jul 1, 2016

@@ -24,7 +24,7 @@ import java.util.List;
 import java8.util.Optional;
 
 /**
- * <h1>MethodPrototypeBeanDefinition</h1>
+ * <h2>MethodPrototypeBeanDefinition</h2>
  *
  * @author Michael Rhöse
  * @since Do, Jul 7, 2016

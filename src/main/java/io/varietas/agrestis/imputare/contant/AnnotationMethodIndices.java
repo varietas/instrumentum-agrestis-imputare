@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.contant;
 
 /**
- * <h1>AnnotationMethodIndices</h1>
+ * <h2>AnnotationMethodIndices</h2>
  *
  * @author Michael Rhöse
  * @since Di, Mai 10, 2016

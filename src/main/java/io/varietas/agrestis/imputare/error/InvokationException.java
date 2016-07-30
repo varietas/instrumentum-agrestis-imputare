@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.error;
 
 /**
- * <h1>InvokationException</h1>
+ * <h2>InvokationException</h2>
  *
  * @author Michael Rhöse
  * @since Di, Jul 5, 2016

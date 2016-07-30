@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <h1>InjectionUtils</h1>
+ * <h2>InjectionUtils</h2>
  *
  * @author Michael Rhöse
  * @since Fr, Jul 8, 2016

@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <h1>IllegalAnnotationException</h1>
+ * <h2>IllegalAnnotationException</h2>
  *
  * @author Michael Rhöse
  * @since Do, Jun 30, 2016

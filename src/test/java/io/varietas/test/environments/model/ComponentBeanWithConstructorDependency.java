@@ -20,7 +20,7 @@ import io.varietas.agrestis.imputare.annotation.Service;
 import java.util.Random;
 
 /**
- * <h1>ComponentBeanWithoutDependencies</h1>
+ * <h2>ComponentBeanWithoutDependencies</h2>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016

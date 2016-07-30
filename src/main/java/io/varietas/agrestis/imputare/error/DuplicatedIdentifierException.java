@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.error;
 
 /**
- * <h1>DuplicatedIdentifierException</h1>
+ * <h2>DuplicatedIdentifierException</h2>
  *
  * @author Michael Rhöse
  * @since Do, Jul 7, 2016

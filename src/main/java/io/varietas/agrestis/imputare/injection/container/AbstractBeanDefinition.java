@@ -20,7 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
- * <h1>AbstractBeanDefinition</h1>
+ * <h2>AbstractBeanDefinition</h2>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016

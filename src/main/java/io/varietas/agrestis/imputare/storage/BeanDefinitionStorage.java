@@ -26,7 +26,7 @@ import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
 
 /**
- * <h1>BeanDefinitionStorage</h1>
+ * <h2>BeanDefinitionStorage</h2>
  *
  * @author Michael Rhöse
  * @since Do, Jul 7, 2016

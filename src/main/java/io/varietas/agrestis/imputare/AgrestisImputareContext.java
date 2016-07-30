@@ -18,7 +18,7 @@ package io.varietas.agrestis.imputare;
 import java8.util.Optional;
 
 /**
- * <h1>AgrestisImputareContext</h1>
+ * <h2>AgrestisImputareContext</h2>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016

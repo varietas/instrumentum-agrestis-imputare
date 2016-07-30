@@ -23,7 +23,7 @@ import java8.util.Optional;
 import java.util.Set;
 
 /**
- * <h1>UnsortedStorageImpl</h1>
+ * <h2>UnsortedStorageImpl</h2>
  *
  * This class represents a container to store all located, annotated classes. Additionally there are a number of useful methods.
  *

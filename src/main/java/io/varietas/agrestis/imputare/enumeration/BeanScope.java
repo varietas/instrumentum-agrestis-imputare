@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.enumeration;
 
 /**
- * <h1>BeanScopes</h1>
+ * <h2>BeanScopes</h2>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016

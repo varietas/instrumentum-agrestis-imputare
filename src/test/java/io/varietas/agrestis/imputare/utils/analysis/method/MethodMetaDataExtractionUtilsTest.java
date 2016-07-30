@@ -33,7 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <h1>MethodMetaDataExtractionUtilsTest</h1>
+ * <h2>MethodMetaDataExtractionUtilsTest</h2>
  *
  * @author Michael Rhöse
  * @since Sa, Jul 9, 2016

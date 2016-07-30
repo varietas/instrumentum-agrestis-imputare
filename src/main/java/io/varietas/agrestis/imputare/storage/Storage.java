@@ -18,7 +18,7 @@ package io.varietas.agrestis.imputare.storage;
 import java8.util.Optional;
 
 /**
- * <h1>Storage</h1>
+ * <h2>Storage</h2>
  *
  * @param <Type> Generic type for the storage.
  *

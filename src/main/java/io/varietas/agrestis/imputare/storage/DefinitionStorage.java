@@ -19,7 +19,7 @@ import io.varietas.agrestis.imputare.analysis.container.DependencyInformation;
 import java.util.List;
 
 /**
- * <h1>DefinitionStorage</h1>
+ * <h2>DefinitionStorage</h2>
  *
  * @author Michael Rhöse
  * @since Do, Jul 7, 2016

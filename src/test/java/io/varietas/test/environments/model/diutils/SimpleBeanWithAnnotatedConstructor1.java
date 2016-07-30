@@ -19,7 +19,7 @@ import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 import io.varietas.agrestis.imputare.annotation.Component;
 
 /**
- * <h1>SimpleBeanWithAnnotatedConstructor1</h1>
+ * <h2>SimpleBeanWithAnnotatedConstructor1</h2>
  *
  * @author Michael Rhöse
  * @since So, Mai 22, 2016

@@ -18,7 +18,7 @@ package io.varietas.agrestis.imputare.injection.container;
 import io.varietas.agrestis.imputare.enumeration.BeanScope;
 
 /**
- * <h1>BeanDefinition</h1>
+ * <h2>BeanDefinition</h2>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016

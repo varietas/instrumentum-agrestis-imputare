@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * <h1>BeanCreationUtilsTests</h1>
+ * <h2>BeanCreationUtilsTests</h2>
  *
  * @author Michael Rhöse
  * @since Di, Mai 24, 2016

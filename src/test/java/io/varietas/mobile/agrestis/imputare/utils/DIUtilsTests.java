@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 import org.junit.Ignore;
 
 /**
- * <h1>DIUtilsTests</h1>
+ * <h2>DIUtilsTests</h2>
  *
  * @author Michael Rhöse
  * @since Di, Mai 10, 2016

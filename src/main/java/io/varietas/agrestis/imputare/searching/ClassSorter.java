@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <h1>ClassSorter</h1>
+ * <h2>ClassSorter</h2>
  *
  * @author Michael Rhöse
  * @since Do, Jun 30, 2016

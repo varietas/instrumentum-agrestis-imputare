@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java8.util.stream.StreamSupport;
 
 /**
- * <h1>FieldMetaDataExtractorUtils</h1>
+ * <h2>FieldMetaDataExtractorUtils</h2>
  *
  * @author Michael Rhöse
  * @since Mi, Jul 6, 2016

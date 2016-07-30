@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /**
- * <h1>io.varietas.mobile.agrestis.imputare.annotation</h1>
+ * <h2>io.varietas.mobile.agrestis.imputare.annotation</h2>
  *
  * The annotations are organised for a program structure. There is a hierarchy which bean could contains other beans. The full description could be found in the documentation.
  *

@@ -18,7 +18,7 @@ package io.varietas.agrestis.imputare.analysis.container;
 import java.lang.reflect.Field;
 
 /**
- * <h1>FieldDependencyInformation</h1>
+ * <h2>FieldDependencyInformation</h2>
  *
  * @author Michael Rhöse
  * @since Fr, Jul 8, 2016

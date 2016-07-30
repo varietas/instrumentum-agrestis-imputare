@@ -22,7 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <h1>Autowire</h1>
+ * <h2>Autowire</h2>
  *
  * @author Michael Rhöse
  * @since Mo, Mai 9, 2016

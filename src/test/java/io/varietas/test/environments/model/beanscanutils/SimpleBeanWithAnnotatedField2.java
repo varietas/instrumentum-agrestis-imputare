@@ -19,7 +19,7 @@ import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 import java.util.Random;
 
 /**
- * <h1>SimpleBeanWithAnnotatedField1</h1>
+ * <h2>SimpleBeanWithAnnotatedField1</h2>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 21, 2016

@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.error;
 
 /**
- * <h1>BeanLoadException</h1>
+ * <h2>BeanLoadException</h2>
  *
  * @author Michael Rhöse
  * @since Fr, Mai 27, 2016

@@ -27,7 +27,7 @@ import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
 
 /**
- * <h1>ConstructorMetaDataExtractionUtils</h1>
+ * <h2>ConstructorMetaDataExtractionUtils</h2>
  *
  * @author Michael Rhöse
  * @since Mi, Jul 6, 2016

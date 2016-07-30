@@ -18,7 +18,7 @@ package io.varietas.test.environments.model;
 import java.util.Random;
 
 /**
- * <h1>Pojo</h1>
+ * <h2>Pojo</h2>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016

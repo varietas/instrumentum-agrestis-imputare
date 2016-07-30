@@ -16,7 +16,7 @@
 package io.varietas.test.environments.model.beanscanutils;
 
 /**
- * <h1>SimpleParameterisedConstructor</h1>
+ * <h2>SimpleParameterisedConstructor</h2>
  *
  * @author Michael Rhöse
  * @since So, Mai 22, 2016

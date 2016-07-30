@@ -27,7 +27,7 @@ import io.varietas.test.environments.model.utilssimple.SimpleServiceBean2;
 import io.varietas.test.environments.model.utilssimple.SimpleServiceBean3;
 
 /**
- * <h1>ClassWithBeansInConstructor</h1>
+ * <h2>ClassWithBeansInConstructor</h2>
  *
  * @author Michael Rhöse
  * @since Di, Mai 24, 2016

@@ -23,7 +23,7 @@ import java.util.List;
 import java8.util.Optional;
 
 /**
- * <h1>ConstructorPrototypeBeanDefinition</h1>
+ * <h2>ConstructorPrototypeBeanDefinition</h2>
  *
  * @author Michael Rhöse
  * @since Fr, Jul 8, 2016

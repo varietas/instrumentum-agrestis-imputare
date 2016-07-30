@@ -36,7 +36,7 @@ import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
 /**
- * <h1>AgrestisImputareContextInitialiser</h1>
+ * <h2>AgrestisImputareContextInitialiser</h2>
  *
  * @author Michael Rhöse
  * @since Mo, Jun 6, 2016

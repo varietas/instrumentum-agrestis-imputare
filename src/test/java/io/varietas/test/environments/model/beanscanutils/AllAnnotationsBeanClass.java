@@ -22,7 +22,7 @@ import io.varietas.agrestis.imputare.annotation.Service;
 import io.varietas.agrestis.imputare.enumeration.BeanScope;
 
 /**
- * <h1>AllAnnotationsBeanClass</h1>
+ * <h2>AllAnnotationsBeanClass</h2>
  *
  * @author Michael Rhöse
  * @since So, Mai 22, 2016

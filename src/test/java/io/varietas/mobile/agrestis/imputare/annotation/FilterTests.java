@@ -27,7 +27,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * <h1>FilterTests</h1>
+ * <h2>FilterTests</h2>
  *
  * @author Michael Rhöse
  * @since Mo, Mai 9, 2016

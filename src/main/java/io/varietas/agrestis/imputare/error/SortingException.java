@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.error;
 
 /**
- * <h1>SortingException</h1>
+ * <h2>SortingException</h2>
  *
  * @author Michael Rhöse
  * @since Fr, Jul 8, 2016

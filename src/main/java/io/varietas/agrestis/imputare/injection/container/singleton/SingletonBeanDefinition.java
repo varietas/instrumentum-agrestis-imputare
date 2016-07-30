@@ -19,7 +19,7 @@ import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.agrestis.imputare.injection.container.AbstractBeanDefinition;
 
 /**
- * <h1>SingletonBeanDefinition</h1>
+ * <h2>SingletonBeanDefinition</h2>
  *
  * @author Michael Rhöse
  * @since Fr, Jul 8, 2016

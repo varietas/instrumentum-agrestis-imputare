@@ -16,7 +16,7 @@
 package io.varietas.test.environments.model;
 
 /**
- * <h1>PojoWithoutConstructor</h1>
+ * <h2>PojoWithoutConstructor</h2>
  *
  * @author Michael Rhöse
  * @since Mo, Mai 9, 2016

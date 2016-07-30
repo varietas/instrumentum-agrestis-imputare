@@ -21,7 +21,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 /**
- * <h1>BeanScanUtilsTests</h1>
+ * <h2>BeanScanUtilsTests</h2>
  *
  * @author Michael Rhöse
  * @since Di, Mai 10, 2016

@@ -18,7 +18,7 @@ package io.varietas.agrestis.imputare.utils.common;
 import io.varietas.agrestis.imputare.contant.AnnotationConstants;
 
 /**
- * <h1>NamingUtils</h1>
+ * <h2>NamingUtils</h2>
  *
  * @author Michael Rhöse
  * @since Mo, Jul 4, 2016

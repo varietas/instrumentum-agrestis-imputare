@@ -22,7 +22,7 @@ import java.util.Map;
 import java8.util.Optional;
 
 /**
- * <h1>SortedStorage</h1>
+ * <h2>SortedStorage</h2>
  *
  * @author Michael Rhöse
  * @since Fr, Jul 1, 2016

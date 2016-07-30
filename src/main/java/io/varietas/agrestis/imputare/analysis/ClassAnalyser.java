@@ -41,7 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <h1>ClassAnalyser</h1>
+ * <h2>ClassAnalyser</h2>
  *
  * @author Michael Rhöse
  * @since Fr, Jul 1, 2016

@@ -19,7 +19,7 @@ import io.varietas.agrestis.imputare.annotation.Service;
 import java.util.Random;
 
 /**
- * <h1>SimpleServiceBean1</h1>
+ * <h2>SimpleServiceBean1</h2>
  *
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016
