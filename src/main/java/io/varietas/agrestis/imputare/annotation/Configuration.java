@@ -15,7 +15,6 @@
  */
 package io.varietas.agrestis.imputare.annotation;
 
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.agrestis.imputare.contant.AnnotationConstants;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -33,6 +32,4 @@ import java.lang.annotation.Target;
 public @interface Configuration {
 
     String name() default AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
-
-    BeanScope scope() default BeanScope.SINGELTON;
 }
