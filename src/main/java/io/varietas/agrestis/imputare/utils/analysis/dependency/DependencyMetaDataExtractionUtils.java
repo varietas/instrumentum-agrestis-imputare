@@ -22,7 +22,6 @@ import io.varietas.agrestis.imputare.utils.analysis.constructor.ConstructorMetaD
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.common.NamingUtils;
 import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
@@ -50,9 +49,8 @@ public class DependencyMetaDataExtractionUtils {
      *
      * @param method
      * @return
-     * @throws IOException
      */
-    public static DependencyInformation[] getDependenciesWithIdentifier(final Method method) throws IOException {
+    public static DependencyInformation[] getDependenciesWithIdentifier(final Method method) {
 
         String[] identifiers;
 
@@ -77,9 +75,8 @@ public class DependencyMetaDataExtractionUtils {
      *
      * @param constructor
      * @return
-     * @throws IOException
      */
-    public static DependencyInformation[] getDependenciesWithIdentifier(final Constructor constructor) throws IOException {
+    public static DependencyInformation[] getDependenciesWithIdentifier(final Constructor constructor) {
 
         String[] identifiers;
 
@@ -98,7 +95,7 @@ public class DependencyMetaDataExtractionUtils {
         return DependencyMetaDataExtractionUtils.createDependencyInformation(constructor, identifiers);
     }
 
-    public static DependencyInformation[] getDependenciesWithIdentifier(final Class<?> clazz) throws IOException {
+    public static DependencyInformation[] getDependenciesWithIdentifier(final Class<?> clazz) {
 
         final List<DependencyInformation> res = new ArrayList<>();
 
