@@ -37,19 +37,7 @@
     <dependencies>
         <dependency>
             <groupId>net.sourceforge.streamsupport</groupId>
-            <artifactId>streamsupport</artifactId>
-            <version>1.5.1</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.streamsupport</groupId>
             <artifactId>streamsupport-atomic</artifactId>
-            <version>1.5.1</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.streamsupport</groupId>
-            <artifactId>streamsupport-cfuture</artifactId>
             <version>1.5.1</version>
             <optional>true</optional>
         </dependency>
@@ -101,11 +89,6 @@
             <artifactId>assertj-core-java8</artifactId>
             <version>1.0.0m1</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.21</version>
         </dependency>
     </dependencies>
     
