@@ -31,14 +31,17 @@ public class AbstractDependencyRequester implements DependencyRequester {
         this.parameterCount = parameterCount;
     }
 
+    @Override
     public DependencyInformation[] getDependencies() {
         return dependencies;
     }
 
+    @Override
     public Boolean isDependenciesRequired() {
-        return this.parameterCount.intValue() > 0;
+        return this.parameterCount > 0;
     }
 
+    @Override
     public Boolean isDependenciesAvailable() {
         if (this.dependencies == null) {
             return Boolean.TRUE;

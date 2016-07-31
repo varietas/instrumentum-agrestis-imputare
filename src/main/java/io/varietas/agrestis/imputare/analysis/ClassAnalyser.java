@@ -17,13 +17,14 @@ package io.varietas.agrestis.imputare.analysis;
 
 import io.varietas.agrestis.imputare.analysis.container.BeanInformation;
 import io.varietas.agrestis.imputare.analysis.container.ConstructorInformation;
-import io.varietas.agrestis.imputare.analysis.container.DependencyInformation;
 import io.varietas.agrestis.imputare.analysis.container.MethodInformation;
+import io.varietas.agrestis.imputare.analysis.factory.BeanInformationFactory;
+import io.varietas.agrestis.imputare.analysis.factory.ConstructorInformationFactory;
+import io.varietas.agrestis.imputare.analysis.factory.MethodInformationFactory;
 import io.varietas.agrestis.imputare.storage.SortedStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.annotation.Bean;
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
 import io.varietas.agrestis.imputare.enumeration.ConstructorTypes;
 import io.varietas.agrestis.imputare.error.DuplicatedIdentifierException;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
@@ -90,7 +91,7 @@ public class ClassAnalyser {
                 }
 
                 if (status == -2) {
-                    throw new DuplicatedIdentifierException("Critical error occured. COntect initialising abourted.");
+                    throw new DuplicatedIdentifierException("Critical error occured. Contect initialising abourted.");
                 }
             }
 
@@ -118,7 +119,7 @@ public class ClassAnalyser {
                 }
 
                 if (status == -2) {
-                    throw new DuplicatedIdentifierException("Critical error occured. COntect initialising abourted.");
+                    throw new DuplicatedIdentifierException("Critical error occured. Contect initialising abourted.");
                 }
 
                 next = this.sortedClassesStorage.next(annotationType);
@@ -131,45 +132,45 @@ public class ClassAnalyser {
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private BeanInformation createMethodInformation(final Method method, Class<?> parent) {
         ///< Bean meta data
-        Class<?> beanType = method.getReturnType();
-        BeanScope scope = MethodMetaDataExtractionUtils.getBeanScope(method);
-        String identifier = MethodMetaDataExtractionUtils.getBeanIdentifier(method);
-        MethodInformation methodInformation = null;
-
         ///< Depednency meta data
-        try {
-            ///< Collect Dependencies
-            methodInformation = new MethodInformation(parent, method, DependencyMetaDataExtractionUtils.getDependenciesWithIdentifier(method));
-        } catch (IOException ex) {
-            LOGGER.error(ex.getLocalizedMessage(), ex);
-        }
+        ///< Collect Dependencies
+        MethodInformation methodInformation = new MethodInformationFactory()
+                .setMethod(method)
+                .setParent(parent)
+                .setDependencyOperator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier)
+                .build();
 
-        return new BeanInformation(methodInformation, scope, identifier, beanType);
+        return new BeanInformationFactory()
+                .setCreationInformation(methodInformation)
+                .setScope(MethodMetaDataExtractionUtils.getBeanScope(method))
+                .setIdentifier(MethodMetaDataExtractionUtils.getBeanIdentifier(method))
+                .setType(method.getReturnType())
+                .build();
     }
 
     private BeanInformation createClassInformation(final Class<?> beanType, final Integer annotationType) throws ToManyInjectedConstructorsException, NoSuchMethodException, IOException {
-        ///< Bean meta data
-        BeanScope scope = ClassMetaDataExtractionUtils.getBeanScope(beanType, annotationType);
-        String identifier = ClassMetaDataExtractionUtils.getBeanIdentifier(beanType, annotationType);
 
         ///< Constructor analysis
         Pair<ConstructorTypes, Constructor> chosenConstructor = ConstructorMetaDataExtractionUtils.chooseConstructor(beanType);
 
-        ConstructorInformation constructorInformation = null;
+        ///< Constructor parameter analysis
+        ConstructorInformation constructorInformation = new ConstructorInformationFactory()
+                .setConstructor(chosenConstructor.getValue2())
+                .setDependencyOperator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier)
+                .build();
 
-        try {
-            ///< Constructor parameter analysis
-            constructorInformation = new ConstructorInformation(chosenConstructor.getValue2(), DependencyMetaDataExtractionUtils.getDependenciesWithIdentifier(chosenConstructor.getValue2()));
-        } catch (IOException ex) {
-            LOGGER.error(ex.getLocalizedMessage(), ex);
-        }
+        BeanInformationFactory informationFactory = new BeanInformationFactory();
 
-        DependencyInformation[] dependencies = null;
         ///< Bean field analysis
         if (FieldMetaDataExtractorUtils.isDependenciesExist(beanType)) {
-            dependencies = DependencyMetaDataExtractionUtils.getDependenciesWithIdentifier(beanType);
+            informationFactory.setDependencyOperator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier);
         }
 
-        return new BeanInformation(constructorInformation, scope, identifier, beanType, dependencies);
+        return informationFactory
+                .setCreationInformation(constructorInformation)
+                .setScope(ClassMetaDataExtractionUtils.getBeanScope(beanType, annotationType))
+                .setIdentifier(ClassMetaDataExtractionUtils.getBeanIdentifier(beanType, annotationType))
+                .setType(beanType)
+                .build();
     }
 }

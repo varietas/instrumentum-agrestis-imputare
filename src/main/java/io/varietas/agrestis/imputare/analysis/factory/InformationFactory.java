@@ -16,11 +16,12 @@
 package io.varietas.agrestis.imputare.analysis.factory;
 
 /**
- * <h2>MethodBeanInformationFactory</h2>
+ * <h2>InformationFactory</h2>
  *
  * @author Michael Rhöse
- * @since Mo, Jul 4, 2016
+ * @since Sa, Jul 30, 2016
  */
-public class MethodBeanInformationFactory {
+public interface InformationFactory<Info> {
 
+    public Info build() throws Exception;
 }
