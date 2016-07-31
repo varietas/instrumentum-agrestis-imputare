@@ -44,7 +44,7 @@ public class ClassSorterTest {
     private int count;
 
     @BeforeClass
-    public static void ontimeSetUp() throws IOException, ClassNotFoundException, URISyntaxException, IllegalArgumentException, IllegalAccessException, InstantiationException {
+    public static void oneTimeSetUp() throws IOException, ClassNotFoundException, URISyntaxException, IllegalArgumentException, IllegalAccessException, InstantiationException {
 
         ClassSorterTest.classCollector = new ClassCollector(TestHelper.class.getPackage());
         UnsortedStorage storage = classCollector.collectAnnotatedClazzes().getStorage();
