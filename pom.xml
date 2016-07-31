@@ -30,6 +30,7 @@
         <license>
             <name>Apache License, Version 2.0</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
     
@@ -37,25 +38,25 @@
         <dependency>
             <groupId>net.sourceforge.streamsupport</groupId>
             <artifactId>streamsupport</artifactId>
-            <version>1.5</version>
+            <version>1.5.1</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.streamsupport</groupId>
             <artifactId>streamsupport-atomic</artifactId>
-            <version>1.5</version>
+            <version>1.5.1</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.streamsupport</groupId>
             <artifactId>streamsupport-cfuture</artifactId>
-            <version>1.5</version>
+            <version>1.5.1</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.streamsupport</groupId>
             <artifactId>streamsupport-flow</artifactId>
-            <version>1.5</version>
+            <version>1.5.1</version>
             <optional>true</optional>
         </dependency>
         
