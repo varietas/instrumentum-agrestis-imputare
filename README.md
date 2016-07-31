@@ -63,7 +63,7 @@ Default scope: *Prototype*
 #### 3.1. Injection functionality
 ![Injection functionality](https://bitbucket.org/repo/yk6XMB/images/92307188-injection-principle_v2-prasentation.png)
 #### 3.2. Injection workflow
-![Injection workflow](https://bitbucket.org/repo/yk6XMB/images/1770838356-injection-workflow-complete.png =400x)
+![Injection workflow](https://bitbucket.org/repo/yk6XMB/images/1770838356-injection-workflow-complete.png)
 ## 4. Technical Information
 #### 4.1. Project dependencies
-![Project dependencies](https://bitbucket.org/repo/yk6XMB/images/4179541309-project-dependencies.png =400x)
+![Project dependencies](https://bitbucket.org/repo/yk6XMB/images/4179541309-project-dependencies.png)
