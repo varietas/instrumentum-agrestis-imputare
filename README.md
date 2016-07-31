@@ -1,15 +1,15 @@
 # agrestis imputare #
 
 ## Table of content ## 
-1. About
-    1. Get agrestis imputare
-    2. How to use
-2. The annotations
-3. Inside
-    1. Injection principle
-    2. Injection workflow
-4. Technical information
-    1. Project dependencies
+1. [About](#about)
+    1. [Get agrestis imputare](#get-agrestis-imputare)
+    2. [How to use](#how-to-use)
+2. [The annotations](#the-annotations)
+3. [Inside](#inside)
+    1. [Injection principle](#injection-principle)
+    2. [Injection workflow](#injection-workflow)
+4. [Technical information](#technical-information)
+    1. [Project dependencies](#project-dependencies)
 
 
 Agrestis Imputare - The smart Dependency Injection is developed to provide dependency injection (DI) on java based applications (embedded or not). agrestis imputare (AI) is a runtime DI framework that is using annotations to find and inject beans. AI is inspired by the spring DI framework so if you know spring the learning should be easier for you.
