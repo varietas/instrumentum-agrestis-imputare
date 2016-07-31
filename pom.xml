@@ -38,21 +38,25 @@
             <groupId>net.sourceforge.streamsupport</groupId>
             <artifactId>streamsupport</artifactId>
             <version>1.5</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.streamsupport</groupId>
             <artifactId>streamsupport-atomic</artifactId>
             <version>1.5</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.streamsupport</groupId>
             <artifactId>streamsupport-cfuture</artifactId>
             <version>1.5</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.streamsupport</groupId>
             <artifactId>streamsupport-flow</artifactId>
             <version>1.5</version>
+            <optional>true</optional>
         </dependency>
         
         <!-- Dependency for byte code analysis. The internal used asm classes couldn't be used. -->
@@ -60,6 +64,7 @@
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
             <version>5.1</version>
+            <optional>true</optional>
         </dependency>
 
         
@@ -68,11 +73,19 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.1.7</version>
+            <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>                                    
             <groupId>org.slf4j</groupId>                
             <artifactId>jcl-over-slf4j</artifactId>     
-            <version>1.7.21</version>  
+            <version>1.7.21</version>
+            <optional>true</optional>  
         </dependency>
         
         <!-- Dependencies for testing -->
@@ -87,6 +100,11 @@
             <artifactId>assertj-core-java8</artifactId>
             <version>1.0.0m1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.21</version>
         </dependency>
     </dependencies>
     
