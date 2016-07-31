@@ -16,13 +16,13 @@ At this time there is a number of annotations available:
 * Annotations used to inject beans
     * Autowire
 
-Every annotation for defining a bean has to optional properties:
+Every annotation for defining a bean has two optional properties:
 
 * name - custom bean identifier
 * scope - what kind of bean (singleton or prototype)
 
-The custom bean identifier allows you to specify your own name of the bean. This option is optional. If you not use an own identifier the name of the class will used as the default identifier.
-The default scope of a bean is the typical scope other frameworks are using too. However, some times it could be helpful to change the scope for a bean. So you could do it with this option. (Be sure you know what you do!)
+The custom bean identifier allows you to specify your own name of the bean. This option is optional. If you don't use an own identifier the name of the class will be used as the default identifier.
+The default scope of a bean is the typical scope other frameworks are using too. However, sometimes it could be helpful to change the scope for a bean. So you could do it with this option. (Be sure you know what you do!)
 #### 1.1. Get agrestis imputare
 
 If you use a build tool like maven or gradle you are able to add the agrestis imputare dependency to your pom or .gralde file. (This time agrestis imputare is not available in the maven central repository so you have to add the dependency to your local repository.)
@@ -33,24 +33,24 @@ If you use a build tool like maven or gradle you are able to add the agrestis im
         <version>latest version</version>
     </dependency>
 
-If you not use any build tool you have to clone the project and to build it with the command `mvn package`.
+If you don't use any build tool you have to clone the project and to build it with the command `mvn package`.
 #### 1.2. How to use
 ## 2. The annotations
 #### 2.1. Repository
-The `Repository` annotation is used to mark a bean used for the access of data in a database.
+The `Repository` annotation is used to mark a bean occupied for the access of data in a database.
 
 Default scope: *Singleton*
 #### 2.2. Servics
 
-The `Service` annotation is used to mark beans used as services. A service bean should only contains `Repository` beans or other `Service` beans.
+The `Service` annotation is used to mark beans occupied as services. A service bean should only contain `Repository` beans or other `Service` beans.
 
 Default scope: *Singleton*
 #### 2.3. Controller
-The `Controller` annotation is used to mark a bean used as controller. This beans normally are used to load and manipulate data as a result of a request or any action. A controller bean should only contains `Repository` beans, `Service` beans or other `Controller` beans.
+The `Controller` annotation is used to mark a bean occupied as controller. This beans normally are used to load and manipulate data as a result of a request or any action. A controller bean should only contain `Repository` beans, `Service` beans or other `Controller` beans.
 
 Default scope: *Singleton*
 #### 2.4. Configuration
-The `Configuration` annotation is used to mark a class used as configuration. If you want to define beans with the `Bean` annotation the right place is here. Important: A `Configuration` is no instance in the application context. You will not be able to autowire them!
+The `Configuration` annotation is used to mark a class occupied as configuration. If you want to define beans with the `Bean` annotation the right place is here. Important: A `Configuration` is no instance in the application context. You will not be able to autowire them!
 #### 2.5. Component
 The `Component` annotation is used to define a basic bean. This means that the bean is not part of the core but you want to manage the bean via agrestis imputare. Every POJO could be a `Component` in your application.
 
