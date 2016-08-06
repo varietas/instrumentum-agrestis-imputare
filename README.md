@@ -2,7 +2,7 @@
 
 [TOC]
 
-Agrestis Imputare - The smart Dependency Injection is developed to provide dependency injection (DI) on java based applications (embedded or not). agrestis imputare (AI) is a runtime DI framework that is using annotations to find and inject beans. AI is inspired by the spring DI framework so if you know spring the learning should be easier for you.
+Agrestis imputare - The smart Dependency Injection is developed to provide dependency injection (DI) on java based applications (embedded or not). Agrestis imputare (AI) is a runtime DI framework that is using annotations to find and inject beans. AI is inspired by the spring DI framework so if you know spring the learning should be easier for you.
 
 At this time there is a number of annotations available:
 
@@ -35,6 +35,11 @@ If you use a build tool like maven or gradle you are able to add the agrestis im
 
 If you don't use any build tool you have to clone the project and to build it with the command `mvn package`.
 #### 1.2. How to use
+The usage is quite simple. First you need to create a context. There is a `AgrestisImputareContextInitialiser` who is require only the current entry point of your application.
+
+    AgrestisImputareContext context = new AgrestisImputareContextInitialiser(this).initializeContext().createContext();
+
+And that's it. Agrestis imputare will now do its magic. It is important that the context is static so you should create it in the main method before application is started.
 ## 2. The annotations
 #### 2.1. Repository
 The `Repository` annotation is used to mark a bean occupied for the access of data in a database.
@@ -66,4 +71,13 @@ Default scope: *Prototype*
 ![Injection workflow](https://bitbucket.org/repo/yk6XMB/images/1770838356-injection-workflow-complete.png)
 ## 4. Technical Information
 #### 4.1. Project dependencies
-![Project dependencies](https://bitbucket.org/repo/yk6XMB/images/4179541309-project-dependencies.png)
+
+group id                       | artifact id          | version | required for
+:----------------------------- | :------------------- | ------: | :---------------------------------------------------------------------------------------------------
+net.sourceforge.streamsupport  | streamsupport-atomic | 1.5.1   | Back port of Java 8 code to Java 7. Required for android or embedded devices without Java 8 runtime.
+net.sourceforge.streamsupport  | streamsupport-flow   | 1.5.1   | Back port of Java 8 code to Java 7. Required for android or embedded devices without Java 8 runtime.
+org.ow2.asm                    | asm                  | 5.1     | Library for Java byte code analysis on runtime. Required for the annotated class scanning.
+ch.qos.logback                 | logback-classic      | 1.1.7   | Library for usage of Slf4j with Logback. Used logging inside of agrestis imputare.
+org.slf4j                      | jcl-over-slf4j       | 1.1.21  | Simple logging facade for Java based applications.
+junit                          | junit                | 4.12    | Test framework for Java based applications.
+org.assertj                    | assertj-core         | 3.5.2   | Library for fluent assertions.
