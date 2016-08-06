@@ -27,18 +27,24 @@ The default scope of a bean is the typical scope other frameworks are using too.
 
 If you use a build tool like maven or gradle you are able to add the agrestis imputare dependency to your pom or .gralde file. (This time agrestis imputare is not available in the maven central repository so you have to add the dependency to your local repository.)
 
-    <dependency>
-        <groupId>io.varietas.mobile</groupId>
-        <artifactId>agrestis-imputare</artifactId>
-        <version>latest version</version>
-    </dependency>
+```
+#!xml
+<dependency>
+    <groupId>io.varietas.mobile</groupId>
+    <artifactId>agrestis-imputare</artifactId>
+    <version>latest version</version>
+</dependency>
 
+```
 If you don't use any build tool you have to clone the project and to build it with the command `mvn package`.
 #### 1.2. How to use
 The usage is quite simple. First you need to create a context. There is a `AgrestisImputareContextInitialiser` who is require only the current entry point of your application.
 
-    AgrestisImputareContext context = new AgrestisImputareContextInitialiser(this).initializeContext().createContext();
+```
+#!java
+AgrestisImputareContext context = new AgrestisImputareContextInitialiser(this).initializeContext().createContext();
 
+```
 And that's it. Agrestis imputare will now do its magic. It is important that the context is static so you should create it in the main method before application is started.
 ## 2. The annotations
 #### 2.1. Repository
@@ -73,7 +79,7 @@ Default scope: *Prototype*
 #### 4.1. Project dependencies
 
 group id                       | artifact id          | version | required for
-:----------------------------- | :------------------- | ------: | :---------------------------------------------------------------------------------------------------
+:----------------------------- | :------------------- | -------:| :---------------------------------------------------------------------------------------------------
 net.sourceforge.streamsupport  | streamsupport-atomic | 1.5.1   | Back port of Java 8 code to Java 7. Required for android or embedded devices without Java 8 runtime.
 net.sourceforge.streamsupport  | streamsupport-flow   | 1.5.1   | Back port of Java 8 code to Java 7. Required for android or embedded devices without Java 8 runtime.
 org.ow2.asm                    | asm                  | 5.1     | Library for Java byte code analysis on runtime. Required for the annotated class scanning.
