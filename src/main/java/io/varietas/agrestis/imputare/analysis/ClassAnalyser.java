@@ -135,17 +135,17 @@ public class ClassAnalyser {
         ///< Depednency meta data
         ///< Collect Dependencies
         MethodInformation methodInformation = new MethodInformationFactory()
-                .setMethod(method)
-                .setParent(parent)
-                .setDependencyOperator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier)
-                .build();
+            .setMethod(method)
+            .setParent(parent)
+            .setDependencyOperator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier)
+            .build();
 
         return new BeanInformationFactory()
-                .setCreationInformation(methodInformation)
-                .setScope(MethodMetaDataExtractionUtils.getBeanScope(method))
-                .setIdentifier(MethodMetaDataExtractionUtils.getBeanIdentifier(method))
-                .setType(method.getReturnType())
-                .build();
+            .setCreationInformation(methodInformation)
+            .setScope(MethodMetaDataExtractionUtils.getBeanScope(method))
+            .setIdentifier(MethodMetaDataExtractionUtils.getBeanIdentifier(method))
+            .setType(method.getReturnType())
+            .build();
     }
 
     private BeanInformation createClassInformation(final Class<?> beanType, final Integer annotationType) throws ToManyInjectedConstructorsException, NoSuchMethodException, IOException {
@@ -155,9 +155,9 @@ public class ClassAnalyser {
 
         ///< Constructor parameter analysis
         ConstructorInformation constructorInformation = new ConstructorInformationFactory()
-                .setConstructor(chosenConstructor.getValue2())
-                .setDependencyOperator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier)
-                .build();
+            .setConstructor(chosenConstructor.getValue2())
+            .setDependencyOperator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier)
+            .build();
 
         BeanInformationFactory informationFactory = new BeanInformationFactory();
 
@@ -167,10 +167,10 @@ public class ClassAnalyser {
         }
 
         return informationFactory
-                .setCreationInformation(constructorInformation)
-                .setScope(ClassMetaDataExtractionUtils.getBeanScope(beanType, annotationType))
-                .setIdentifier(ClassMetaDataExtractionUtils.getBeanIdentifier(beanType, annotationType))
-                .setType(beanType)
-                .build();
+            .setCreationInformation(constructorInformation)
+            .setScope(ClassMetaDataExtractionUtils.getBeanScope(beanType, annotationType))
+            .setIdentifier(ClassMetaDataExtractionUtils.getBeanIdentifier(beanType, annotationType))
+            .setType(beanType)
+            .build();
     }
 }

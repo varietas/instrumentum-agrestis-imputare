@@ -18,6 +18,7 @@ package io.varietas.agrestis.imputare.analysis.factory;
 import io.varietas.agrestis.imputare.analysis.container.BeanInformation;
 import io.varietas.agrestis.imputare.analysis.container.DependencyInformation;
 import io.varietas.agrestis.imputare.enumeration.BeanScope;
+import java8.util.Objects;
 import java8.util.function.Function;
 
 /**
@@ -64,6 +65,11 @@ public class BeanInformationFactory implements InformationFactory<BeanInformatio
 
     @Override
     public BeanInformation build() {
+
+        if (Objects.isNull(this.operator)) {
+            return new BeanInformation(this.creationInformation, this.scope, this.identifier, this.type);
+        }
+
         return new BeanInformation(this.creationInformation, this.scope, this.identifier, this.type, this.operator.apply(this.type));
     }
 }

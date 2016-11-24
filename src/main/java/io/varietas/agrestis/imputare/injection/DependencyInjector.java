@@ -138,6 +138,10 @@ public class DependencyInjector {
         }
 
         if (Objects.equals(beanInformation.scope(), BeanScope.SINGELTON)) {
+            if (Objects.isNull(activationTargetPara)) {
+                activationTargetPara = new Object[0];
+            }
+
             Object instance = InjectionUtils.invoke(activationTarget, activationTargetPara, beanIdentifier, targetParent);
 
             InjectionUtils.addDependenciesToBean(instance, dependencies);

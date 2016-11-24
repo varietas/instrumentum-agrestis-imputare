@@ -54,7 +54,7 @@ public class InjectionUtils {
         }
 
         if (res == null) {
-            throw new NullPointerException("There is no bean instance created.");
+            throw new NullPointerException("There is no bean instance for " + beanIdentifier + " created.");
         }
 
         return res;

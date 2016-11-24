@@ -54,7 +54,6 @@
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
             <version>5.1</version>
-            <optional>true</optional>
         </dependency>
 
         <!-- Dependencies for logging with logback -->

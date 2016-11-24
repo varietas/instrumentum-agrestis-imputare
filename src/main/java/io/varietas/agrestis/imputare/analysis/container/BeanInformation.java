@@ -32,7 +32,7 @@ public class BeanInformation extends AbstractDependencyRequester {
     private final Class<?> type;
 
     public BeanInformation(Object creationInformation, BeanScope scope, String identifier, Class<?> type) {
-        this(creationInformation, scope, identifier, type, (DependencyInformation) null);
+        this(creationInformation, scope, identifier, type, new DependencyInformation[0]);
     }
 
     public BeanInformation(Object creationInformation, BeanScope scope, String identifier, Class<?> type, DependencyInformation... dependencyInformations) {
