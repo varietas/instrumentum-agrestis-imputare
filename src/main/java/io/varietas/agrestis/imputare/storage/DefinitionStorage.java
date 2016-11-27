@@ -17,6 +17,7 @@ package io.varietas.agrestis.imputare.storage;
 
 import io.varietas.agrestis.imputare.analysis.container.DependencyInformation;
 import java.util.List;
+import java8.util.Optional;
 
 /**
  * <h2>DefinitionStorage</h2>
@@ -26,11 +27,11 @@ import java.util.List;
  */
 public interface DefinitionStorage<Identifier, Type, Entry> extends UnsortedStorage<Entry> {
 
-    public Entry findForIdentifier(final Identifier identifier);
+    public Optional<Entry> findForIdentifier(final Identifier identifier);
 
     public List<Entry> findForType(final Type type);
 
-    public Entry findForDependency(final DependencyInformation dependency);
+    public Optional<Entry> findForDependency(final DependencyInformation dependency);
 
     public List<Entry> findForDependencies(final List<DependencyInformation> dependencies);
 

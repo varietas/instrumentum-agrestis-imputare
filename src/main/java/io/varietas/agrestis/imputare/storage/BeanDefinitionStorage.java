@@ -40,8 +40,8 @@ public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>
     }
 
     @Override
-    public BeanDefinition findForIdentifier(String identifier) {
-        return StreamSupport.stream(this.storage).filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst().get();
+    public Optional<BeanDefinition> findForIdentifier(String identifier) {
+        return StreamSupport.stream(this.storage).filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>
     }
 
     @Override
-    public BeanDefinition findForDependency(DependencyInformation dependency) {
+    public Optional<BeanDefinition> findForDependency(DependencyInformation dependency) {
         return this.findForIdentifier(dependency.identifier());
     }
 
@@ -59,7 +59,11 @@ public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>
         List<BeanDefinition> res = new ArrayList<>();
 
         for (DependencyInformation dependencyInformation : dependencies) {
-            res.add(this.findForDependency(dependencyInformation));
+            Optional<BeanDefinition> dependency = this.findForDependency(dependencyInformation);
+            if (!dependency.isPresent()) {
+                continue;
+            }
+            res.add(dependency.get());
         }
 
         return res;

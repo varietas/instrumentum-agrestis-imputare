@@ -85,12 +85,16 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     }
 
     public Optional<BeanInformation> findByIdentifier(final String identifier) {
-        Optional<BeanInformation> res = Optional.empty();
+
         for (Map.Entry<Integer, List<BeanInformation>> set : this.storage.entrySet()) {
-            res = StreamSupport.parallelStream(set.getValue()).filter(bean -> Objects.equals(bean.identifier(), identifier)).findFirst();
+            Optional<BeanInformation> res = StreamSupport.stream(set.getValue()).filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst();
+
+            if (res.isPresent()) {
+                return res;
+            }
         }
 
-        return res;
+        return Optional.empty();
     }
 
     @Override

@@ -87,11 +87,11 @@ public class ClassAnalyser {
                 int status = this.sortedBeanInformationStorage.store(this.createMethodInformation(method, next.get()), ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
 
                 if (status == -1) {
-                    throw new InternalException("An internal error occured while storing a new entry.");
+                    throw new InternalException("An internal error occured while storing a new entry. New entry not stored.");
                 }
 
                 if (status == -2) {
-                    throw new DuplicatedIdentifierException("Critical error occured. Contect initialising abourted.");
+                    throw new DuplicatedIdentifierException("Critical error occured. Context initialising abourted. An bean information with this identifier already exists. (" + method.getName() + ")");
                 }
             }
 
@@ -134,7 +134,7 @@ public class ClassAnalyser {
         ///< Bean meta data
         ///< Depednency meta data
         ///< Collect Dependencies
-        MethodInformation methodInformation = new MethodInformationFactory()
+        final MethodInformation methodInformation = new MethodInformationFactory()
             .setMethod(method)
             .setParent(parent)
             .setDependencyOperator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier)

@@ -42,22 +42,15 @@ public class InjectionUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(InjectionUtils.class);
 
     public static final <ActivationTarget extends Executable> Object invoke(final ActivationTarget activationTarget, final Object[] activationTargetParam, final String beanIdentifier, Optional<Class<?>> targetParent) {
-
-        Object res = null;
-
         if (activationTarget instanceof Method) {
-            res = InjectionUtils.invokeMethod(activationTarget, activationTargetParam, beanIdentifier, targetParent);
+            return InjectionUtils.invokeMethod(activationTarget, activationTargetParam, beanIdentifier, targetParent);
         }
 
         if (activationTarget instanceof Constructor) {
-            res = InjectionUtils.activateConstructor(activationTarget, activationTargetParam, beanIdentifier);
+            return InjectionUtils.activateConstructor(activationTarget, activationTargetParam, beanIdentifier);
         }
 
-        if (res == null) {
-            throw new NullPointerException("There is no bean instance for " + beanIdentifier + " created.");
-        }
-
-        return res;
+        throw new NullPointerException("There is no bean instance for " + beanIdentifier + " created.");
     }
 
     public static final void addDependenciesToBean(final Object beanInstance, final List<Pair<Field, Object>> dependencies) {
@@ -84,7 +77,7 @@ public class InjectionUtils {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public static final <ActivationTarget extends Executable> Object invokeMethod(final ActivationTarget activationTarget, final Object[] activationTargetParam, final String beanIdentifier, Optional<Class<?>> targetParent) {
+    public static final <ActivationTarget extends Executable> Object invokeMethod(final ActivationTarget activationTarget, final Object[] activationTargetParams, final String beanIdentifier, Optional<Class<?>> targetParent) {
         try {
             Method targetAsMethod = (Method) activationTarget;
 
@@ -92,21 +85,21 @@ public class InjectionUtils {
                 throw new NullPointerException("There is no parent class available but it is required for the creation of an method bean instance.");
             }
 
-            return targetAsMethod.invoke(targetParent.get().newInstance(), activationTargetParam);
+            return targetAsMethod.invoke(targetParent.get().newInstance(), activationTargetParams);
 
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException | NullPointerException ex) {
-            throw new InvokationException("Instance of the prototype bean" + beanIdentifier + "couldn't be created", ex);
+            throw new InvokationException("Instance of bean " + beanIdentifier + " couldn't be created.", ex);
         }
     }
 
-    public static final <ActivationTarget extends Executable> Object activateConstructor(final ActivationTarget activationTarget, final Object[] activationTargetParam, final String beanIdentifier) {
+    public static final <ActivationTarget extends Executable> Object activateConstructor(final ActivationTarget activationTarget, final Object[] activationTargetParams, final String beanIdentifier) {
 
         try {
             Constructor constructor = (Constructor) activationTarget;
 
-            return constructor.newInstance(activationTargetParam);
+            return constructor.newInstance(activationTargetParams);
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            throw new InvokationException("Instance of the prototype bean" + beanIdentifier + "couldn't be created", ex);
+            throw new InvokationException("Instance of bean " + beanIdentifier + " couldn't be created.", ex);
         }
     }
 }

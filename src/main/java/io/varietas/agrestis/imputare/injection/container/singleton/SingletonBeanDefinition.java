@@ -35,6 +35,6 @@ public class SingletonBeanDefinition extends AbstractBeanDefinition {
 
     @Override
     public Object get() {
-        return this.beanClazz;
+        return this.beanInstance;
     }
 }

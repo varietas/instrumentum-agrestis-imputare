@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java8.util.Optional;
+import java8.util.stream.IntStreams;
 
 /**
  * <h2>DependencyInjector</h2>
@@ -89,7 +90,7 @@ public class DependencyInjector {
 
         Boolean isConstructor = Boolean.FALSE;
 
-        List<Pair<Field, Object>> fieldDependencies = new ArrayList<>();
+        final List<Pair<Field, Object>> fieldDependencies = new ArrayList<>();
 
         if (creationInformation instanceof ConstructorInformation) {
             isConstructor = Boolean.TRUE;
@@ -119,10 +120,9 @@ public class DependencyInjector {
 
         ///< Exctract field dependencies
         if (beanInformation.isDependenciesRequired()) {
-            Class<?> type = beanInformation.type();
 
             for (DependencyInformation dependencyInformation : beanInformation.getDependencies()) {
-                Field field = ((FieldDependencyInformation) dependencyInformation).field();
+                final Field field = ((FieldDependencyInformation) dependencyInformation).field();
 
                 if (this.definitionStorage.contains(dependencyInformation.identifier())) {
                     dependencies.add(new Pair<>(field, this.definitionStorage.findForIdentifier(dependencyInformation.identifier())));
@@ -142,7 +142,7 @@ public class DependencyInjector {
                 activationTargetPara = new Object[0];
             }
 
-            Object instance = InjectionUtils.invoke(activationTarget, activationTargetPara, beanIdentifier, targetParent);
+            final Object instance = InjectionUtils.invoke(activationTarget, activationTargetPara, beanIdentifier, targetParent);
 
             InjectionUtils.addDependenciesToBean(instance, dependencies);
 
@@ -159,11 +159,11 @@ public class DependencyInjector {
     }
 
     private Object[] loadDependencies(final AbstractDependencyRequester dependencyRequester) {
-        List<Object> dependencies = new ArrayList<>();
+        final List<BeanDefinition> dependencies = new ArrayList<>();
         for (DependencyInformation dependencyInformation : dependencyRequester.getDependencies()) {
             ///< if is in definition storage
             if (this.definitionStorage.contains(dependencyInformation.identifier())) {
-                dependencies.add(this.definitionStorage.findForIdentifier(dependencyInformation.identifier()).get());
+                dependencies.add((BeanDefinition) this.definitionStorage.findForIdentifier(dependencyInformation.identifier()).get());
                 continue;
             }
 
@@ -172,11 +172,20 @@ public class DependencyInjector {
                 throw new NullPointerException("No dependency information located for " + dependencyInformation.identifier());
             }
 
-            BeanDefinition dependencyDefinition = this.singleInjectionWork(this.informationStorage.findByIdentifier(dependencyInformation.identifier()).get());
+            final Optional<BeanInformation> information = this.informationStorage.findByIdentifier(dependencyInformation.identifier());
+
+            if (!information.isPresent()) {
+                throw new NullPointerException("No dependency information located for " + dependencyInformation.identifier());
+            }
+
+            final BeanDefinition dependencyDefinition = this.singleInjectionWork(information.get());
             this.definitionStorage.store(dependencyDefinition);
-            dependencies.add(dependencyDefinition.get());
+            dependencies.add(dependencyDefinition);
         }
 
-        return dependencies.toArray();
+        final Object[] res = new Object[dependencies.size()];
+        IntStreams.range(0, dependencies.size()).forEachOrdered(index -> res[index] = dependencies.get(index).get());
+
+        return res;
     }
 }
