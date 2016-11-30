@@ -34,6 +34,8 @@ import org.slf4j.LoggerFactory;
  *
  * This class is the entry point to the collection of all annotated classes of the current application. All classes contained in the packages and used libraries will scanned and loaded.
  *
+ * TODO: Remove NIO classes
+ *
  * @author Michael Rhöse
  * @since Di, Jun 28, 2016
  */
