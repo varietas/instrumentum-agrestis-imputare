@@ -15,7 +15,7 @@
  */
 package io.varietas.agrestis.imputare.searching;
 
-import io.varietas.agrestis.imputare.storage.UnsortedStorage;
+import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import io.varietas.test.TestHelper;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.searching;
 
 import io.varietas.agrestis.imputare.storage.UnsortedStorageImpl;
-import io.varietas.agrestis.imputare.storage.UnsortedStorage;
+import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassLoadUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;

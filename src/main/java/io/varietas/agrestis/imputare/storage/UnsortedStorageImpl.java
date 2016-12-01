@@ -15,6 +15,7 @@
  */
 package io.varietas.agrestis.imputare.storage;
 
+import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;

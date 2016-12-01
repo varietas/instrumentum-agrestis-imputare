@@ -15,8 +15,8 @@
  */
 package io.varietas.agrestis.imputare.searching;
 
-import io.varietas.agrestis.imputare.storage.SortedStorage;
-import io.varietas.agrestis.imputare.storage.UnsortedStorage;
+import io.varietas.instrumentum.simul.storage.SortedStorage;
+import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.test.TestHelper;
 import java.io.IOException;

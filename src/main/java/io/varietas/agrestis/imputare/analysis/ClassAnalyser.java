@@ -21,7 +21,7 @@ import io.varietas.agrestis.imputare.analysis.container.MethodInformation;
 import io.varietas.agrestis.imputare.analysis.factory.BeanInformationFactory;
 import io.varietas.agrestis.imputare.analysis.factory.ConstructorInformationFactory;
 import io.varietas.agrestis.imputare.analysis.factory.MethodInformationFactory;
-import io.varietas.agrestis.imputare.storage.SortedStorage;
+import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.annotation.Bean;
