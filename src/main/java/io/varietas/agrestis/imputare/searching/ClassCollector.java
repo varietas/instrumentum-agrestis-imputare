@@ -18,16 +18,15 @@ package io.varietas.agrestis.imputare.searching;
 import io.varietas.agrestis.imputare.storage.UnsortedStorageImpl;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassLoadUtils;
+import io.varietas.agrestis.imputare.utils.searching.ClazzCollectorUtils;
+import io.varietas.mobile.arbitrium.fabri.common.Platform;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java8.util.stream.StreamSupport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h2>ClassCollector</h2>
@@ -39,38 +38,38 @@ import org.slf4j.LoggerFactory;
  * @author Michael Rhöse
  * @since Di, Jun 28, 2016
  */
+@Slf4j
 public class ClassCollector {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(ClassCollector.class);
 
     private final String applicationPackage;
     private final UnsortedStorage clazzStorage;
+    private final Platform platform;
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public ClassCollector(String applicationPackage) {
+    public ClassCollector(String applicationPackage, final Platform platform) {
         this.applicationPackage = applicationPackage;
         this.clazzStorage = new UnsortedStorageImpl();
+        this.platform = platform;
     }
 
-    public ClassCollector(Package applicationPackage) {
-        this(applicationPackage.toString());
+    public ClassCollector(final Package applicationPackage, final Platform platform) {
+        this(applicationPackage.toString(), platform);
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     public ClassCollector collectAnnotatedClazzes() throws IOException, ClassNotFoundException, URISyntaxException {
 
-        String path = ClassLoadUtils.fullModifyPackageName(this.applicationPackage);
-
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        List<URL> urls = ClassLoadUtils.getRootUrls(classLoader);
-
-        urls.addAll(ClassLoadUtils.getResourceUrls(urls, classLoader, path));
-
-        StreamSupport.stream(urls).forEach(url -> this.doClazzLoading(url, path));
-
-        String projectPath = System.getProperty("user.dir");
-
-        this.doClazzLoading(Paths.get(projectPath), projectPath);
+        switch (this.platform) {
+            case ANDROID:
+                this.doAndroidClazzCollection();
+                break;
+            case IOS:
+            case DESKTOP:
+                this.doDesktopClazzCollection();
+                break;
+            default:
+                break;
+        }
 
         return this;
     }
@@ -80,29 +79,23 @@ public class ClassCollector {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    private void doClazzLoading(final Path root, final String path) throws IOException {
-        if (!Files.exists(root)) {
-            LOGGER.debug("File or folder {} not exists.", root.toString());
-            return;
-        }
-        ///< Load all classes from the given package
-        this.clazzStorage.storeAll(ClassLoadUtils.visitPackage(ClassLoadUtils.modifyPackageName(path), root));
+    private void doDesktopClazzCollection() throws IOException {
+        String path = ClassLoadUtils.fullModifyPackageName(this.applicationPackage);
+
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        List<URL> urls = ClassLoadUtils.getRootUrls(classLoader);
+
+        urls.addAll(ClassLoadUtils.getResourceUrls(urls, classLoader, path));
+
+        StreamSupport.stream(urls).forEach(url -> this.clazzStorage.storeAll(ClazzCollectorUtils.doClazzLoading(url, path)));
+
+        String projectPath = System.getProperty("user.dir");
+
+        this.clazzStorage.storeAll(ClazzCollectorUtils.doClazzLoading(Paths.get(projectPath), projectPath));
     }
 
-    private void doClazzLoading(URL url, final String path) throws RuntimeException {
-
-        try {
-            if (!url.toString().contains("jar")) {
-                Path root = Paths.get(url.toURI());
-                this.doClazzLoading(root, path);
-                return;
-            }
-
-            ///< Load all classes from required jar
-            this.clazzStorage.storeAll(ClassLoadUtils.visitJar(url));
-
-        } catch (URISyntaxException | IOException | ClassNotFoundException ex) {
-            throw new RuntimeException(ex);
-        }
+    private void doAndroidClazzCollection() {
+        // TODO: Implement android class collection
+        throw new UnsupportedOperationException();
     }
 }

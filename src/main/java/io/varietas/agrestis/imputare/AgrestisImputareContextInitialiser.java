@@ -31,9 +31,10 @@ import io.varietas.agrestis.imputare.storage.DefinitionStorage;
 import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
+import io.varietas.mobile.arbitrium.fabri.common.Platform;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.logging.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h2>AgrestisImputareContextInitialiser</h2>
@@ -41,13 +42,14 @@ import java.util.logging.Logger;
  * @author Michael Rhöse
  * @since Mo, Jun 6, 2016
  */
+@Slf4j
 public class AgrestisImputareContextInitialiser {
-
-    private static final Logger LOGGER = Logger.getLogger(AgrestisImputareContextInitialiser.class.getName());
 
     private final Package applicationPackage;
 
     private DefinitionStorage<String, Class<?>, BeanDefinition> beanStorage;
+
+    private Platform currentPlatform;
 
     public AgrestisImputareContextInitialiser(Object application) throws InstantiationException, IllegalAccessException {
         this.applicationPackage = application.getClass().getPackage();
@@ -55,11 +57,17 @@ public class AgrestisImputareContextInitialiser {
     }
 
     public AgrestisImputareContextInitialiser initializeContext() {
+        this.currentPlatform = Platform.DESKTOP;
         UnsortedStorage unsortedStorage = this.initSearching(this.applicationPackage);
         SortedStorage sortetStorage = this.initSorting(unsortedStorage);
         SortedBeanInformationStorage beanInformationStorage = this.initAnalysis(sortetStorage);
         this.beanStorage = this.initInjection(beanInformationStorage);
 
+        return this;
+    }
+
+    public AgrestisImputareContextInitialiser currentPlatform(final Platform platform) {
+        this.currentPlatform = platform;
         return this;
     }
 
@@ -81,7 +89,8 @@ public class AgrestisImputareContextInitialiser {
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private UnsortedStorage initSearching(final Package applicationPackage) {
         try {
-            return new ClassCollector(applicationPackage).collectAnnotatedClazzes().getStorage();
+            LOGGER.debug("Platform type {} configured for class searching.", this.currentPlatform.name());
+            return new ClassCollector(applicationPackage, this.currentPlatform).collectAnnotatedClazzes().getStorage();
         } catch (IOException | ClassNotFoundException | URISyntaxException ex) {
             throw new SearchingException("Something goes wrong while searching annotated classes.", ex);
         }
