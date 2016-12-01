@@ -89,6 +89,14 @@
             <optional>true</optional>  
         </dependency>
         
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.10</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+        
         <!-- Dependencies for testing -->
         <dependency>
             <groupId>junit</groupId>
