@@ -15,8 +15,6 @@
  */
 package io.varietas.agrestis.imputare;
 
-import io.varietas.agrestis.imputare.injection.container.BeanDefinition;
-import io.varietas.agrestis.imputare.storage.DefinitionStorage;
 import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
 import io.varietas.agrestis.imputare.storage.UnsortedStorageImpl;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
@@ -36,7 +34,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AgrestisImputareAndroidContextInitialiser extends AbstractContextInitialiser<AgrestisImputareAndroidContextInitialiser> {
 
-    private DefinitionStorage<String, Class<?>, BeanDefinition> beanStorage;
     private final List<Class<?>> collectedClazzes;
 
     public AgrestisImputareAndroidContextInitialiser(final List<Class<?>> collectedClazzes) {

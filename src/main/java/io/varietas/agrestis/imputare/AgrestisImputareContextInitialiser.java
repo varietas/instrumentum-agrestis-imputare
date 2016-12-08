@@ -16,9 +16,7 @@
 package io.varietas.agrestis.imputare;
 
 import io.varietas.agrestis.imputare.error.SearchingException;
-import io.varietas.agrestis.imputare.injection.container.BeanDefinition;
 import io.varietas.agrestis.imputare.searching.ClassCollector;
-import io.varietas.agrestis.imputare.storage.DefinitionStorage;
 import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
@@ -36,8 +34,6 @@ import lombok.extern.slf4j.Slf4j;
 public class AgrestisImputareContextInitialiser extends AbstractContextInitialiser<AgrestisImputareContextInitialiser> {
 
     private final Package applicationPackage;
-
-    private DefinitionStorage<String, Class<?>, BeanDefinition> beanStorage;
 
     public AgrestisImputareContextInitialiser(Object application) throws InstantiationException, IllegalAccessException {
         this.applicationPackage = application.getClass().getPackage();

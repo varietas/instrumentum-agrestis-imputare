@@ -56,7 +56,7 @@ public class InjectionUtils {
     public static final void addDependenciesToBean(final Object beanInstance, final List<Pair<Field, Object>> dependencies) {
 
         if (dependencies.isEmpty()) {
-            LOGGER.debug("No dependencies for bean type {} available.", beanInstance.getClass().getSimpleName());
+            LOGGER.debug("No dependencies for bean type {} required.", beanInstance.getClass().getSimpleName());
             return;
         }
 
