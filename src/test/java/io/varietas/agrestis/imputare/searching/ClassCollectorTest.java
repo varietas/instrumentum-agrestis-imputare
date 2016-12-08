@@ -16,7 +16,6 @@
 package io.varietas.agrestis.imputare.searching;
 
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
-import io.varietas.mobile.arbitrium.fabri.common.Platform;
 import io.varietas.test.TestHelper;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -59,7 +58,7 @@ public class ClassCollectorTest {
     @Test
     public void collectAnnotatedClazzes() throws IOException, ClassNotFoundException, URISyntaxException {
 
-        ClassCollector classCollector = new ClassCollector(TestHelper.class.getPackage(), Platform.DESKTOP);
+        ClassCollector classCollector = new ClassCollector(TestHelper.class.getPackage());
 
         UnsortedStorage storage = classCollector.collectAnnotatedClazzes().getStorage();
 

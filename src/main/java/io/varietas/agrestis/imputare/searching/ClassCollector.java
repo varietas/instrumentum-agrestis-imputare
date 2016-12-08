@@ -19,7 +19,6 @@ import io.varietas.agrestis.imputare.storage.UnsortedStorageImpl;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassLoadUtils;
 import io.varietas.agrestis.imputare.utils.searching.ClazzCollectorUtils;
-import io.varietas.mobile.arbitrium.fabri.common.Platform;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -43,33 +42,21 @@ public class ClassCollector {
 
     private final String applicationPackage;
     private final UnsortedStorage clazzStorage;
-    private final Platform platform;
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public ClassCollector(String applicationPackage, final Platform platform) {
+    public ClassCollector(String applicationPackage) {
         this.applicationPackage = applicationPackage;
         this.clazzStorage = new UnsortedStorageImpl();
-        this.platform = platform;
     }
 
-    public ClassCollector(final Package applicationPackage, final Platform platform) {
-        this(applicationPackage.toString(), platform);
+    public ClassCollector(final Package applicationPackage) {
+        this(applicationPackage.toString());
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     public ClassCollector collectAnnotatedClazzes() throws IOException, ClassNotFoundException, URISyntaxException {
 
-        switch (this.platform) {
-            case ANDROID:
-                this.doAndroidClazzCollection();
-                break;
-            case IOS:
-            case DESKTOP:
-                this.doDesktopClazzCollection();
-                break;
-            default:
-                break;
-        }
+        this.doClazzCollection();
 
         return this;
     }
@@ -79,7 +66,7 @@ public class ClassCollector {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    private void doDesktopClazzCollection() throws IOException {
+    private void doClazzCollection() throws IOException {
         String path = ClassLoadUtils.fullModifyPackageName(this.applicationPackage);
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -87,15 +74,10 @@ public class ClassCollector {
 
         urls.addAll(ClassLoadUtils.getResourceUrls(urls, classLoader, path));
 
-        StreamSupport.stream(urls).forEach(url -> this.clazzStorage.storeAll(ClazzCollectorUtils.doClazzLoading(url, path)));
+        StreamSupport.stream(urls).forEach(url -> this.clazzStorage.storeAll(ClazzCollectorUtils.loadClazzes(url, path)));
 
         String projectPath = System.getProperty("user.dir");
 
-        this.clazzStorage.storeAll(ClazzCollectorUtils.doClazzLoading(Paths.get(projectPath), projectPath));
-    }
-
-    private void doAndroidClazzCollection() {
-        // TODO: Implement android class collection
-        throw new UnsupportedOperationException();
+        this.clazzStorage.storeAll(ClazzCollectorUtils.loadClazzes(Paths.get(projectPath), projectPath));
     }
 }

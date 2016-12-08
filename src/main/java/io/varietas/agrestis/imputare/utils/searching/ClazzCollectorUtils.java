@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ClazzCollectorUtils {
 
-    public static List<Class<?>> doClazzLoading(final Path root, final String path) throws IOException {
+    public static List<Class<?>> loadClazzes(final Path root, final String path) throws IOException {
         if (!Files.exists(root)) {
             LOGGER.debug("File or folder {} not exists.", root.toString());
             return new ArrayList<>();
@@ -44,12 +44,12 @@ public class ClazzCollectorUtils {
         return ClassLoadUtils.visitPackage(ClassLoadUtils.modifyPackageName(path), root);
     }
 
-    public static List<Class<?>> doClazzLoading(URL url, final String path) throws RuntimeException {
+    public static List<Class<?>> loadClazzes(URL url, final String path) throws RuntimeException {
 
         try {
             if (!url.toString().contains("jar")) {
                 Path root = Paths.get(url.toURI());
-                return ClazzCollectorUtils.doClazzLoading(root, path);
+                return ClazzCollectorUtils.loadClazzes(root, path);
             }
 
             ///< Load all classes from required jar

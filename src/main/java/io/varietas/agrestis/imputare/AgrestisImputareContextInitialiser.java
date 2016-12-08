@@ -31,7 +31,6 @@ import io.varietas.agrestis.imputare.storage.DefinitionStorage;
 import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
-import io.varietas.mobile.arbitrium.fabri.common.Platform;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import lombok.extern.slf4j.Slf4j;
@@ -49,25 +48,16 @@ public class AgrestisImputareContextInitialiser {
 
     private DefinitionStorage<String, Class<?>, BeanDefinition> beanStorage;
 
-    private Platform currentPlatform;
-
     public AgrestisImputareContextInitialiser(Object application) throws InstantiationException, IllegalAccessException {
         this.applicationPackage = application.getClass().getPackage();
-
     }
 
     public AgrestisImputareContextInitialiser initializeContext() {
-        this.currentPlatform = Platform.DESKTOP;
         UnsortedStorage unsortedStorage = this.initSearching(this.applicationPackage);
         SortedStorage sortetStorage = this.initSorting(unsortedStorage);
         SortedBeanInformationStorage beanInformationStorage = this.initAnalysis(sortetStorage);
         this.beanStorage = this.initInjection(beanInformationStorage);
 
-        return this;
-    }
-
-    public AgrestisImputareContextInitialiser currentPlatform(final Platform platform) {
-        this.currentPlatform = platform;
         return this;
     }
 
@@ -89,8 +79,8 @@ public class AgrestisImputareContextInitialiser {
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private UnsortedStorage initSearching(final Package applicationPackage) {
         try {
-            LOGGER.debug("Platform type {} configured for class searching.", this.currentPlatform.name());
-            return new ClassCollector(applicationPackage, this.currentPlatform).collectAnnotatedClazzes().getStorage();
+            LOGGER.debug("Searching classes in package {}.", this.applicationPackage.getName());
+            return new ClassCollector(applicationPackage).collectAnnotatedClazzes().getStorage();
         } catch (IOException | ClassNotFoundException | URISyntaxException ex) {
             throw new SearchingException("Something goes wrong while searching annotated classes.", ex);
         }
