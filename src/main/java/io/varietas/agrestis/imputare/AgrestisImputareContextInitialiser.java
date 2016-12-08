@@ -15,18 +15,9 @@
  */
 package io.varietas.agrestis.imputare;
 
-import io.varietas.agrestis.imputare.analysis.ClassAnalyser;
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
-import io.varietas.agrestis.imputare.error.AnalysisException;
-import io.varietas.agrestis.imputare.error.IllegalAnnotationException;
 import io.varietas.agrestis.imputare.error.SearchingException;
-import io.varietas.agrestis.imputare.error.SortingException;
-import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
-import io.varietas.agrestis.imputare.injection.DependencyInjector;
 import io.varietas.agrestis.imputare.injection.container.BeanDefinition;
-import io.varietas.agrestis.imputare.injection.container.singleton.SingletonBeanDefinition;
 import io.varietas.agrestis.imputare.searching.ClassCollector;
-import io.varietas.agrestis.imputare.searching.ClassSorter;
 import io.varietas.agrestis.imputare.storage.DefinitionStorage;
 import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
@@ -42,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since Mo, Jun 6, 2016
  */
 @Slf4j
-public class AgrestisImputareContextInitialiser {
+public class AgrestisImputareContextInitialiser extends AbstractContextInitialiser<AgrestisImputareContextInitialiser> {
 
     private final Package applicationPackage;
 
@@ -52,6 +43,7 @@ public class AgrestisImputareContextInitialiser {
         this.applicationPackage = application.getClass().getPackage();
     }
 
+    @Override
     public AgrestisImputareContextInitialiser initializeContext() {
         UnsortedStorage unsortedStorage = this.initSearching(this.applicationPackage);
         SortedStorage sortetStorage = this.initSorting(unsortedStorage);
@@ -59,21 +51,6 @@ public class AgrestisImputareContextInitialiser {
         this.beanStorage = this.initInjection(beanInformationStorage);
 
         return this;
-    }
-
-    public AgrestisImputareContext createContext() {
-
-        final AgrestisImputareContextImpl agrestisImputareContext = new AgrestisImputareContextImpl();
-
-        BeanDefinition[] definitions = new BeanDefinition[this.beanStorage.getStorage().size()];
-        for (int index = 0; index < this.beanStorage.getStorage().size(); ++index) {
-            definitions[index] = this.beanStorage.getStorage().get(index);
-        }
-        agrestisImputareContext.addBeanDefinitions(definitions);
-
-        agrestisImputareContext.addContextDefinition(new SingletonBeanDefinition(agrestisImputareContext, AgrestisImputareContext.class.getSimpleName(), BeanScope.SINGELTON, AgrestisImputareContext.class));
-
-        return agrestisImputareContext;
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -84,25 +61,5 @@ public class AgrestisImputareContextInitialiser {
         } catch (IOException | ClassNotFoundException | URISyntaxException ex) {
             throw new SearchingException("Something goes wrong while searching annotated classes.", ex);
         }
-    }
-
-    private SortedStorage initSorting(final UnsortedStorage unsortedStorage) throws SortingException {
-        try {
-            return new ClassSorter(unsortedStorage).sortLocatedClazzes().getStorage();
-        } catch (IllegalArgumentException | IllegalAccessException | InstantiationException | IllegalAnnotationException ex) {
-            throw new SortingException("Something goes wrong while sorting located classes.", ex);
-        }
-    }
-
-    private SortedBeanInformationStorage initAnalysis(final SortedStorage sortetStorage) throws AnalysisException {
-        try {
-            return new ClassAnalyser(sortetStorage).doAnalysis().getStorage();
-        } catch (ToManyInjectedConstructorsException | NoSuchMethodException | IOException | IllegalArgumentException | IllegalAccessException | InstantiationException ex) {
-            throw new AnalysisException("Something goes wrong while analysing dependency graph.", ex);
-        }
-    }
-
-    private DefinitionStorage<String, Class<?>, BeanDefinition> initInjection(final SortedBeanInformationStorage beanInformationStorage) {
-        return new DependencyInjector(beanInformationStorage).doInjectionWork().getStorage();
     }
 }

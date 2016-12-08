@@ -15,58 +15,42 @@
  */
 package io.varietas.agrestis.imputare;
 
-import io.varietas.agrestis.imputare.analysis.ClassAnalyser;
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
-import io.varietas.agrestis.imputare.error.AnalysisException;
-import io.varietas.agrestis.imputare.error.IllegalAnnotationException;
-import io.varietas.agrestis.imputare.error.SortingException;
-import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
-import io.varietas.agrestis.imputare.injection.DependencyInjector;
 import io.varietas.agrestis.imputare.injection.container.BeanDefinition;
-import io.varietas.agrestis.imputare.injection.container.singleton.SingletonBeanDefinition;
-import io.varietas.agrestis.imputare.searching.ClassSorter;
 import io.varietas.agrestis.imputare.storage.DefinitionStorage;
 import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
 import io.varietas.agrestis.imputare.storage.UnsortedStorageImpl;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
-import java.io.IOException;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h2>AgrestisImputareAndroidContextInitialiser</h2>
  *
+ * This class represents the context initialiser implementation for Android based platforms. The OpenJDK used on Android doesn't provide the Oracle NIO framework. To get all classes for agrestis
+ * imputares you have to handle a scan outside.
+ *
  * @author Michael Rhöse
  * @version 1.0.0, 12/8/2016
  */
 @Slf4j
-public class AgrestisImputareAndroidContextInitialiser {
+public class AgrestisImputareAndroidContextInitialiser extends AbstractContextInitialiser<AgrestisImputareAndroidContextInitialiser> {
 
     private DefinitionStorage<String, Class<?>, BeanDefinition> beanStorage;
+    private final List<Class<?>> collectedClazzes;
 
-    public AgrestisImputareAndroidContextInitialiser initializeContext(final List<Class<?>> collectedClazzes) {
-        UnsortedStorage unsortedStorage = this.createUnsortedStorage(collectedClazzes);
+    public AgrestisImputareAndroidContextInitialiser(final List<Class<?>> collectedClazzes) {
+        this.collectedClazzes = collectedClazzes;
+    }
+
+    @Override
+    public AgrestisImputareAndroidContextInitialiser initializeContext() {
+        UnsortedStorage unsortedStorage = this.createUnsortedStorage(this.collectedClazzes);
         SortedStorage sortetStorage = this.initSorting(unsortedStorage);
         SortedBeanInformationStorage beanInformationStorage = this.initAnalysis(sortetStorage);
         this.beanStorage = this.initInjection(beanInformationStorage);
 
         return this;
-    }
-
-    public AgrestisImputareContext createContext() {
-
-        final AgrestisImputareContextImpl agrestisImputareContext = new AgrestisImputareContextImpl();
-
-        BeanDefinition[] definitions = new BeanDefinition[this.beanStorage.getStorage().size()];
-        for (int index = 0; index < this.beanStorage.getStorage().size(); ++index) {
-            definitions[index] = this.beanStorage.getStorage().get(index);
-        }
-        agrestisImputareContext.addBeanDefinitions(definitions);
-
-        agrestisImputareContext.addContextDefinition(new SingletonBeanDefinition(agrestisImputareContext, AgrestisImputareContext.class.getSimpleName(), BeanScope.SINGELTON, AgrestisImputareContext.class));
-
-        return agrestisImputareContext;
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -75,25 +59,5 @@ public class AgrestisImputareAndroidContextInitialiser {
         storage.storeAll(collectedCLazzes);
         LOGGER.debug("{} classes collected and stored.", collectedCLazzes.size());
         return storage;
-    }
-
-    private SortedStorage initSorting(final UnsortedStorage unsortedStorage) throws SortingException {
-        try {
-            return new ClassSorter(unsortedStorage).sortLocatedClazzes().getStorage();
-        } catch (IllegalArgumentException | IllegalAccessException | InstantiationException | IllegalAnnotationException ex) {
-            throw new SortingException("Something goes wrong while sorting located classes.", ex);
-        }
-    }
-
-    private SortedBeanInformationStorage initAnalysis(final SortedStorage sortetStorage) throws AnalysisException {
-        try {
-            return new ClassAnalyser(sortetStorage).doAnalysis().getStorage();
-        } catch (ToManyInjectedConstructorsException | NoSuchMethodException | IOException | IllegalArgumentException | IllegalAccessException | InstantiationException ex) {
-            throw new AnalysisException("Something goes wrong while analysing dependency graph.", ex);
-        }
-    }
-
-    private DefinitionStorage<String, Class<?>, BeanDefinition> initInjection(final SortedBeanInformationStorage beanInformationStorage) {
-        return new DependencyInjector(beanInformationStorage).doInjectionWork().getStorage();
     }
 }
