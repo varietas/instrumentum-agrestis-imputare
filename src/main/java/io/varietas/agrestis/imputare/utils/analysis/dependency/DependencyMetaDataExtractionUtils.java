@@ -31,8 +31,7 @@ import java.util.List;
 import java.util.Objects;
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h2>DependencyMetaDataExtractionUtils</h2>
@@ -40,9 +39,8 @@ import org.slf4j.LoggerFactory;
  * @author Michael Rhöse
  * @since Mo, Jul 4, 2016
  */
+@Slf4j
 public class DependencyMetaDataExtractionUtils {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DependencyMetaDataExtractionUtils.class);
 
     /**
      * Extracts the dependencies from a given method. The method will analysed for the presents of the {@link Autowire} annotation. For later operations the type and the identifier will be extracted.
@@ -66,7 +64,14 @@ public class DependencyMetaDataExtractionUtils {
             }
         }
 
-        return DependencyMetaDataExtractionUtils.createDependencyInformation(method, identifiers);
+        int parameterCount = method.getParameterCount();
+        DependencyInformation[] res = new DependencyInformation[parameterCount];
+
+        for (int index = 0; index < method.getParameterCount(); ++index) {
+            res[index] = new DependencyInformation(identifiers[index], method.getParameters()[index].getType());
+        }
+
+        return res;
     }
 
     /**
@@ -92,7 +97,14 @@ public class DependencyMetaDataExtractionUtils {
             }
         }
 
-        return DependencyMetaDataExtractionUtils.createDependencyInformation(constructor, identifiers);
+        int parameterCount = constructor.getParameterCount();
+        DependencyInformation[] res = new DependencyInformation[parameterCount];
+
+        for (int index = 0; index < constructor.getParameterCount(); ++index) {
+            res[index] = new DependencyInformation(identifiers[index], constructor.getParameters()[index].getType());
+        }
+
+        return res;
     }
 
     public static DependencyInformation[] getDependenciesWithIdentifier(final Class<?> clazz) {
@@ -110,10 +122,13 @@ public class DependencyMetaDataExtractionUtils {
     /**
      * Creates the {@link DependencyInformation} for identifiers and types. The {@link Executable} parameters will iterated and with the identifier on the same index stored.
      *
+     * Could used if no android support is required anymore.
+     *
      * @param method
      * @param identifiers
      * @return
      */
+    @Deprecated
     public static DependencyInformation[] createDependencyInformation(final Executable method, final String[] identifiers) {
         int parameterCount = method.getParameterCount();
         DependencyInformation[] res = new DependencyInformation[parameterCount];
