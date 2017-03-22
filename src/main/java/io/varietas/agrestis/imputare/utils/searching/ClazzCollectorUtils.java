@@ -15,14 +15,14 @@
  */
 package io.varietas.agrestis.imputare.utils.searching;
 
-import io.varietas.agrestis.imputare.utils.analysis.classes.ClassLoadUtils;
+import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
+import io.github.lukehutch.fastclasspathscanner.scanner.ScanResult;
+import io.varietas.agrestis.imputare.annotation.Component;
+import io.varietas.agrestis.imputare.annotation.Configuration;
+import io.varietas.agrestis.imputare.annotation.Controller;
+import io.varietas.agrestis.imputare.annotation.Repository;
+import io.varietas.agrestis.imputare.annotation.Service;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,28 +35,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ClazzCollectorUtils {
 
-    public static List<Class<?>> loadClazzes(final Path root, final String path) throws IOException {
-        if (!Files.exists(root)) {
-            LOGGER.debug("File or folder {} not exists.", root.toString());
-            return new ArrayList<>();
-        }
+    public static List<Class<?>> loadClazzes() throws IOException {
+
+        ScanResult res = new FastClasspathScanner().scan();
+
         ///< Load all classes from the given package
-        return ClassLoadUtils.visitPackage(ClassLoadUtils.modifyPackageName(path), root);
-    }
-
-    public static List<Class<?>> loadClazzes(URL url, final String path) throws RuntimeException {
-
-        try {
-            if (!url.toString().contains("jar")) {
-                Path root = Paths.get(url.toURI());
-                return ClazzCollectorUtils.loadClazzes(root, path);
-            }
-
-            ///< Load all classes from required jar
-            return ClassLoadUtils.visitJar(url);
-
-        } catch (URISyntaxException | IOException | ClassNotFoundException ex) {
-            throw new RuntimeException(ex);
-        }
+        return res.classNamesToClassRefs(res.getNamesOfClassesWithAnnotationsAnyOf(Repository.class, Service.class, Controller.class, Component.class, Configuration.class));
     }
 }

@@ -37,11 +37,6 @@
     <dependencies>
         <dependency>
             <groupId>io.varietas</groupId>
-            <artifactId>mobile-arbitrium-fabri</artifactId>
-            <version>0.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>io.varietas</groupId>
             <artifactId>instrumentum-simul</artifactId>
             <version>0.0.0-SNAPSHOT</version>
         </dependency>
@@ -62,9 +57,9 @@
         
         <!-- Dependency for byte code analysis. The internal used asm classes couldn't be used. -->
         <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm</artifactId>
-            <version>5.1</version>
+            <groupId>io.github.lukehutch</groupId>
+            <artifactId>fast-classpath-scanner</artifactId>
+            <version>2.0.17</version>
         </dependency>
 
         <!-- Dependencies for logging with logback -->

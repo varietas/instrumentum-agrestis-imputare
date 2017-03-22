@@ -19,7 +19,7 @@ package io.varietas.agrestis.imputare.utils.container;
  * <h2>Pair</h2>
  *
  * @author Michael Rhöse
- * @since Mo, Jul 4, 2016
+ * @version 1.0.0, 7/4/2016
  */
 public class Pair<Value1, Value2> {
 

@@ -17,14 +17,9 @@ package io.varietas.agrestis.imputare.searching;
 
 import io.varietas.agrestis.imputare.storage.UnsortedStorageImpl;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
-import io.varietas.agrestis.imputare.utils.analysis.classes.ClassLoadUtils;
 import io.varietas.agrestis.imputare.utils.searching.ClazzCollectorUtils;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.util.List;
-import java8.util.stream.StreamSupport;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -35,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  * TODO: Remove NIO classes
  *
  * @author Michael Rhöse
- * @since Di, Jun 28, 2016
+ * @version 1.0.0, 6/28/2016
  */
 @Slf4j
 public class ClassCollector {
@@ -67,17 +62,7 @@ public class ClassCollector {
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private void doClazzCollection() throws IOException {
-        String path = ClassLoadUtils.fullModifyPackageName(this.applicationPackage);
 
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        List<URL> urls = ClassLoadUtils.getRootUrls(classLoader);
-
-        urls.addAll(ClassLoadUtils.getResourceUrls(urls, classLoader, path));
-
-        StreamSupport.stream(urls).forEach(url -> this.clazzStorage.storeAll(ClazzCollectorUtils.loadClazzes(url, path)));
-
-        String projectPath = System.getProperty("user.dir");
-
-        this.clazzStorage.storeAll(ClazzCollectorUtils.loadClazzes(Paths.get(projectPath), projectPath));
+        this.clazzStorage.storeAll(ClazzCollectorUtils.loadClazzes());
     }
 }

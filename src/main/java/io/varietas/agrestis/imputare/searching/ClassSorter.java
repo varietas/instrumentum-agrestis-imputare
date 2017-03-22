@@ -21,18 +21,14 @@ import io.varietas.agrestis.imputare.storage.SortedStorageImpl;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import java8.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * <h2>ClassSorter</h2>
  *
  * @author Michael Rhöse
- * @since Do, Jun 30, 2016
+ * @version 1.0.0, 6/30/2016
  */
 public class ClassSorter {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClassSorter.class);
 
     private final SortedStorageImpl sortedClassStorage;
     private final UnsortedStorage classStorage;

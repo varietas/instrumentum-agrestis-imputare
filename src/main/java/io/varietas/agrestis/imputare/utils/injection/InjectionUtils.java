@@ -25,21 +25,16 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java8.util.Optional;
 import java8.util.stream.StreamSupport;
-import org.slf4j.Logger;
-;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h2>InjectionUtils</h2>
  *
  * @author Michael Rhöse
- * @since Fr, Jul 8, 2016
+ * @version 1.0.0, 7/8/2016
  */
-
-
+@Slf4j
 public class InjectionUtils {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(InjectionUtils.class);
 
     public static final <ActivationTarget extends Executable> Object invoke(final ActivationTarget activationTarget, final Object[] activationTargetParam, final String beanIdentifier, Optional<Class<?>> targetParent) {
         if (activationTarget instanceof Method) {

@@ -19,7 +19,7 @@ package io.varietas.agrestis.imputare.error;
  * <h2>InvokationException</h2>
  *
  * @author Michael Rhöse
- * @since Di, Jul 5, 2016
+ * @version 1.0.0, 7/5/2016
  */
 public class InvokationException extends RuntimeException {
 

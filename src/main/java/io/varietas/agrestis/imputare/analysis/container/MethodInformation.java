@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
  * The method information contains all information about the creation of an instance for a bean. The dependencies represents the required parameters if the method needs parameters.
  *
  * @author Michael Rhöse
- * @since Fr, Jul 1, 2016
+ * @version 1.0.0, 7/1/2016
  */
 public class MethodInformation extends AbstractDependencyRequester {
 

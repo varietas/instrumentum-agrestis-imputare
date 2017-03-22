@@ -25,7 +25,7 @@ import java8.util.function.Function;
  * <h2>BeanInformationFactory</h2>
  *
  * @author Michael Rhöse
- * @since Sa, Jul 30, 2016
+ * @version 1.0.0, 7/30/2016
  */
 public class BeanInformationFactory implements InformationFactory<BeanInformation> {
 

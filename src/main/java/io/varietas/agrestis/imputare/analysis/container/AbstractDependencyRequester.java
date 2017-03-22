@@ -19,7 +19,7 @@ package io.varietas.agrestis.imputare.analysis.container;
  * <h2>AbstractDependencyRequester</h2>
  *
  * @author Michael Rhöse
- * @since Mi, Jul 6, 2016
+ * @version 1.0.0, 7/6/2016
  */
 public class AbstractDependencyRequester implements DependencyRequester {
 

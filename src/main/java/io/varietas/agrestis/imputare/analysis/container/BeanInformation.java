@@ -22,7 +22,7 @@ import java.util.Objects;
  * <h2>BeainInformation</h2>
  *
  * @author Michael Rhöse
- * @since Fr, Jul 1, 2016
+ * @version 1.0.0, 7/1/2016
  */
 public class BeanInformation extends AbstractDependencyRequester {
 

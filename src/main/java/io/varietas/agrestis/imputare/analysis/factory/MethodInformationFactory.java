@@ -24,14 +24,14 @@ import java8.util.function.Function;
  * <h2>MethodInformationFactory</h2>
  *
  * @author Michael Rhöse
- * @since Mo, Jul 4, 2016
+ * @version 1.0.0, 7/4/2016
  */
-public class MethodInformationFactory implements InformationFactory<MethodInformation>{
+public class MethodInformationFactory implements InformationFactory<MethodInformation> {
 
     private Class<?> parent;
     private Method method;
     Function<Method, DependencyInformation[]> operator;
-    
+
     public MethodInformationFactory() {
     }
 
@@ -44,14 +44,14 @@ public class MethodInformationFactory implements InformationFactory<MethodInform
         this.method = method;
         return this;
     }
-    
+
     public MethodInformationFactory setDependencyOperator(Function<Method, DependencyInformation[]> operation) {
         this.operator = operation;
         return this;
     }
 
     @Override
-    public MethodInformation build(){
+    public MethodInformation build() {
         return new MethodInformation(parent, method, this.operator.apply(this.method));
     }
 }

@@ -43,7 +43,7 @@ import java8.util.stream.StreamSupport;
  * This class is a collection of useful methods to collect information from classes.
  *
  * @author Michael Rhöse
- * @since Di, Jun 28, 2016
+ * @version 1.0.0, 6/28/2016
  */
 public class ClassMetaDataExtractionUtils {
 
@@ -72,9 +72,9 @@ public class ClassMetaDataExtractionUtils {
         }
 
         List<Constructor> annotatedParamsConstructor = StreamSupport
-                .stream(Arrays.asList(clazz.getConstructors())).filter(constructor -> StreamSupport
-                .stream(Arrays.asList(constructor.getParameters())).filter(parameter -> parameter.isAnnotationPresent(Autowire.class)).findFirst().isPresent())
-                .collect(Collectors.toList());
+            .stream(Arrays.asList(clazz.getConstructors())).filter(constructor -> StreamSupport
+            .stream(Arrays.asList(constructor.getParameters())).filter(parameter -> parameter.isAnnotationPresent(Autowire.class)).findFirst().isPresent())
+            .collect(Collectors.toList());
 
         if (annotatedParamsConstructor.size() > 1) {
             throw new ToManyInjectedConstructorsException(String.format("There are %d constructors with injected parameters. Only one is allowed.", injectedConstructors.size()));
@@ -297,12 +297,12 @@ public class ClassMetaDataExtractionUtils {
     public static class AnnotationCodes {
 
         public static final Integer //
-                NONE = 0,
-                REPOSITORY = 1,
-                SERVICE = 2,
-                CONTROLLER = 4,
-                COMPONENT = 8,
-                CONFIGURATION = 16;
+            NONE = 0,
+            REPOSITORY = 1,
+            SERVICE = 2,
+            CONTROLLER = 4,
+            COMPONENT = 8,
+            CONFIGURATION = 16;
     }
 
     /**
@@ -322,11 +322,11 @@ public class ClassMetaDataExtractionUtils {
     public static class AnnotationPosition {
 
         public static final Integer //
-                NONE = 0,
-                FIELD = 1,
-                METHOD_PARAMETER = 2,
-                METHOD = 3,
-                CONSTRUCTOR = 4,
-                CONSTRUCTOR_PARAMETER = 5;
+            NONE = 0,
+            FIELD = 1,
+            METHOD_PARAMETER = 2,
+            METHOD = 3,
+            CONSTRUCTOR = 4,
+            CONSTRUCTOR_PARAMETER = 5;
     }
 }

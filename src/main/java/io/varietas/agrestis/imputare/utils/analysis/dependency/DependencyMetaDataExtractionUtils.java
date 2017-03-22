@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
  * <h2>DependencyMetaDataExtractionUtils</h2>
  *
  * @author Michael Rhöse
- * @since Mo, Jul 4, 2016
+ * @version 1.0.0, 7/4/2016
  */
 @Slf4j
 public class DependencyMetaDataExtractionUtils {

@@ -28,7 +28,7 @@ import java8.util.Optional;
  * <h2>AbstractPrototypeBeanDefinition</h2>
  *
  * @author Michael Rhöse
- * @since Do, Jul 7, 2016
+ * @version 1.0.0, 7/7/2016
  */
 public abstract class AbstractPrototypeBeanDefinition<ActivationTarget extends Executable> extends AbstractBeanDefinition {
 

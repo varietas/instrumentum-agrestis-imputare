@@ -30,7 +30,7 @@ import java8.util.stream.StreamSupport;
  * <h2>ConstructorMetaDataExtractionUtils</h2>
  *
  * @author Michael Rhöse
- * @since Mi, Jul 6, 2016
+ * @version 1.0.0, 7/6/2016
  */
 public class ConstructorMetaDataExtractionUtils {
 
@@ -61,9 +61,9 @@ public class ConstructorMetaDataExtractionUtils {
         }
 
         List<Constructor> annotatedParamsConstructor = StreamSupport
-                .stream(Arrays.asList(clazz.getConstructors())).filter(constructor -> StreamSupport
-                .stream(Arrays.asList(constructor.getParameters())).filter(parameter -> parameter.isAnnotationPresent(Autowire.class)).findFirst().isPresent())
-                .collect(Collectors.toList());
+            .stream(Arrays.asList(clazz.getConstructors())).filter(constructor -> StreamSupport
+            .stream(Arrays.asList(constructor.getParameters())).filter(parameter -> parameter.isAnnotationPresent(Autowire.class)).findFirst().isPresent())
+            .collect(Collectors.toList());
 
         if (annotatedParamsConstructor.size() > 1) {
             throw new ToManyInjectedConstructorsException(String.format("There are %d constructors with injected parameters. Only one is allowed.", injectedConstructors.size()));

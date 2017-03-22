@@ -19,7 +19,7 @@ package io.varietas.agrestis.imputare.error;
  * <h2>SearchingException</h2>
  *
  * @author Michael Rhöse
- * @since Fr, Jul 8, 2016
+ * @version 1.0.0, 7/8/2016
  */
 public class SearchingException extends RuntimeException {
 

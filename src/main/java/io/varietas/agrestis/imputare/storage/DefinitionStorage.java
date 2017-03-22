@@ -24,7 +24,7 @@ import java8.util.Optional;
  * <h2>DefinitionStorage</h2>
  *
  * @author Michael Rhöse
- * @since Do, Jul 7, 2016
+ * @version 1.0.0, 7/7/2016
  */
 public interface DefinitionStorage<Identifier, Type, Entry> extends UnsortedStorage<Entry> {
 

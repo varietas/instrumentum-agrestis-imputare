@@ -19,7 +19,7 @@ package io.varietas.agrestis.imputare.error;
  * <h2>BeanLoadException</h2>
  *
  * @author Michael Rhöse
- * @since Fr, Mai 27, 2016
+ * @version 1.0.0, 5/27/2016
  */
 public class BeanLoadException extends Exception {
 

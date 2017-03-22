@@ -16,131 +16,29 @@
 package io.varietas.agrestis.imputare.utils.analysis.classes;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.URLDecoder;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.jar.JarInputStream;
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.Opcodes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h2>ClassLoadUtils</h2>
  *
- * @author Michael RhÃ¶se
- * @since Mo, Jun 6, 2016
+ * @author Michael Rhöse
+ * @version 1.0.0, 6/6/2016
  */
+@Slf4j
 public class ClassLoadUtils {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClassLoadUtils.class);
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // Static methods to do loading operations
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public static List<Class<?>> visitPackage(final String scannedPackage, final Path packagePath) throws IOException {
-        LOGGER.trace("[TRAVERSE PACKAGE] {}", packagePath.toString());
-        final List<Class<?>> clazzList = new ArrayList<>();
-
-        Files.walkFileTree(packagePath, new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                if (!file.toString().endsWith(".class")) {
-                    LOGGER.trace("[SKIPPED] {}", file.getFileName().toString());
-                    return FileVisitResult.CONTINUE;
-                }
-
-                try {
-                    LOGGER.trace("[ACCEPTED] {}", file.getFileName().toString());
-                    AgrestisImpitareClassVisiter classVisiter = new AgrestisImpitareClassVisiter();
-                    new ClassReader(new FileInputStream(file.toFile())).accept(classVisiter, 0);
-
-                    if (!classVisiter.isAnnotated()) {
-                        LOGGER.trace("[SKIPPED] No annotation located.");
-                        return FileVisitResult.CONTINUE;
-                    }
-
-                    LOGGER.trace("[ACCEPTED] Annotation located.");
-                    String clazzName = ClassLoadUtils.clazzName(scannedPackage, file.toString());
-                    if (!clazzName.isEmpty()) {
-                        clazzList.add(Class.forName(clazzName));
-                    }
-                } catch (ClassNotFoundException ex) {
-                    LOGGER.error(ex.getLocalizedMessage(), ex);
-                    return FileVisitResult.CONTINUE;
-                }
-                return FileVisitResult.CONTINUE;
-            }
-        });
-
-        return clazzList;
-    }
-
-    public static List<Class<?>> visitJar(URL url) throws IOException, URISyntaxException, ClassNotFoundException {
-        LOGGER.trace("[TRAVERSE URL] {}", url.toString());
-        ClassLoader jarClassLoader = URLClassLoader.newInstance(new URL[]{url}, Thread.currentThread().getContextClassLoader());
-        final List<Class<?>> clazzList = new ArrayList<>();
-
-        try (InputStream urlIn = url.openStream(); JarInputStream jarIn = new JarInputStream(urlIn)) {
-            JarEntry entry;
-            JarFile jarFile = new JarFile(URLDecoder.decode(url.getPath(), "UTF8"));
-            while ((entry = jarIn.getNextJarEntry()) != null) {
-                if (entry.getName().endsWith(".class")) {
-                    LOGGER.trace("[ACCEPTED] {}", entry.getName());
-                    AgrestisImpitareClassVisiter classVisiter = new AgrestisImpitareClassVisiter();
-                    new ClassReader(jarFile.getInputStream(entry)).accept(classVisiter, 0);
-
-                    if (!classVisiter.isAnnotated()) {
-                        LOGGER.trace("[SKIPPED] No annotation located.");
-                        continue;
-                    }
-
-                    LOGGER.trace("[ACCEPTED] Annotation located.");
-                    clazzList.add(jarClassLoader.loadClass(entry.getName().replace(".class", "").replace('/', '.')));
-                }
-            }
-        }
-        return clazzList;
-    }
-
-    private static class AgrestisImpitareClassVisiter extends ClassVisitor {
-
-        private boolean annotated = false;
-
-        public AgrestisImpitareClassVisiter() {
-            super(Opcodes.ASM5);
-        }
-
-        @Override
-        public AnnotationVisitor visitAnnotation(String annotationAsString, boolean visible) {
-            this.annotated = (ClassMetaDataExtractionUtils.getPresentAnnotationCodeForAnnotationAsString(annotationAsString.replace('/', '.')) > ClassMetaDataExtractionUtils.AnnotationCodes.NONE);
-            return null;
-        }
-
-        public boolean isAnnotated() {
-            return annotated;
-        }
-    }
-
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     // Static methods to do string operations
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -199,6 +97,6 @@ public class ClassLoadUtils {
             tempResourceUrls.add(resources.nextElement());
         }
 
-        return StreamSupport.stream(tempResourceUrls).filter(resourceUrl -> !StreamSupport.stream(urls).filter(url -> resourceUrl.toString().contains(url.toString())).findFirst().isPresent()).collect(Collectors.toList());
+        return java8.util.stream.StreamSupport.stream(tempResourceUrls).filter(resourceUrl -> !StreamSupport.stream(urls).filter(url -> resourceUrl.toString().contains(url.toString())).findFirst().isPresent()).collect(Collectors.toList());
     }
 }

@@ -24,7 +24,7 @@ import java8.util.stream.StreamSupport;
  * <h2>FieldMetaDataExtractorUtils</h2>
  *
  * @author Michael Rhöse
- * @since Mi, Jul 6, 2016
+ * @version 1.0.0, 7/6/2016
  */
 public class FieldMetaDataExtractorUtils {
 

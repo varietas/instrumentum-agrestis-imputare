@@ -19,7 +19,7 @@ package io.varietas.agrestis.imputare.enumeration;
  * <h2>ConstructorTypes</h2>
  *
  * @author Michael Rhöse
- * @since Di, Mai 17, 2016
+ * @version 1.0.0, 5/17/2016
  */
 public enum ConstructorTypes {
     STANDARD, PARAMETERISED, COPY, INJECTED

@@ -22,7 +22,7 @@ import io.varietas.agrestis.imputare.injection.container.AbstractBeanDefinition;
  * <h2>SingletonBeanDefinition</h2>
  *
  * @author Michael Rhöse
- * @since Fr, Jul 8, 2016
+ * @version 1.0.0, 7/8/2016
  */
 public class SingletonBeanDefinition extends AbstractBeanDefinition {
 

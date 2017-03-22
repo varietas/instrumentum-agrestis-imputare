@@ -22,18 +22,16 @@ import java.util.List;
 import java8.util.Optional;
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h2>AgrestisImputareContextImpl</h2>
  *
  * @author Michael Rhöse
- * @since Sa, Mai 7, 2016
+ * @version 1.0.0, 5/7/2016
  */
+@Slf4j
 public class AgrestisImputareContextImpl implements AgrestisImputareContext {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AgrestisImputareContextImpl.class);
 
     private BeanDefinition[] store;
 

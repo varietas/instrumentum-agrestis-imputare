@@ -19,7 +19,7 @@ package io.varietas.agrestis.imputare.error;
  * <h2>ToManyInjectedConstructorsException</h2>
  *
  * @author Michael Rhöse
- * @since Mi, Mai 18, 2016
+ * @version 1.0.0, 5/18/2016
  */
 public class ToManyInjectedConstructorsException extends Exception {
 

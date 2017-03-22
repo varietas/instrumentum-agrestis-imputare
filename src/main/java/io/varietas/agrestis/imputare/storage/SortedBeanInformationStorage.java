@@ -29,18 +29,16 @@ import java.util.Objects;
 import java8.util.Optional;
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h2>SortedBeanInformationStorage</h2>
  *
  * @author Michael Rhöse
- * @since Fr, Jul 1, 2016
+ * @version 1.0.0, 7/1/2016
  */
+@Slf4j
 public class SortedBeanInformationStorage implements SortedStorage<Integer, BeanInformation> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SortedBeanInformationStorage.class);
 
     private final Map<Integer, List<BeanInformation>> storage;
 

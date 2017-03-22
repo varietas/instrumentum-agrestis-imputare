@@ -18,18 +18,16 @@ package io.varietas.agrestis.imputare.error;
 import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
 import java.lang.reflect.Field;
 import java8.util.Objects;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h2>IllegalAnnotationException</h2>
  *
  * @author Michael Rhöse
- * @since Do, Jun 30, 2016
+ * @version 1.0.0, 6/30/2016
  */
+@Slf4j
 public class IllegalAnnotationException extends RuntimeException {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(IllegalAnnotationException.class);
 
     private final Integer code;
 

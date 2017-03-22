@@ -21,7 +21,7 @@ import java.lang.reflect.Constructor;
  * <h2>ConstructorInformation</h2>
  *
  * @author Michael Rhöse
- * @since Fr, Jul 1, 2016
+ * @version 1.0.0, 7/1/2016
  */
 public class ConstructorInformation extends AbstractDependencyRequester {
 

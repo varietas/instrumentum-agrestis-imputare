@@ -21,7 +21,7 @@ import java.lang.reflect.Field;
  * <h2>FieldDependencyInformation</h2>
  *
  * @author Michael Rhöse
- * @since Fr, Jul 8, 2016
+ * @version 1.0.0, 7/8/2016
  */
 public class FieldDependencyInformation extends DependencyInformation {
 

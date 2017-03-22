@@ -19,11 +19,11 @@ package io.varietas.agrestis.imputare.contant;
  * <h2>AnnotationMethodIndices</h2>
  *
  * @author Michael Rhöse
- * @since Di, Mai 10, 2016
+ * @version 1.0.0, 5/10/2016
  */
 public class AnnotationMethodIndices {
 
     public static final Integer //
-            NAME = 0,
-            SCOPE = 1;
+        NAME = 0,
+        SCOPE = 1;
 }

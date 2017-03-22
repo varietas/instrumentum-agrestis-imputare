@@ -33,7 +33,7 @@ import java8.util.stream.StreamSupport;
  * This class represents a container to store all classes sorted by {@link ClassMetaDataExtractionUtils.AnnotationCodes}. Additionally there are a number of useful methods.
  *
  * @author Michael Rhöse
- * @since Do, Jun 30, 2016
+ * @version 1.0.0, 6/30/2016
  */
 public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
 

@@ -33,7 +33,7 @@ import java8.util.stream.StreamSupport;
  * This class is a collection of useful methods to collect information from methods.
  *
  * @author Michael Rhöse
- * @since Fr, Jul 1, 2016
+ * @version 1.0.0, 7/1/2016
  */
 public class MethodMetaDataExtractionUtils {
 
@@ -119,6 +119,6 @@ public class MethodMetaDataExtractionUtils {
     public static class AnnotationCodes extends ClassMetaDataExtractionUtils.AnnotationCodes {
 
         public static final Integer //
-                BEAN = 32;
+            BEAN = 32;
     }
 }

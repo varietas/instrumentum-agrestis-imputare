@@ -19,6 +19,6 @@
  * The annotations are organised for a program structure. There is a hierarchy which bean could contains other beans. The full description could be found in the documentation.
  *
  * @author Michael Rhöse
- * @since Mo, Jun 6, 2016
+ * @version 1.0.0, 6/6/2016
  */
 package io.varietas.agrestis.imputare.annotation;

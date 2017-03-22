@@ -38,18 +38,14 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java8.util.Optional;
 import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * <h2>ClassAnalyser</h2>
  *
  * @author Michael Rhöse
- * @since Fr, Jul 1, 2016
+ * @version 1.0.0, 7/1/2016
  */
 public class ClassAnalyser {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(ClassAnalyser.class);
 
     private final SortedBeanInformationStorage sortedBeanInformationStorage;
     private final SortedStorage<Integer, Class<?>> sortedClassesStorage;

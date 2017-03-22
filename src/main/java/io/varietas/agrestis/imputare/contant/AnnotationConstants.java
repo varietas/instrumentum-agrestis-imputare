@@ -21,11 +21,11 @@ package io.varietas.agrestis.imputare.contant;
  * This class contains all required constants used as default values in annotation types.
  *
  * @author Michael Rhöse
- * @since Sa, Mai 7, 2016
+ * @version 1.0.0, 5/7/2016
  */
 public class AnnotationConstants {
 
     public static final String //
-            ANNOTATION_BEAN_NAME_DEFAULT = "UseGeneratedIdentifier",
-            ANNOTATION_DB_NAMING_DEFAULT = "UseGeneratedDbNaming";
+        ANNOTATION_BEAN_NAME_DEFAULT = "UseGeneratedIdentifier",
+        ANNOTATION_DB_NAMING_DEFAULT = "UseGeneratedDbNaming";
 }

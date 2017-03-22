@@ -21,12 +21,12 @@ package io.varietas.agrestis.imputare.contant;
  * This constants are used to specify a file type to extract from a jar.
  *
  * @author Michael Rhöse
- * @since Do, Nov 5, 2015
+ * @version 1.0.0, 11/5/2015
  */
 public class ExtractionFileType {
 
     public static final String //
-            TYPE_ALL = "",
-            TYPE_JSON = ".json",
-            TYPE_CLASS = ".class";
+        TYPE_ALL = "",
+        TYPE_JSON = ".json",
+        TYPE_CLASS = ".class";
 }

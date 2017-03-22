@@ -24,9 +24,9 @@ import java8.util.function.Function;
  * <h2>ConstructorInformationFactory</h2>
  *
  * @author Michael Rhöse
- * @since So, Jul 31, 2016
+ * @version 1.0.0, 7/31/2016
  */
-public class ConstructorInformationFactory implements InformationFactory<ConstructorInformation>{
+public class ConstructorInformationFactory implements InformationFactory<ConstructorInformation> {
 
     private Constructor constructor;
     Function<Constructor, DependencyInformation[]> operator;
@@ -38,12 +38,12 @@ public class ConstructorInformationFactory implements InformationFactory<Constru
         this.constructor = constructor;
         return this;
     }
-    
+
     public ConstructorInformationFactory setDependencyOperator(Function<Constructor, DependencyInformation[]> operation) {
         this.operator = operation;
         return this;
     }
-    
+
     @Override
     public ConstructorInformation build() {
         return new ConstructorInformation(this.constructor, this.operator.apply(this.constructor));

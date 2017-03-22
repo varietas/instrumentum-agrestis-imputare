@@ -21,7 +21,7 @@ import io.varietas.agrestis.imputare.enumeration.BeanScope;
  * <h2>BeanDefinition</h2>
  *
  * @author Michael Rhöse
- * @since Sa, Mai 7, 2016
+ * @version 1.0.0, 5/7/2016
  */
 public interface BeanDefinition {
 

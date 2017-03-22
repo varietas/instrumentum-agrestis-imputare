@@ -45,7 +45,7 @@ import java8.util.stream.IntStreams;
  * <h2>DependencyInjector</h2>
  *
  * @author Michael Rhöse
- * @since Do, Jul 7, 2016
+ * @version 1.0.0, 7/7/2016
  */
 public class DependencyInjector {
 

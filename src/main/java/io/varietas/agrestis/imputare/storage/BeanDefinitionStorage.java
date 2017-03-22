@@ -29,7 +29,7 @@ import java8.util.stream.StreamSupport;
  * <h2>BeanDefinitionStorage</h2>
  *
  * @author Michael Rhöse
- * @since Do, Jul 7, 2016
+ * @version 1.0.0, 7/7/2016
  */
 public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>, BeanDefinition> {
 
