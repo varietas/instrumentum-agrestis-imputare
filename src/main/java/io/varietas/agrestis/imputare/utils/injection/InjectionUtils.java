@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.utils.injection;
 
 import io.varietas.agrestis.imputare.error.InvokationException;
-import io.varietas.agrestis.imputare.utils.container.Pair;
+import io.varietas.agrestis.imputare.utils.containers.Pair;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Field;

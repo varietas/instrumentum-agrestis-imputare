@@ -15,7 +15,7 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
-import io.varietas.agrestis.imputare.injection.container.BeanDefinition;
+import io.varietas.agrestis.imputare.injection.containers.BeanDefinition;
 import io.varietas.agrestis.imputare.error.BeanLoadException;
 import io.varietas.agrestis.imputare.error.RecursiveInjectionException;
 import java.lang.reflect.InvocationTargetException;

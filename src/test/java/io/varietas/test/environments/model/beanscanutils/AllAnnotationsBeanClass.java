@@ -19,7 +19,7 @@ import io.varietas.agrestis.imputare.annotation.Bean;
 import io.varietas.agrestis.imputare.annotation.Component;
 import io.varietas.agrestis.imputare.annotation.Configuration;
 import io.varietas.agrestis.imputare.annotation.Service;
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
+import io.varietas.agrestis.imputare.enumerations.BeanScopes;
 
 /**
  * <h2>AllAnnotationsBeanClass</h2>
@@ -39,7 +39,7 @@ public class AllAnnotationsBeanClass {
         return this.intValue;
     }
 
-    @Bean(scope = BeanScope.SINGELTON)
+    @Bean(scope = BeanScopes.SINGELTON)
     public int int2Bean() {
         return this.intValue;
     }

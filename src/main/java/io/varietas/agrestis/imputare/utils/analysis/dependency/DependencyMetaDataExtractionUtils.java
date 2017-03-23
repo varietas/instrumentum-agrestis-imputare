@@ -15,10 +15,10 @@
  */
 package io.varietas.agrestis.imputare.utils.analysis.dependency;
 
-import io.varietas.agrestis.imputare.analysis.container.DependencyInformation;
-import io.varietas.agrestis.imputare.analysis.container.FieldDependencyInformation;
+import io.varietas.agrestis.imputare.analysis.containers.DependencyInformation;
+import io.varietas.agrestis.imputare.analysis.containers.FieldDependencyInformation;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
-import io.varietas.agrestis.imputare.utils.analysis.constructor.ConstructorMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.analysis.constructors.ConstructorMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.common.NamingUtils;
 import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;

@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.agrestis.imputare.annotation.injections;
-
-import io.varietas.agrestis.imputare.contants.AnnotationConstants;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package io.varietas.agrestis.imputare.contants;
 
 /**
- * <h2>Autowire</h2>
+ * <h2>BeanIdentifier</h2>
+ *
+ * This constants are used to specify a file type to extract from a jar.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 5/9/2016
+ * @version 1.0.0, 11/5/2015
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})
-public @interface Autowire {
+public class ExtractionFileTypes {
 
-    String[] value() default AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
+    public static final String //
+        TYPE_ALL = "",
+        TYPE_JSON = ".json",
+        TYPE_CLASS = ".class";
 }

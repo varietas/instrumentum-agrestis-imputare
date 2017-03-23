@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare;
 
 import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
-import io.varietas.agrestis.imputare.storage.UnsortedStorageImpl;
+import io.varietas.agrestis.imputare.storage.impl.UnsortedStorageImpl;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import java.util.List;

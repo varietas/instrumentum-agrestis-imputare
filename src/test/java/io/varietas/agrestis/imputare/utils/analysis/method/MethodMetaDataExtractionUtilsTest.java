@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.utils.analysis.method;
 
 import io.varietas.agrestis.imputare.annotation.Bean;
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
+import io.varietas.agrestis.imputare.enumerations.BeanScopes;
 import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
 import io.varietas.test.environments.model.ConfigurationBeanWithDependency;
 import java.io.IOException;
@@ -68,13 +68,13 @@ public class MethodMetaDataExtractionUtilsTest {
 
     @Test
     public void getBeanScope() {
-        BeanScope scope = MethodMetaDataExtractionUtils.getBeanScope(MethodMetaDataExtractionUtilsTest.methods.get(0));
-        Assertions.assertThat(scope).isEqualTo(BeanScope.PROTOTYPE);
-        LOGGER.info("Bean scope expected: {} | located: {}", BeanScope.PROTOTYPE, scope);
+        BeanScopes scope = MethodMetaDataExtractionUtils.getBeanScope(MethodMetaDataExtractionUtilsTest.methods.get(0));
+        Assertions.assertThat(scope).isEqualTo(BeanScopes.PROTOTYPE);
+        LOGGER.info("Bean scope expected: {} | located: {}", BeanScopes.PROTOTYPE, scope);
 
         scope = MethodMetaDataExtractionUtils.getBeanScope(MethodMetaDataExtractionUtilsTest.methods.get(1));
-        Assertions.assertThat(scope).isEqualTo(BeanScope.SINGELTON);
-        LOGGER.info("Bean scope expected: {} | located: {}", BeanScope.SINGELTON, scope);
+        Assertions.assertThat(scope).isEqualTo(BeanScopes.SINGELTON);
+        LOGGER.info("Bean scope expected: {} | located: {}", BeanScopes.SINGELTON, scope);
     }
 
     @Test

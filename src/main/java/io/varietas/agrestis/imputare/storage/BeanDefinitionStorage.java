@@ -15,8 +15,8 @@
  */
 package io.varietas.agrestis.imputare.storage;
 
-import io.varietas.agrestis.imputare.analysis.container.DependencyInformation;
-import io.varietas.agrestis.imputare.injection.container.BeanDefinition;
+import io.varietas.agrestis.imputare.analysis.containers.DependencyInformation;
+import io.varietas.agrestis.imputare.injection.containers.BeanDefinition;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

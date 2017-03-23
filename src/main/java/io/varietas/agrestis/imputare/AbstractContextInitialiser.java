@@ -16,14 +16,14 @@
 package io.varietas.agrestis.imputare;
 
 import io.varietas.agrestis.imputare.analysis.ClassAnalyser;
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
+import io.varietas.agrestis.imputare.enumerations.BeanScopes;
 import io.varietas.agrestis.imputare.error.AnalysisException;
 import io.varietas.agrestis.imputare.error.IllegalAnnotationException;
 import io.varietas.agrestis.imputare.error.SortingException;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import io.varietas.agrestis.imputare.injection.DependencyInjector;
-import io.varietas.agrestis.imputare.injection.container.BeanDefinition;
-import io.varietas.agrestis.imputare.injection.container.singleton.SingletonBeanDefinition;
+import io.varietas.agrestis.imputare.injection.containers.BeanDefinition;
+import io.varietas.agrestis.imputare.injection.containers.singleton.SingletonBeanDefinition;
 import io.varietas.agrestis.imputare.searching.ClassSorter;
 import io.varietas.agrestis.imputare.storage.DefinitionStorage;
 import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
@@ -58,7 +58,7 @@ public abstract class AbstractContextInitialiser<ContextInitialiserType extends 
         }
         agrestisImputareContext.addBeanDefinitions(definitions);
 
-        agrestisImputareContext.addContextDefinition(new SingletonBeanDefinition(agrestisImputareContext, AgrestisImputareContext.class.getSimpleName(), BeanScope.SINGELTON, AgrestisImputareContext.class));
+        agrestisImputareContext.addContextDefinition(new SingletonBeanDefinition(agrestisImputareContext, AgrestisImputareContext.class.getSimpleName(), BeanScopes.SINGELTON, AgrestisImputareContext.class));
 
         return agrestisImputareContext;
     }

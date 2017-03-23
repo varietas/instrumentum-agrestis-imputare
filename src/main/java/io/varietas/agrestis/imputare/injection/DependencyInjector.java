@@ -15,21 +15,21 @@
  */
 package io.varietas.agrestis.imputare.injection;
 
-import io.varietas.agrestis.imputare.analysis.container.AbstractDependencyRequester;
-import io.varietas.agrestis.imputare.analysis.container.BeanInformation;
-import io.varietas.agrestis.imputare.analysis.container.ConstructorInformation;
-import io.varietas.agrestis.imputare.analysis.container.DependencyInformation;
-import io.varietas.agrestis.imputare.analysis.container.FieldDependencyInformation;
-import io.varietas.agrestis.imputare.analysis.container.MethodInformation;
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
-import io.varietas.agrestis.imputare.injection.container.BeanDefinition;
-import io.varietas.agrestis.imputare.injection.container.prototype.ConstructorPrototypeBeanDefinition;
-import io.varietas.agrestis.imputare.injection.container.prototype.MethodPrototypeBeanDefinition;
-import io.varietas.agrestis.imputare.injection.container.singleton.SingletonBeanDefinition;
+import io.varietas.agrestis.imputare.analysis.containers.AbstractDependencyRequester;
+import io.varietas.agrestis.imputare.analysis.containers.BeanInformation;
+import io.varietas.agrestis.imputare.analysis.containers.ConstructorInformation;
+import io.varietas.agrestis.imputare.analysis.containers.DependencyInformation;
+import io.varietas.agrestis.imputare.analysis.containers.FieldDependencyInformation;
+import io.varietas.agrestis.imputare.analysis.containers.MethodInformation;
+import io.varietas.agrestis.imputare.enumerations.BeanScopes;
+import io.varietas.agrestis.imputare.injection.containers.BeanDefinition;
+import io.varietas.agrestis.imputare.injection.containers.prototype.ConstructorPrototypeBeanDefinition;
+import io.varietas.agrestis.imputare.injection.containers.prototype.MethodPrototypeBeanDefinition;
+import io.varietas.agrestis.imputare.injection.containers.singleton.SingletonBeanDefinition;
 import io.varietas.agrestis.imputare.storage.BeanDefinitionStorage;
 import io.varietas.agrestis.imputare.storage.DefinitionStorage;
 import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
-import io.varietas.agrestis.imputare.utils.container.Pair;
+import io.varietas.agrestis.imputare.utils.containers.Pair;
 import io.varietas.agrestis.imputare.utils.injection.InjectionUtils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
@@ -137,7 +137,7 @@ public class DependencyInjector {
             }
         }
 
-        if (Objects.equals(beanInformation.scope(), BeanScope.SINGELTON)) {
+        if (Objects.equals(beanInformation.scope(), BeanScopes.SINGELTON)) {
             if (Objects.isNull(activationTargetPara)) {
                 activationTargetPara = new Object[0];
             }

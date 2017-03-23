@@ -15,22 +15,22 @@
  */
 package io.varietas.agrestis.imputare.analysis;
 
-import io.varietas.agrestis.imputare.analysis.container.BeanInformation;
-import io.varietas.agrestis.imputare.analysis.container.ConstructorInformation;
-import io.varietas.agrestis.imputare.analysis.container.MethodInformation;
-import io.varietas.agrestis.imputare.analysis.factory.BeanInformationFactory;
-import io.varietas.agrestis.imputare.analysis.factory.ConstructorInformationFactory;
-import io.varietas.agrestis.imputare.analysis.factory.MethodInformationFactory;
+import io.varietas.agrestis.imputare.analysis.containers.BeanInformation;
+import io.varietas.agrestis.imputare.analysis.containers.ConstructorInformation;
+import io.varietas.agrestis.imputare.analysis.containers.MethodInformation;
+import io.varietas.agrestis.imputare.analysis.factories.BeanInformationFactory;
+import io.varietas.agrestis.imputare.analysis.factories.ConstructorInformationFactory;
+import io.varietas.agrestis.imputare.analysis.factories.MethodInformationFactory;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.annotation.Bean;
-import io.varietas.agrestis.imputare.enumeration.ConstructorTypes;
+import io.varietas.agrestis.imputare.enumerations.ConstructorTypes;
 import io.varietas.agrestis.imputare.error.DuplicatedIdentifierException;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
-import io.varietas.agrestis.imputare.utils.analysis.constructor.ConstructorMetaDataExtractionUtils;
-import io.varietas.agrestis.imputare.utils.container.Pair;
+import io.varietas.agrestis.imputare.utils.analysis.constructors.ConstructorMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.utils.containers.Pair;
 import io.varietas.agrestis.imputare.utils.analysis.dependency.DependencyMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.analysis.fields.FieldMetaDataExtractorUtils;
 import java.io.IOException;

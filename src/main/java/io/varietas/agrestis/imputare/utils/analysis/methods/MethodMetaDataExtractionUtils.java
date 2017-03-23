@@ -17,7 +17,7 @@ package io.varietas.agrestis.imputare.utils.analysis.methods;
 
 import io.varietas.agrestis.imputare.annotation.Bean;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
+import io.varietas.agrestis.imputare.enumerations.BeanScopes;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.common.NamingUtils;
 import java.lang.annotation.Annotation;
@@ -48,7 +48,7 @@ public class MethodMetaDataExtractionUtils {
         return StreamSupport.stream(Arrays.asList(clazz.getDeclaredMethods())).filter(method -> method.isAnnotationPresent(annotationType)).collect(Collectors.toList());
     }
 
-    public static BeanScope getBeanScope(final Method method) {
+    public static BeanScopes getBeanScope(final Method method) {
         Bean beanAnnotation = (Bean) method.getAnnotation(Bean.class);
         return beanAnnotation.scope();
     }

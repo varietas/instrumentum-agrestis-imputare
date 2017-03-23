@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.storage;
 
 import io.varietas.instrumentum.simul.storage.SortedStorage;
-import io.varietas.agrestis.imputare.analysis.container.BeanInformation;
+import io.varietas.agrestis.imputare.analysis.containers.BeanInformation;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
 import java.lang.reflect.Field;

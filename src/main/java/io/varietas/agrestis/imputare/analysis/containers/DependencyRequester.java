@@ -13,23 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.agrestis.imputare.annotation.injections;
-
-import io.varietas.agrestis.imputare.contants.AnnotationConstants;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package io.varietas.agrestis.imputare.analysis.containers;
 
 /**
- * <h2>Autowire</h2>
+ * <h2>DependencyRequester</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 5/9/2016
+ * @version 1.0.0, 7/6/2016
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})
-public @interface Autowire {
+public interface DependencyRequester {
 
-    String[] value() default AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
+    public DependencyInformation[] getDependencies();
+
+    public Boolean isDependenciesRequired();
+
+    public Boolean isDependenciesAvailable();
 }

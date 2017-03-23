@@ -21,9 +21,9 @@ import io.varietas.agrestis.imputare.annotation.Controller;
 import io.varietas.agrestis.imputare.annotation.Repository;
 import io.varietas.agrestis.imputare.annotation.Service;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
-import io.varietas.agrestis.imputare.contant.AnnotationConstants;
-import io.varietas.agrestis.imputare.contant.AnnotationMethodIndices;
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
+import io.varietas.agrestis.imputare.contants.AnnotationConstants;
+import io.varietas.agrestis.imputare.contants.AnnotationMethodIndices;
+import io.varietas.agrestis.imputare.enumerations.BeanScopes;
 import io.varietas.agrestis.imputare.error.InvokationException;
 import io.varietas.agrestis.imputare.utils.common.NamingUtils;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
@@ -236,12 +236,12 @@ public class ClassMetaDataExtractionUtils {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public static BeanScope getBeanScope(final Class<?> clazz, Integer code) {
+    public static BeanScopes getBeanScope(final Class<?> clazz, Integer code) {
 
         Optional<Annotation> annotation = ClassMetaDataExtractionUtils.getAnnotation(clazz, code);
 
         Method method = null;
-        BeanScope scope = BeanScope.SINGELTON;
+        BeanScopes scope = BeanScopes.SINGELTON;
 
         if (!annotation.isPresent()) {
             return scope;
@@ -249,7 +249,7 @@ public class ClassMetaDataExtractionUtils {
 
         try {
             method = annotation.get().annotationType().getMethods()[AnnotationMethodIndices.SCOPE];
-            scope = (BeanScope) method.invoke(annotation.get());
+            scope = (BeanScopes) method.invoke(annotation.get());
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             throw new InvokationException(String.format("Error while invoke annotation method %s.%s", annotation.get().annotationType().getName(), method.getName()), ex);
         }

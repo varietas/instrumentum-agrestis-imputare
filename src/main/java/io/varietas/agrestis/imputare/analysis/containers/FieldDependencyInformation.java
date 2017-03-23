@@ -13,23 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.agrestis.imputare.annotation.injections;
+package io.varietas.agrestis.imputare.analysis.containers;
 
-import io.varietas.agrestis.imputare.contants.AnnotationConstants;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.reflect.Field;
 
 /**
- * <h2>Autowire</h2>
+ * <h2>FieldDependencyInformation</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 5/9/2016
+ * @version 1.0.0, 7/8/2016
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})
-public @interface Autowire {
+public class FieldDependencyInformation extends DependencyInformation {
 
-    String[] value() default AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
+    private final Field field;
+
+    public FieldDependencyInformation(Field field, String identifier, Class<?> type) {
+        super(identifier, type);
+        this.field = field;
+    }
+
+    public Field field() {
+        return this.field;
+    }
 }

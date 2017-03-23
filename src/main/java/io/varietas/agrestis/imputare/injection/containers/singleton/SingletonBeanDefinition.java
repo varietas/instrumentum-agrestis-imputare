@@ -13,26 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.agrestis.imputare.annotation;
+package io.varietas.agrestis.imputare.injection.containers.singleton;
 
 import io.varietas.agrestis.imputare.enumerations.BeanScopes;
-import io.varietas.agrestis.imputare.contants.AnnotationConstants;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import io.varietas.agrestis.imputare.injection.containers.AbstractBeanDefinition;
 
 /**
- * <h2>Service</h2>
+ * <h2>SingletonBeanDefinition</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 5/7/2016
+ * @version 1.0.0, 7/8/2016
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Controller {
+public class SingletonBeanDefinition extends AbstractBeanDefinition {
 
-    String name() default AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
+    private final Object beanInstance;
 
-    BeanScopes scope() default BeanScopes.SINGELTON;
+    public SingletonBeanDefinition(Object beanInstance, String beanIdentifier, BeanScopes beanScope, Class beanClazz) {
+        super(beanIdentifier, beanScope, beanClazz);
+        this.beanInstance = beanInstance;
+    }
+
+    @Override
+    public Object get() {
+        return this.beanInstance;
+    }
 }

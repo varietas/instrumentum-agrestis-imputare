@@ -15,7 +15,7 @@
  */
 package io.varietas.agrestis.imputare.searching;
 
-import io.varietas.agrestis.imputare.storage.UnsortedStorageImpl;
+import io.varietas.agrestis.imputare.storage.impl.UnsortedStorageImpl;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import io.varietas.agrestis.imputare.utils.searching.ClazzCollectorUtils;
 import java.io.IOException;

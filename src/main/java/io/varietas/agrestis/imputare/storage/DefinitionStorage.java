@@ -15,7 +15,7 @@
  */
 package io.varietas.agrestis.imputare.storage;
 
-import io.varietas.agrestis.imputare.analysis.container.DependencyInformation;
+import io.varietas.agrestis.imputare.analysis.containers.DependencyInformation;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import java.util.List;
 import java8.util.Optional;

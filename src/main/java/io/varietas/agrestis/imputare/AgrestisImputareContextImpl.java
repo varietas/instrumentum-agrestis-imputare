@@ -15,7 +15,7 @@
  */
 package io.varietas.agrestis.imputare;
 
-import io.varietas.agrestis.imputare.injection.container.BeanDefinition;
+import io.varietas.agrestis.imputare.injection.containers.BeanDefinition;
 import io.varietas.agrestis.imputare.error.BeanLoadException;
 import java.util.Arrays;
 import java.util.List;

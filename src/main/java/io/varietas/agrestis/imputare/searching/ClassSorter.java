@@ -17,7 +17,7 @@ package io.varietas.agrestis.imputare.searching;
 
 import io.varietas.agrestis.imputare.error.IllegalAnnotationException;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
-import io.varietas.agrestis.imputare.storage.SortedStorageImpl;
+import io.varietas.agrestis.imputare.storage.impl.SortedStorageImpl;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import java8.util.Optional;

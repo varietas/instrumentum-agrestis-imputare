@@ -18,7 +18,7 @@ package io.varietas.test.environments.model;
 import io.varietas.agrestis.imputare.annotation.Bean;
 import io.varietas.agrestis.imputare.annotation.Configuration;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
-import io.varietas.agrestis.imputare.enumeration.BeanScope;
+import io.varietas.agrestis.imputare.enumerations.BeanScopes;
 
 /**
  * <h2>ConfigurationBeanWithoutDependency</h2>
@@ -47,7 +47,7 @@ public class ConfigurationBeanWithDependency {
         return new Pojo(pojoBean.getIntValue());
     }
 
-    @Bean(scope = BeanScope.SINGELTON, name = "customPojoNameBean")
+    @Bean(scope = BeanScopes.SINGELTON, name = "customPojoNameBean")
     public Pojo pojoBean(@Autowire Pojo pojoBean1, @Autowire Pojo pojoBean2) {
         return new Pojo(pojoBean1.getIntValue());
     }
