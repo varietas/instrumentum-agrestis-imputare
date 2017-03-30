@@ -18,8 +18,12 @@ package io.varietas.agrestis.imputare;
 import io.varietas.agrestis.imputare.analysis.ClassAnalyser;
 import io.varietas.agrestis.imputare.enumerations.BeanScopes;
 import io.varietas.agrestis.imputare.error.AnalysisException;
+import io.varietas.agrestis.imputare.error.ConstructorAccessException;
+import io.varietas.agrestis.imputare.error.DuplicatedIdentifierException;
 import io.varietas.agrestis.imputare.error.IllegalAnnotationException;
+import io.varietas.agrestis.imputare.error.InternalException;
 import io.varietas.agrestis.imputare.error.SortingException;
+import io.varietas.agrestis.imputare.error.StorageInitialisingException;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import io.varietas.agrestis.imputare.injection.DependencyInjector;
 import io.varietas.agrestis.imputare.injection.containers.BeanDefinition;
@@ -79,7 +83,7 @@ public abstract class AbstractContextInitialiser<ContextInitialiserType extends 
     protected SortedBeanInformationStorage initAnalysis(final SortedStorage sortetStorage) throws AnalysisException {
         try {
             return new ClassAnalyser(sortetStorage).doAnalysis().getStorage();
-        } catch (ToManyInjectedConstructorsException | NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InstantiationException ex) {
+        } catch (ToManyInjectedConstructorsException | ConstructorAccessException | DuplicatedIdentifierException | InternalException | StorageInitialisingException ex) {
             throw new AnalysisException("Something goes wrong while analysing dependency graph.", ex);
         }
     }
