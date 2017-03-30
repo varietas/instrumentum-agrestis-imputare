@@ -25,6 +25,7 @@ import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.annotation.Bean;
+import io.varietas.agrestis.imputare.annotation.Configuration;
 import io.varietas.agrestis.imputare.enumerations.ConstructorTypes;
 import io.varietas.agrestis.imputare.error.DuplicatedIdentifierException;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
@@ -33,7 +34,6 @@ import io.varietas.agrestis.imputare.utils.analysis.constructors.ConstructorMeta
 import io.varietas.agrestis.imputare.utils.containers.Pair;
 import io.varietas.agrestis.imputare.utils.analysis.dependency.DependencyMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.analysis.fields.FieldMetaDataExtractorUtils;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java8.util.Optional;
@@ -42,10 +42,17 @@ import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
 /**
  * <h2>ClassAnalyser</h2>
  *
+ * <p>
+ * The class analyser iterates over all annotated classes and collects the relevant information. The analyse process is separated in two independent tasks. The first task analyses all methods of
+ * {@link Configuration.class} annotated classes. Normally beans will be created in configuration classes which are important and/or used in other beans.</p>
+ * <p>
+ * The second task is for analysing of "normal" bean classes annotated with one of the other available annotations.</p>
+ *
+ *
  * @author Michael Rhöse
  * @version 1.0.0, 7/1/2016
  */
-public class ClassAnalyser {
+public final class ClassAnalyser {
 
     private final SortedBeanInformationStorage sortedBeanInformationStorage;
     private final SortedStorage<Integer, Class<?>> sortedClassesStorage;
@@ -57,7 +64,14 @@ public class ClassAnalyser {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public ClassAnalyser doAnalysis() throws ToManyInjectedConstructorsException, NoSuchMethodException, IOException {
+    /**
+     * Starts the bean analyse process for collected classes.
+     *
+     * @return Current instance if the analyser for fluent like API.
+     * @throws ToManyInjectedConstructorsException Thrown if a class has more than one injected constructor. Agrestis imputare can not analyse which constructor has to be used.
+     * @throws NoSuchMethodException Thrown if a bean producing method isn't accessible.
+     */
+    public ClassAnalyser doAnalysis() throws ToManyInjectedConstructorsException, NoSuchMethodException {
 
         ///< Do configuration class analysis
         this.doMethodBeanAnalysis();
@@ -96,11 +110,11 @@ public class ClassAnalyser {
         return this;
     }
 
-    private ClassAnalyser doBeanAnalysis() throws ToManyInjectedConstructorsException, NoSuchMethodException, IOException, DuplicatedIdentifierException, InternalException {
+    private ClassAnalyser doBeanAnalysis() throws ToManyInjectedConstructorsException, NoSuchMethodException, DuplicatedIdentifierException, InternalException {
 
         for (Integer annotationType : this.sortedClassesStorage.getStorage().keySet()) {
 
-            ///< Skip type category is is there no entry
+            ///< Skip type category if is there no entry
             if (this.sortedClassesStorage.isEmpty(annotationType)) {
                 continue;
             }
@@ -134,17 +148,17 @@ public class ClassAnalyser {
             .setMethod(method)
             .setParent(parent)
             .setDependencyOperator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier)
-            .build();
+            .get();
 
         return new BeanInformationFactory()
             .setCreationInformation(methodInformation)
             .setScope(MethodMetaDataExtractionUtils.getBeanScope(method))
             .setIdentifier(MethodMetaDataExtractionUtils.getBeanIdentifier(method))
             .setType(method.getReturnType())
-            .build();
+            .get();
     }
 
-    private BeanInformation createClassInformation(final Class<?> beanType, final Integer annotationType) throws ToManyInjectedConstructorsException, NoSuchMethodException, IOException {
+    private BeanInformation createClassInformation(final Class<?> beanType, final Integer annotationType) throws ToManyInjectedConstructorsException, NoSuchMethodException {
 
         ///< Constructor analysis
         Pair<ConstructorTypes, Constructor> chosenConstructor = ConstructorMetaDataExtractionUtils.chooseConstructor(beanType);
@@ -153,7 +167,7 @@ public class ClassAnalyser {
         ConstructorInformation constructorInformation = new ConstructorInformationFactory()
             .setConstructor(chosenConstructor.getValue2())
             .setDependencyOperator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier)
-            .build();
+            .get();
 
         BeanInformationFactory informationFactory = new BeanInformationFactory();
 
@@ -167,6 +181,6 @@ public class ClassAnalyser {
             .setScope(ClassMetaDataExtractionUtils.getBeanScope(beanType, annotationType))
             .setIdentifier(ClassMetaDataExtractionUtils.getBeanIdentifier(beanType, annotationType))
             .setType(beanType)
-            .build();
+            .get();
     }
 }

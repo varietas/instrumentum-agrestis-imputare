@@ -47,7 +47,7 @@ import java8.util.stream.IntStreams;
  * @author Michael Rhöse
  * @version 1.0.0, 7/7/2016
  */
-public class DependencyInjector {
+public final class DependencyInjector {
 
     private final SortedBeanInformationStorage informationStorage;
     private final DefinitionStorage<String, Class<?>, BeanDefinition> definitionStorage;
@@ -58,6 +58,11 @@ public class DependencyInjector {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    /**
+     * Starts the bean injection process for collected bean information.
+     *
+     * @return Current instance if the injector for fluent like API.
+     */
     public final DependencyInjector doInjectionWork() {
 
         Optional<BeanInformation> next = this.informationStorage.next();
@@ -78,7 +83,7 @@ public class DependencyInjector {
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private final BeanDefinition singleInjectionWork(final BeanInformation beanInformation) {
-        ///< If are dependencies required
+        ///< If dependencies required
         Object creationInformation = beanInformation.getCreationInformation();
 
         String beanIdentifier = beanInformation.identifier();
@@ -150,7 +155,6 @@ public class DependencyInjector {
         }
 
         if (isConstructor) {
-
             return new ConstructorPrototypeBeanDefinition(fieldDependencies, (Constructor) activationTarget, activationTargetPara, beanIdentifier, beanInformation.scope(), beanInformation.type());
         }
 

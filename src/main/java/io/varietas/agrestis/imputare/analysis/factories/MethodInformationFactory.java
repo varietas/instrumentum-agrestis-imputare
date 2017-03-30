@@ -51,7 +51,7 @@ public class MethodInformationFactory implements InformationFactory<MethodInform
     }
 
     @Override
-    public MethodInformation build() {
+    public MethodInformation get() {
         return new MethodInformation(parent, method, this.operator.apply(this.method));
     }
 }

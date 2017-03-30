@@ -45,7 +45,7 @@ public class ConstructorInformationFactory implements InformationFactory<Constru
     }
 
     @Override
-    public ConstructorInformation build() {
+    public ConstructorInformation get() {
         return new ConstructorInformation(this.constructor, this.operator.apply(this.constructor));
     }
 }

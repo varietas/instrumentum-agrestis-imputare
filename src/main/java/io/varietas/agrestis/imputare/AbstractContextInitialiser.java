@@ -29,7 +29,6 @@ import io.varietas.agrestis.imputare.storage.DefinitionStorage;
 import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
-import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -46,6 +45,11 @@ public abstract class AbstractContextInitialiser<ContextInitialiserType extends 
 
     protected DefinitionStorage<String, Class<?>, BeanDefinition> beanStorage;
 
+    /**
+     * Starts the whole initialising process of agrestis imputare. This includes all required operations for searching, analysing and injecting.
+     *
+     * @return Current instance of the initialiser for fluent like API.
+     */
     public abstract ContextInitialiserType initializeContext();
 
     public AgrestisImputareContext createContext() {
@@ -75,7 +79,7 @@ public abstract class AbstractContextInitialiser<ContextInitialiserType extends 
     protected SortedBeanInformationStorage initAnalysis(final SortedStorage sortetStorage) throws AnalysisException {
         try {
             return new ClassAnalyser(sortetStorage).doAnalysis().getStorage();
-        } catch (ToManyInjectedConstructorsException | NoSuchMethodException | IOException | IllegalArgumentException | IllegalAccessException | InstantiationException ex) {
+        } catch (ToManyInjectedConstructorsException | NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InstantiationException ex) {
             throw new AnalysisException("Something goes wrong while analysing dependency graph.", ex);
         }
     }

@@ -23,25 +23,28 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * <h2>AgrestisImputareAndroidContextInitialiser</h2>
+ * <h2>AndroidContextInitialiser</h2>
  *
  * This class represents the context initialiser implementation for Android based platforms. The OpenJDK used on Android doesn't provide the Oracle NIO framework. To get all classes for agrestis
  * imputares you have to handle a scan outside.
+ *
+ * @deprecated Agrestis imputare will not work on openJDK based java applications. There is no need for an alternative.
  *
  * @author Michael Rhöse
  * @version 1.0.0, 12/8/2016
  */
 @Slf4j
-public class AgrestisImputareAndroidContextInitialiser extends AbstractContextInitialiser<AgrestisImputareAndroidContextInitialiser> {
+@Deprecated
+public class AndroidContextInitialiser extends AbstractContextInitialiser<AndroidContextInitialiser> {
 
     private final List<Class<?>> collectedClazzes;
 
-    public AgrestisImputareAndroidContextInitialiser(final List<Class<?>> collectedClazzes) {
+    public AndroidContextInitialiser(final List<Class<?>> collectedClazzes) {
         this.collectedClazzes = collectedClazzes;
     }
 
     @Override
-    public AgrestisImputareAndroidContextInitialiser initializeContext() {
+    public AndroidContextInitialiser initializeContext() {
         UnsortedStorage unsortedStorage = this.createUnsortedStorage(this.collectedClazzes);
         SortedStorage sortetStorage = this.initSorting(unsortedStorage);
         SortedBeanInformationStorage beanInformationStorage = this.initAnalysis(sortetStorage);

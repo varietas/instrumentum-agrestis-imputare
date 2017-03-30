@@ -18,10 +18,21 @@ package io.varietas.agrestis.imputare.analysis.factories;
 /**
  * <h2>InformationFactory</h2>
  *
+ * <p>
+ * This interface represents the minimal API of factories used in acrestis imputare.</p>
+ *
+ * @param <Info>
+ *
  * @author Michael Rhöse
  * @version 1.0.0, 7/30/2016
  */
 public interface InformationFactory<Info> {
 
-    public Info build() throws Exception;
+    /**
+     * Creates a new instance of a information container. This is not a normal getter method because it could perform required operations.
+     *
+     * @return New instance for collected information.
+     * @throws Exception Thrown if a performed operation produces an error.
+     */
+    public Info get() throws Exception;
 }

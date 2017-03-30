@@ -25,22 +25,30 @@ import java.net.URISyntaxException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * <h2>AgrestisImputareContextInitialiser</h2>
+ * <h2>StandardContextInitialiser</h2>
+ *
+ * This class represents the context initialiser implementation for Oracle Java based platforms.
  *
  * @author Michael Rhöse
  * @version 1.0.0, 6/6/2016
  */
 @Slf4j
-public class AgrestisImputareContextInitialiser extends AbstractContextInitialiser<AgrestisImputareContextInitialiser> {
+public class StandardContextInitialiser extends AbstractContextInitialiser<StandardContextInitialiser> {
 
     private final Package applicationPackage;
 
-    public AgrestisImputareContextInitialiser(Object application) throws InstantiationException, IllegalAccessException {
+    public StandardContextInitialiser(Object application) throws InstantiationException, IllegalAccessException {
         this.applicationPackage = application.getClass().getPackage();
     }
 
+    /**
+     * /**
+     * Starts the whole initialising process of agrestis imputare. This includes all required operations for searching, analysing and injecting.
+     *
+     * @return Current instance of the initialiser for fluent like API.
+     */
     @Override
-    public AgrestisImputareContextInitialiser initializeContext() {
+    public StandardContextInitialiser initializeContext() {
         UnsortedStorage unsortedStorage = this.initSearching(this.applicationPackage);
         SortedStorage sortetStorage = this.initSorting(unsortedStorage);
         SortedBeanInformationStorage beanInformationStorage = this.initAnalysis(sortetStorage);

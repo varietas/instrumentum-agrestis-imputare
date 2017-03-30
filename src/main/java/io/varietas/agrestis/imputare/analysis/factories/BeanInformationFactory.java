@@ -64,7 +64,7 @@ public class BeanInformationFactory implements InformationFactory<BeanInformatio
     }
 
     @Override
-    public BeanInformation build() {
+    public BeanInformation get() {
 
         if (Objects.isNull(this.operator)) {
             return new BeanInformation(this.creationInformation, this.scope, this.identifier, this.type);
