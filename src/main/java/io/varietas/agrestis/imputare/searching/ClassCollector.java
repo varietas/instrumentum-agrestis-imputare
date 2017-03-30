@@ -18,8 +18,6 @@ package io.varietas.agrestis.imputare.searching;
 import io.varietas.agrestis.imputare.storage.impl.UnsortedStorageImpl;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import io.varietas.agrestis.imputare.utils.searching.ClazzCollectorUtils;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -27,13 +25,11 @@ import lombok.extern.slf4j.Slf4j;
  *
  * This class is the entry point to the collection of all annotated classes of the current application. All classes contained in the packages and used libraries will scanned and loaded.
  *
- * TODO: Remove NIO classes
- *
  * @author Michael Rhöse
  * @version 1.0.0, 6/28/2016
  */
 @Slf4j
-public class ClassCollector {
+public final class ClassCollector {
 
     private final String applicationPackage;
     private final UnsortedStorage clazzStorage;
@@ -49,7 +45,12 @@ public class ClassCollector {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public ClassCollector collectAnnotatedClazzes() throws IOException, ClassNotFoundException, URISyntaxException {
+    /**
+     * Filters all classes of current class path for annotated classes and stores them in an unsorted storage.
+     *
+     * @return Storage of all annotated classes.
+     */
+    public final ClassCollector collectAnnotatedClazzes() {
 
         this.doClazzCollection();
 
@@ -61,7 +62,7 @@ public class ClassCollector {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    private void doClazzCollection() throws IOException {
+    private void doClazzCollection() {
 
         this.clazzStorage.storeAll(ClazzCollectorUtils.loadClazzes());
     }

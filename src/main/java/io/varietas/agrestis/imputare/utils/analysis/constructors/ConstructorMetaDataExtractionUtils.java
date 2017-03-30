@@ -17,6 +17,7 @@ package io.varietas.agrestis.imputare.utils.analysis.constructors;
 
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
 import io.varietas.agrestis.imputare.enumerations.ConstructorTypes;
+import io.varietas.agrestis.imputare.error.ConstructorAccessException;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.containers.Pair;
@@ -46,9 +47,8 @@ public class ConstructorMetaDataExtractionUtils {
      * @param clazz Bean class where the constructor will be scanned.
      * @return
      * @throws ToManyInjectedConstructorsException
-     * @throws NoSuchMethodException
      */
-    public static final Pair chooseConstructor(Class<?> clazz) throws ToManyInjectedConstructorsException, NoSuchMethodException {
+    public static final Pair chooseConstructor(Class<?> clazz) throws ToManyInjectedConstructorsException, ConstructorAccessException {
         ///< Constructor dependencies
         List<Constructor> injectedConstructors = StreamSupport.stream(Arrays.asList(clazz.getConstructors())).filter(constructor -> constructor.isAnnotationPresent(Autowire.class)).collect(Collectors.toList());
 
@@ -57,7 +57,7 @@ public class ConstructorMetaDataExtractionUtils {
         }
 
         if (!(injectedConstructors.isEmpty())) {
-            return new Pair<ConstructorTypes, Constructor>(ConstructorTypes.PARAMETERISED, injectedConstructors.get(0));
+            return new Pair<>(ConstructorTypes.PARAMETERISED, injectedConstructors.get(0));
         }
 
         List<Constructor> annotatedParamsConstructor = StreamSupport
@@ -70,10 +70,14 @@ public class ConstructorMetaDataExtractionUtils {
         }
 
         if (!(annotatedParamsConstructor.isEmpty())) {
-            return new Pair<ConstructorTypes, Constructor>(ConstructorTypes.PARAMETERISED, annotatedParamsConstructor.get(0));
+            return new Pair<>(ConstructorTypes.PARAMETERISED, annotatedParamsConstructor.get(0));
         }
 
-        return new Pair<ConstructorTypes, Constructor>(ConstructorTypes.STANDARD, clazz.getConstructor());
+        try {
+            return new Pair<>(ConstructorTypes.STANDARD, clazz.getConstructor());
+        } catch (NoSuchMethodException | SecurityException ex) {
+            throw new ConstructorAccessException("Constructor can not used to create bean.", ex);
+        }
     }
 
     /**
@@ -87,7 +91,7 @@ public class ConstructorMetaDataExtractionUtils {
      *
      * A full list of available codes in general could be found on the {@link ClassMetaDataExtractionUtils.AnnotationPosition}.
      *
-     * @param method Method where the annotation will searched on.
+     * @param constructor
      * @return
      */
     public static Integer getAnnotationPosition(Constructor constructor) {
@@ -95,7 +99,9 @@ public class ConstructorMetaDataExtractionUtils {
             return ClassMetaDataExtractionUtils.AnnotationPosition.CONSTRUCTOR;
         }
 
-        if (StreamSupport.stream(Arrays.asList(constructor.getParameters())).filter(param -> param.isAnnotationPresent(Autowire.class)).findFirst().isPresent()) {
+        boolean isAutowireAnnotationAvailable = StreamSupport.stream(Arrays.asList(constructor.getParameters())).filter(param -> param.isAnnotationPresent(Autowire.class)).findFirst().isPresent();
+
+        if (isAutowireAnnotationAvailable) {
             return ClassMetaDataExtractionUtils.AnnotationPosition.CONSTRUCTOR_PARAMETER;
         }
 

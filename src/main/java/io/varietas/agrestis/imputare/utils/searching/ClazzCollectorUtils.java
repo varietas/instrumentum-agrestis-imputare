@@ -22,7 +22,6 @@ import io.varietas.agrestis.imputare.annotation.Configuration;
 import io.varietas.agrestis.imputare.annotation.Controller;
 import io.varietas.agrestis.imputare.annotation.Repository;
 import io.varietas.agrestis.imputare.annotation.Service;
-import java.io.IOException;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ClazzCollectorUtils {
 
-    public static List<Class<?>> loadClazzes() throws IOException {
+    public static final List<Class<?>> loadClazzes() {
 
         ScanResult res = new FastClasspathScanner().scan();
 

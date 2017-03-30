@@ -18,6 +18,9 @@ package io.varietas.agrestis.imputare.enumerations;
 /**
  * <h2>ConstructorTypes</h2>
  *
+ * These constants are used in the agrestis imputare core for identification of used constructor. A bean can created by one constructor. If a constructor requires injected parameters the
+ * {@link ConstructorTypes} is used to signal agrestis imputare how it has to handle the instantiation process.
+ *
  * @author Michael Rhöse
  * @version 1.0.0, 5/17/2016
  */

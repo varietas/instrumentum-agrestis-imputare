@@ -18,6 +18,13 @@ package io.varietas.agrestis.imputare.enumerations;
 /**
  * <h2>BeanScopes</h2>
  *
+ * Agrestis imputare supports different kinds of bean instantiation. The possible scopes are described in the following list:
+ *
+ * <ul>
+ * <li><b>PROTOTYPE:</b> Every injected variable of the bean will be a new instance.</li>
+ * <li><b>SINGELTON:</b> Every injected variable of the bean will be the same instance.</li>
+ * </ul>
+ *
  * @author Michael Rhöse
  * @version 1.0.0, 5/7/2016
  */

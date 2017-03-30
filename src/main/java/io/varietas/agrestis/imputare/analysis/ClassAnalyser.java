@@ -27,7 +27,10 @@ import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtrac
 import io.varietas.agrestis.imputare.annotation.Bean;
 import io.varietas.agrestis.imputare.annotation.Configuration;
 import io.varietas.agrestis.imputare.enumerations.ConstructorTypes;
+import io.varietas.agrestis.imputare.error.ConstructorAccessException;
 import io.varietas.agrestis.imputare.error.DuplicatedIdentifierException;
+import io.varietas.agrestis.imputare.error.InternalException;
+import io.varietas.agrestis.imputare.error.StorageInitialisingException;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
 import io.varietas.agrestis.imputare.utils.analysis.constructors.ConstructorMetaDataExtractionUtils;
@@ -37,7 +40,6 @@ import io.varietas.agrestis.imputare.utils.analysis.fields.FieldMetaDataExtracto
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java8.util.Optional;
-import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
 
 /**
  * <h2>ClassAnalyser</h2>
@@ -58,7 +60,7 @@ public final class ClassAnalyser {
     private final SortedStorage<Integer, Class<?>> sortedClassesStorage;
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public ClassAnalyser(SortedStorage<Integer, Class<?>> storage) throws IllegalArgumentException, IllegalAccessException, InstantiationException {
+    public ClassAnalyser(SortedStorage<Integer, Class<?>> storage) throws StorageInitialisingException {
         this.sortedBeanInformationStorage = new SortedBeanInformationStorage();
         this.sortedClassesStorage = storage;
     }
@@ -69,9 +71,10 @@ public final class ClassAnalyser {
      *
      * @return Current instance if the analyser for fluent like API.
      * @throws ToManyInjectedConstructorsException Thrown if a class has more than one injected constructor. Agrestis imputare can not analyse which constructor has to be used.
-     * @throws NoSuchMethodException Thrown if a bean producing method isn't accessible.
+     * @throws ConstructorAccessException Thrown if a bean producing method isn't accessible.
+     * @throws io.varietas.agrestis.imputare.error.InternalException
      */
-    public ClassAnalyser doAnalysis() throws ToManyInjectedConstructorsException, NoSuchMethodException {
+    public final ClassAnalyser doAnalysis() throws ToManyInjectedConstructorsException, DuplicatedIdentifierException, InternalException, ConstructorAccessException {
 
         ///< Do configuration class analysis
         this.doMethodBeanAnalysis();
@@ -110,7 +113,7 @@ public final class ClassAnalyser {
         return this;
     }
 
-    private ClassAnalyser doBeanAnalysis() throws ToManyInjectedConstructorsException, NoSuchMethodException, DuplicatedIdentifierException, InternalException {
+    private ClassAnalyser doBeanAnalysis() throws ToManyInjectedConstructorsException, DuplicatedIdentifierException, InternalException, ConstructorAccessException {
 
         for (Integer annotationType : this.sortedClassesStorage.getStorage().keySet()) {
 
@@ -158,7 +161,7 @@ public final class ClassAnalyser {
             .get();
     }
 
-    private BeanInformation createClassInformation(final Class<?> beanType, final Integer annotationType) throws ToManyInjectedConstructorsException, NoSuchMethodException {
+    private BeanInformation createClassInformation(final Class<?> beanType, final Integer annotationType) throws ToManyInjectedConstructorsException, ConstructorAccessException {
 
         ///< Constructor analysis
         Pair<ConstructorTypes, Constructor> chosenConstructor = ConstructorMetaDataExtractionUtils.chooseConstructor(beanType);

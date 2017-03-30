@@ -18,12 +18,14 @@ package io.varietas.agrestis.imputare.contants;
 /**
  * <h2>AnnotationMethodIndices</h2>
  *
+ * This class contains the indeces used for programmatically access of annotation methods. This makes the code more readable.
+ *
  * @author Michael Rhöse
  * @version 1.0.0, 5/10/2016
  */
 public class AnnotationMethodIndices {
 
-    public static final Integer //
+    public static final int //
         NAME = 0,
         SCOPE = 1;
 }

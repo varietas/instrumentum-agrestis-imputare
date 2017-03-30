@@ -15,13 +15,10 @@
  */
 package io.varietas.agrestis.imputare;
 
-import io.varietas.agrestis.imputare.error.SearchingException;
 import io.varietas.agrestis.imputare.searching.ClassCollector;
 import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -42,7 +39,6 @@ public class StandardContextInitialiser extends AbstractContextInitialiser<Stand
     }
 
     /**
-     * /**
      * Starts the whole initialising process of agrestis imputare. This includes all required operations for searching, analysing and injecting.
      *
      * @return Current instance of the initialiser for fluent like API.
@@ -59,11 +55,7 @@ public class StandardContextInitialiser extends AbstractContextInitialiser<Stand
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private UnsortedStorage initSearching(final Package applicationPackage) {
-        try {
-            LOGGER.debug("Searching classes in package {}.", this.applicationPackage.getName());
-            return new ClassCollector(applicationPackage).collectAnnotatedClazzes().getStorage();
-        } catch (IOException | ClassNotFoundException | URISyntaxException ex) {
-            throw new SearchingException("Something goes wrong while searching annotated classes.", ex);
-        }
+        LOGGER.debug("Searching classes in package {}.", this.applicationPackage.getName());
+        return new ClassCollector(applicationPackage).collectAnnotatedClazzes().getStorage();
     }
 }

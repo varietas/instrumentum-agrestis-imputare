@@ -25,10 +25,12 @@ import java8.util.Optional;
 /**
  * <h2>ClassSorter</h2>
  *
+ * The class sorter is used to order the classes for the destined bean type. This is required to implement the injection rules.
+ *
  * @author Michael Rhöse
  * @version 1.0.0, 6/30/2016
  */
-public class ClassSorter {
+public final class ClassSorter {
 
     private final SortedStorageImpl sortedClassStorage;
     private final UnsortedStorage classStorage;
@@ -43,9 +45,10 @@ public class ClassSorter {
     /**
      * Sorts the located classes for present annotation.
      *
+     * @return
      * @throws IllegalAnnotationException
      */
-    public ClassSorter sortLocatedClazzes() throws IllegalAnnotationException {
+    public final ClassSorter sortLocatedClazzes() throws IllegalAnnotationException {
 
         Optional<Class<?>> next = this.classStorage.next();
 

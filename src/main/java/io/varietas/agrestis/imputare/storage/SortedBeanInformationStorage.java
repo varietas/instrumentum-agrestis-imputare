@@ -17,6 +17,7 @@ package io.varietas.agrestis.imputare.storage;
 
 import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.agrestis.imputare.analysis.containers.BeanInformation;
+import io.varietas.agrestis.imputare.error.StorageInitialisingException;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
 import java.lang.reflect.Field;
@@ -42,7 +43,7 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
 
     private final Map<Integer, List<BeanInformation>> storage;
 
-    public SortedBeanInformationStorage() throws IllegalArgumentException, IllegalAccessException, InstantiationException {
+    public SortedBeanInformationStorage() throws StorageInitialisingException {
         this.storage = new HashMap<>();
 
         this.initialiseStorage();
@@ -227,17 +228,21 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     }
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    private void initialiseStorage() throws IllegalArgumentException, IllegalAccessException, InstantiationException {
+    private void initialiseStorage() throws StorageInitialisingException {
 
-        Object annotationCodesInstance = MethodMetaDataExtractionUtils.AnnotationCodes.class.newInstance();
-        Field[] annotationCodesFields = MethodMetaDataExtractionUtils.AnnotationCodes.class.getFields();
+        try {
+            Object annotationCodesInstance = MethodMetaDataExtractionUtils.AnnotationCodes.class.newInstance();
+            Field[] annotationCodesFields = MethodMetaDataExtractionUtils.AnnotationCodes.class.getFields();
 
-        for (int index = 0; index < annotationCodesFields.length; ++index) {
-            if (Objects.equals(annotationCodesFields[index].getName(), ClassMetaDataExtractionUtils.AnnotationCodes.NONE)) {
-                continue;
+            for (int index = 0; index < annotationCodesFields.length; ++index) {
+                if (Objects.equals(annotationCodesFields[index].getName(), ClassMetaDataExtractionUtils.AnnotationCodes.NONE)) {
+                    continue;
+                }
+                Integer code = (Integer) annotationCodesFields[index].get(annotationCodesInstance);
+                this.storage.put(code, new ArrayList<>(0));
             }
-            Integer code = (Integer) annotationCodesFields[index].get(annotationCodesInstance);
-            this.storage.put(code, new ArrayList<>(0));
+        } catch (IllegalArgumentException | IllegalAccessException | InstantiationException | SecurityException ex) {
+            throw new StorageInitialisingException("Initialising of sorted storage not possible.", ex);
         }
     }
 }
