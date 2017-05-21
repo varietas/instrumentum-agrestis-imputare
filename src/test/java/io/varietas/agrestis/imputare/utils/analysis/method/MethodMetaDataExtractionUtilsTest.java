@@ -46,7 +46,7 @@ public class MethodMetaDataExtractionUtilsTest {
     private static List<Method> methods;
 
     @BeforeClass
-    public static void ontimeSetUp() throws IOException, ClassNotFoundException, URISyntaxException, IllegalArgumentException, IllegalAccessException, InstantiationException {
+    public static void beforeClazz() throws IOException, ClassNotFoundException, URISyntaxException, IllegalArgumentException, IllegalAccessException, InstantiationException {
 
         MethodMetaDataExtractionUtilsTest.type = ConfigurationBeanWithDependency.class;
         MethodMetaDataExtractionUtilsTest.methods = StreamSupport.stream(Arrays.asList(MethodMetaDataExtractionUtilsTest.type.getMethods())).filter(meth -> meth.isAnnotationPresent(Bean.class)).collect(Collectors.toList());

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * This package contains all relevant components for application analysis. The analysis is the first step to a dependency graph and required for the injection process.
  *

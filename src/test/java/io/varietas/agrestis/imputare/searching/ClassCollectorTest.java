@@ -17,6 +17,7 @@ package io.varietas.agrestis.imputare.searching;
 
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import io.varietas.test.TestHelper;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -24,6 +25,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.rmi.UnexpectedException;
+import java.util.Arrays;
 import java8.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -44,15 +46,26 @@ public class ClassCollectorTest {
     @Before
     public void setUp() throws UnexpectedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         URL jarUrl = this.getClass().getResource("/bins/lib-with-beans.jar");
-        Optional<URLClassLoader> appClassLoader = Optional.ofNullable(((URLClassLoader) this.getClass().getClassLoader()));
 
-        if (!appClassLoader.isPresent()) {
+        Optional<URLClassLoader> urlClassLoader = Optional.ofNullable(((URLClassLoader) ClassLoader.getSystemClassLoader()));
+
+        if (!urlClassLoader.isPresent()) {
             throw new UnexpectedException("Class loader not available.");
         }
 
-        Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+        this.printClasspath();
 
-        TestHelper.invokeMethod(appClassLoader.get(), method, jarUrl);
+        Class urlClass = URLClassLoader.class;
+        Method method = urlClass.getDeclaredMethod("addURL", new Class[]{URL.class});
+        method.setAccessible(true);
+        method.invoke(urlClassLoader.get(), new Object[]{jarUrl});
+
+        this.printClasspath();
+    }
+
+    private void printClasspath() {
+        String classpath = System.getProperty("java.class.path");
+        Arrays.asList(classpath.split(File.pathSeparator)).forEach(LOGGER::info);
     }
 
     @Test
@@ -68,7 +81,7 @@ public class ClassCollectorTest {
 
         Assertions.assertThat(count).isEqualTo(17);
 
-        for (Object clazz : classCollector.collectAnnotatedClazzes().getStorage().getStorage()) {
+        for (Object clazz : storage.getStorage()) {
             LOGGER.info("Class: {}", ((Class<?>) clazz).getName());
         }
     }

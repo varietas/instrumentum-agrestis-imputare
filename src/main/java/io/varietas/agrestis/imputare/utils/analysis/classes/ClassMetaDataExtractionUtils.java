@@ -61,7 +61,10 @@ public class ClassMetaDataExtractionUtils {
      */
     public static final Constructor getConstructor(Class<?> clazz) throws ToManyInjectedConstructorsException, NoSuchMethodException {
         ///< Constructor dependencies
-        List<Constructor> injectedConstructors = StreamSupport.stream(Arrays.asList(clazz.getConstructors())).filter(constructor -> constructor.isAnnotationPresent(Autowire.class)).collect(Collectors.toList());
+        List<Constructor> injectedConstructors = StreamSupport
+            .stream(Arrays.asList(clazz.getConstructors()))
+            .filter(constructor -> constructor.isAnnotationPresent(Autowire.class))
+            .collect(Collectors.toList());
 
         if (injectedConstructors.size() > 1) {
             throw new ToManyInjectedConstructorsException(String.format("There are %d constructors injected. Only one is allowed.", injectedConstructors.size()));
