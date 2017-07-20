@@ -21,8 +21,7 @@ import java.lang.reflect.Modifier;
 import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h2>TestHelper</h2>
@@ -30,9 +29,8 @@ import org.slf4j.LoggerFactory;
  * @author Michael Rhöse
  * @version 1.0.0, 6/28/2016
  */
+@Slf4j
 public class TestHelper {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TestHelper.class);
 
     public static Optional<Object> invokeMethod(URLClassLoader classLoader, Method method, Object... params) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         if (method.getModifiers() != Modifier.PUBLIC) {

@@ -15,7 +15,7 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
-import java.util.logging.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Ignore;
 
 /**
@@ -24,10 +24,9 @@ import org.junit.Ignore;
  * @author Michael Rhöse
  * @since Di, Mai 10, 2016
  */
+@Slf4j
 @Ignore
 public class DIUtilsTests {
-
-    private static final Logger LOGGER = Logger.getLogger(DIUtilsTests.class.getSimpleName());
 
 //    @Test
 //    public void searchClassesFromPackage() throws URISyntaxException, IOException {

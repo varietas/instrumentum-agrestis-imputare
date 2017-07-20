@@ -21,7 +21,7 @@ import io.varietas.agrestis.imputare.error.RecursiveInjectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -34,11 +34,10 @@ import org.junit.runners.JUnit4;
  * @author Michael Rhöse
  * @since Di, Mai 24, 2016
  */
+@Slf4j
 @RunWith(JUnit4.class)
 @Ignore
 public class BeanCreationUtilsTests {
-
-    private static final Logger LOGGER = Logger.getLogger(BeanCreationUtilsTests.class.getSimpleName());
 
     private List<BeanDefinition> store;
 

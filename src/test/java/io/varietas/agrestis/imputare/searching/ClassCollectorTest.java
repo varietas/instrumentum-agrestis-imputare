@@ -27,11 +27,10 @@ import java.net.URLClassLoader;
 import java.rmi.UnexpectedException;
 import java.util.Arrays;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * <h2>ClassCollectorTest</h2>
@@ -39,9 +38,8 @@ import org.slf4j.LoggerFactory;
  * @author Michael Rhöse
  * @version 1.0.0, 6/28/2016
  */
+@Slf4j
 public class ClassCollectorTest {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClassCollectorTest.class);
 
     @Before
     public void setUp() throws UnexpectedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {

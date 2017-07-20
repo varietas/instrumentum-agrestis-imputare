@@ -25,11 +25,10 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * <h2>MethodMetaDataExtractionUtilsTest</h2>
@@ -37,9 +36,8 @@ import org.slf4j.LoggerFactory;
  * @author Michael Rhöse
  * @since @version 1.0.0, 7/9/2016
  */
+@Slf4j
 public class MethodMetaDataExtractionUtilsTest {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MethodMetaDataExtractionUtilsTest.class);
 
     private static Class<?> type;
     private static List<Method> methods;

@@ -21,12 +21,11 @@ import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtract
 import io.varietas.test.TestHelper;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * <h2>ClassSorterTest</h2>
@@ -34,9 +33,8 @@ import org.slf4j.LoggerFactory;
  * @author Michael Rhöse
  * @since Sa, Jul 9, 2016
  */
+@Slf4j
 public class ClassSorterTest {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClassSorterTest.class);
 
     private static ClassCollector classCollector;
     private static ClassSorter classSorter;

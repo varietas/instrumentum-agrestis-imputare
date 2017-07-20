@@ -21,8 +21,7 @@ import io.varietas.agrestis.imputare.annotation.Configuration;
 import io.varietas.test.environments.model.PrototypeBeanWithoutDependencies;
 import io.varietas.test.environments.model.ComponentBeanWithoutDependencies;
 import io.varietas.test.environments.model.ConfigurationBeanWithoutDependency;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,10 +33,9 @@ import org.junit.runners.JUnit4;
  * @author Michael Rhöse
  * @since Sa, Mai 7, 2016
  */
+@Slf4j
 @RunWith(JUnit4.class)
 public class AnnotationTests {
-
-    private static final Logger LOGGER = Logger.getLogger(AnnotationTests.class.getName());
 
     @Test
     public void findServiceAnnotationPresent() {
@@ -45,9 +43,9 @@ public class AnnotationTests {
         Object singletonObject = new ComponentBeanWithoutDependencies();
 
         Assertions.assertThat(singletonObject.getClass()).isEqualTo(ComponentBeanWithoutDependencies.class);
-        LOGGER.log(Level.INFO, String.format("Object type '%s' is equals to '%s'.", singletonObject.getClass().getName(), ComponentBeanWithoutDependencies.class.getName()));
+        LOGGER.info("Object type '{}' is equals to '{}'.", singletonObject.getClass().getName(), ComponentBeanWithoutDependencies.class.getName());
         Assertions.assertThat(singletonObject.getClass().isAnnotationPresent(Service.class)).isTrue();
-        LOGGER.log(Level.INFO, String.format("Annotation '%s' is present.", Service.class.getName()));
+        LOGGER.info("Annotation '{}' is present.", Service.class.getName());
     }
 
     @Test
@@ -56,9 +54,9 @@ public class AnnotationTests {
         Object componentObject = new PrototypeBeanWithoutDependencies();
 
         Assertions.assertThat(componentObject.getClass()).isEqualTo(PrototypeBeanWithoutDependencies.class);
-        LOGGER.log(Level.INFO, String.format("Object type '%s' is equals to '%s'.", componentObject.getClass().getName(), PrototypeBeanWithoutDependencies.class.getName()));
+        LOGGER.info("Object type '{}' is equals to '{}'.", componentObject.getClass().getName(), PrototypeBeanWithoutDependencies.class.getName());
         Assertions.assertThat(componentObject.getClass().isAnnotationPresent(Component.class)).isTrue();
-        LOGGER.log(Level.INFO, String.format("Annotation '%s' is present.", Component.class.getName()));
+        LOGGER.info("Annotation '{}' is present.", Component.class.getName());
     }
 
     @Test
@@ -67,8 +65,8 @@ public class AnnotationTests {
         Object configurationObject = new ConfigurationBeanWithoutDependency();
 
         Assertions.assertThat(configurationObject.getClass()).isEqualTo(ConfigurationBeanWithoutDependency.class);
-        LOGGER.log(Level.INFO, String.format("Object type '%s' is equals to '%s'.", configurationObject.getClass().getName(), ConfigurationBeanWithoutDependency.class.getName()));
+        LOGGER.info("Object type '{}' is equals to '{}'.", configurationObject.getClass().getName(), ConfigurationBeanWithoutDependency.class.getName());
         Assertions.assertThat(configurationObject.getClass().isAnnotationPresent(Configuration.class)).isTrue();
-        LOGGER.log(Level.INFO, String.format("Annotation '%s' is present.", Configuration.class.getName()));
+        LOGGER.info("Annotation '{}' is present.", Configuration.class.getName());
     }
 }

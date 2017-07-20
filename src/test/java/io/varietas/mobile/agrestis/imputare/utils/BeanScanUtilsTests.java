@@ -15,7 +15,7 @@
  */
 package io.varietas.mobile.agrestis.imputare.utils;
 
-import java.util.logging.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -26,11 +26,11 @@ import org.junit.runners.JUnit4;
  * @author Michael Rhöse
  * @since Di, Mai 10, 2016
  */
+@Slf4j
 @RunWith(JUnit4.class)
 @Ignore
 public class BeanScanUtilsTests {
 
-    private static final Logger LOGGER = Logger.getLogger(BeanScanUtilsTests.class.getName());
 
 //    @Test
 //    public void getBeanIdentifierFromFieldCustomIdentifier() throws NoSuchFieldException {

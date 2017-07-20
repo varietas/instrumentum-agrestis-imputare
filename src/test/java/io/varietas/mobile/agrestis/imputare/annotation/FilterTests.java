@@ -21,7 +21,7 @@ import io.varietas.test.environments.model.ComponentBeanWithoutDependencies;
 import io.varietas.test.environments.model.PojoOnlyWithParamConstructor;
 import io.varietas.test.environments.model.PojoWithoutConstructor;
 import java.lang.reflect.Constructor;
-import java.util.logging.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -32,10 +32,9 @@ import org.junit.runners.JUnit4;
  * @author Michael Rhöse
  * @since Mo, Mai 9, 2016
  */
+@Slf4j
 @RunWith(JUnit4.class)
 public class FilterTests {
-
-    private static final Logger LOGGER = Logger.getLogger(FilterTests.class.getName());
 
     @Test
     public void getAllConstructors() {
