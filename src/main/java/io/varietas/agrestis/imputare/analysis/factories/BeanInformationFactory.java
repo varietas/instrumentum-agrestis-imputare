@@ -18,8 +18,8 @@ package io.varietas.agrestis.imputare.analysis.factories;
 import io.varietas.agrestis.imputare.analysis.containers.BeanInformation;
 import io.varietas.agrestis.imputare.analysis.containers.DependencyInformation;
 import io.varietas.agrestis.imputare.enumerations.BeanScopes;
-import java8.util.Objects;
-import java8.util.function.Function;
+import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * <h2>BeanInformationFactory</h2>

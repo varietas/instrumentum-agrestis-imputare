@@ -29,5 +29,6 @@ package io.varietas.agrestis.imputare.enumerations;
  * @version 1.0.0, 5/7/2016
  */
 public enum BeanScopes {
-    PROTOTYPE, SINGELTON,
+    PROTOTYPE,
+    SINGELTON,
 }

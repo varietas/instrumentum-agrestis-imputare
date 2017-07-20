@@ -22,10 +22,9 @@ import io.varietas.test.environments.model.ConfigurationBeanWithDependency;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.List;
-import java8.util.stream.Collectors;
-import java8.util.stream.StreamSupport;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.assertj.core.api.Assertions;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * <h2>MethodMetaDataExtractionUtilsTest</h2>
  *
  * @author Michael Rhöse
- * @since Sa, Jul 9, 2016
+ * @since @version 1.0.0, 7/9/2016
  */
 public class MethodMetaDataExtractionUtilsTest {
 
@@ -49,7 +48,7 @@ public class MethodMetaDataExtractionUtilsTest {
     public static void beforeClazz() throws IOException, ClassNotFoundException, URISyntaxException, IllegalArgumentException, IllegalAccessException, InstantiationException {
 
         MethodMetaDataExtractionUtilsTest.type = ConfigurationBeanWithDependency.class;
-        MethodMetaDataExtractionUtilsTest.methods = StreamSupport.stream(Arrays.asList(MethodMetaDataExtractionUtilsTest.type.getMethods())).filter(meth -> meth.isAnnotationPresent(Bean.class)).collect(Collectors.toList());
+        MethodMetaDataExtractionUtilsTest.methods = Stream.of(MethodMetaDataExtractionUtilsTest.type.getMethods()).filter(meth -> meth.isAnnotationPresent(Bean.class)).collect(Collectors.toList());
     }
 
     @Test

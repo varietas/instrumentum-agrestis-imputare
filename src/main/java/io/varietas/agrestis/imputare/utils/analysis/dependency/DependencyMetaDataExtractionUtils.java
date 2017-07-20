@@ -26,11 +26,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java8.util.stream.Collectors;
-import java8.util.stream.StreamSupport;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -111,7 +110,7 @@ public class DependencyMetaDataExtractionUtils {
 
         final List<DependencyInformation> res = new ArrayList<>();
 
-        StreamSupport.stream(Arrays.asList(clazz.getDeclaredFields())).filter(field -> field.isAnnotationPresent(Autowire.class)).collect(Collectors.toList()).forEach(field -> {
+        Stream.of(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(Autowire.class)).collect(Collectors.toList()).forEach(field -> {
             String identifier = NamingUtils.formatIdentifier(((Autowire) field.getAnnotation(Autowire.class)).value()[0], field.getName());
             res.add(new FieldDependencyInformation(field, identifier, field.getType()));
         });

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java8.util.Optional;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -82,6 +82,7 @@ public class UnsortedStorageImpl implements UnsortedStorage<Class<?>> {
      * @param clazzes Classes to be stored.
      * @return Number of stored classes or -1 for an error.
      */
+    @Override
     public int storeAll(Collection<Class<?>> clazzes) {
         if (!this.clazzes.addAll(clazzes)) {
             return this.clazzes.size();

@@ -23,7 +23,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.rmi.UnexpectedException;
 import java.util.List;
-import java8.util.Optional;
+import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -33,7 +33,7 @@ import org.junit.Test;
  * <h2>ClassLoadUtilsTest</h2>
  *
  * @author Michael Rhöse
- * @since Di, Jun 28, 2016
+ * @version 1.0.0, 6/28/2016
  */
 @Slf4j
 public class ClassLoadUtilsTest {

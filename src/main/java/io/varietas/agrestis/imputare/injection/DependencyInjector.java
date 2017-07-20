@@ -38,8 +38,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java8.util.Optional;
-import java8.util.stream.IntStreams;
+import java.util.Optional;
+import java.util.stream.IntStream;
 
 /**
  * <h2>DependencyInjector</h2>
@@ -82,7 +82,7 @@ public final class DependencyInjector {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    private final BeanDefinition singleInjectionWork(final BeanInformation beanInformation) {
+    private BeanDefinition singleInjectionWork(final BeanInformation beanInformation) {
         ///< If dependencies required
         Object creationInformation = beanInformation.getCreationInformation();
 
@@ -188,7 +188,7 @@ public final class DependencyInjector {
         }
 
         final Object[] res = new Object[dependencies.size()];
-        IntStreams.range(0, dependencies.size()).forEachOrdered(index -> res[index] = dependencies.get(index).get());
+        IntStream.range(0, dependencies.size()).forEachOrdered(index -> res[index] = dependencies.get(index).get());
 
         return res;
     }

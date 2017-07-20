@@ -27,9 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java8.util.Optional;
-import java8.util.stream.Collectors;
-import java8.util.stream.StreamSupport;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -60,8 +59,8 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     public List<BeanInformation> findByTypes(BeanInformation entry) {
         final List<BeanInformation> res = new ArrayList<>();
 
-        StreamSupport.stream(this.storage.entrySet()).forEach(storageEntry -> {
-            res.addAll(StreamSupport.stream(storageEntry.getValue()).filter(storageEntryEntry -> Objects.equals(storageEntryEntry.type(), entry.type())).collect(Collectors.toList()));
+        this.storage.entrySet().stream().forEach(storageEntry -> {
+            res.addAll(storageEntry.getValue().stream().filter(storageEntryEntry -> Objects.equals(storageEntryEntry.type(), entry.type())).collect(Collectors.toList()));
         });
 
         return res;
@@ -79,7 +78,7 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     public List<BeanInformation> findByTypesAndAnnotationCode(BeanInformation entry, Integer code) {
         final List<BeanInformation> res = new ArrayList<>();
 
-        res.addAll(StreamSupport.stream(this.storage.get(code)).filter(storageEntry -> Objects.equals(storageEntry.type(), entry.type())).collect(Collectors.toList()));
+        res.addAll(this.storage.get(code).stream().filter(storageEntry -> Objects.equals(storageEntry.type(), entry.type())).collect(Collectors.toList()));
 
         return res;
     }
@@ -87,7 +86,9 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     public Optional<BeanInformation> findByIdentifier(final String identifier) {
 
         for (Map.Entry<Integer, List<BeanInformation>> set : this.storage.entrySet()) {
-            Optional<BeanInformation> res = StreamSupport.stream(set.getValue()).filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst();
+            Optional<BeanInformation> res = set.getValue().stream()
+                .filter(entry -> Objects.equals(entry.identifier(), identifier))
+                .findFirst();
 
             if (res.isPresent()) {
                 return res;
@@ -100,7 +101,9 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     @Override
     public Optional<BeanInformation> next() {
 
-        final Optional<List<BeanInformation>> nextList = StreamSupport.stream(this.storage.values()).filter(list -> !list.isEmpty()).findFirst();
+        final Optional<List<BeanInformation>> nextList = this.storage.values().stream()
+            .filter(list -> !list.isEmpty())
+            .findFirst();
 
         if (!nextList.isPresent()) {
             return Optional.empty();
@@ -189,7 +192,10 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
 
     @Override
     public Boolean isEmpty() {
-        return StreamSupport.stream(this.storage.keySet()).filter(code -> this.isEmpty(code)).findFirst().isPresent();
+        return this.storage.keySet().stream()
+            .filter(code -> this.isEmpty(code))
+            .findFirst()
+            .isPresent();
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -204,13 +210,8 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     }
 
     public Boolean contains(final String identifier) {
-        for (Map.Entry<Integer, List<BeanInformation>> set : this.storage.entrySet()) {
-            if (StreamSupport.stream(set.getValue()).filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst().isPresent()) {
-                return true;
-            }
-        }
-
-        return false;
+        return this.storage.entrySet().stream()
+            .anyMatch((set) -> (set.getValue().stream().filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst().isPresent()));
     }
 
     public Boolean isContainsBeanWithIdentifier(final BeanInformation beanInformation, Integer code) {
@@ -219,7 +220,7 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
             return Boolean.FALSE;
         }
 
-        if (StreamSupport.stream(this.storage.get(code)).filter(entry -> Objects.equals(entry.identifier(), beanInformation.identifier())).findFirst().isPresent()) {
+        if (this.storage.get(code).stream().filter(entry -> Objects.equals(entry.identifier(), beanInformation.identifier())).findFirst().isPresent()) {
             LOGGER.info("Bean information for identifier {} already exists.", beanInformation.identifier());
             return Boolean.TRUE;
         }

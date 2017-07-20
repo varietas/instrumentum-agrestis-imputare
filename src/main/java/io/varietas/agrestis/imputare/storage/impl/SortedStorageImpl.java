@@ -23,9 +23,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java8.util.Optional;
-import java8.util.stream.Collectors;
-import java8.util.stream.StreamSupport;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * <h2>SortedStorageImpl</h2>
@@ -50,7 +50,10 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
     @Override
     public Optional<Class<?>> next() {
 
-        final Optional<List<Class<?>>> nextList = StreamSupport.stream(this.clazzes.values()).filter(list -> !list.isEmpty()).findFirst();
+        final Optional<List<Class<?>>> nextList = this.clazzes.values()
+            .stream()
+            .filter(list -> !list.isEmpty())
+            .findFirst();
 
         if (!nextList.isPresent()) {
             return Optional.empty();
@@ -104,11 +107,11 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
 
         List<Class<?>> res = new ArrayList<>();
 
-        if (code == ClassMetaDataExtractionUtils.AnnotationCodes.NONE) {
+        if (Objects.equals(code, ClassMetaDataExtractionUtils.AnnotationCodes.NONE)) {
             return res;
         }
 
-        res.addAll(StreamSupport.stream(this.clazzes.get(code)).filter(clazz -> clazz.equals(entry)).collect(Collectors.toList()));
+        res.addAll(this.clazzes.get(code).stream().filter(clazz -> clazz.equals(entry)).collect(Collectors.toList()));
 
         return res;
     }
@@ -122,7 +125,7 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
      */
     @Override
     public int store(final Class<?> entry, final Integer code) {
-        if (code == ClassMetaDataExtractionUtils.AnnotationCodes.NONE) {
+        if (Objects.equals(code, ClassMetaDataExtractionUtils.AnnotationCodes.NONE)) {
             return -1;
         }
 
@@ -165,7 +168,7 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
 
     @Override
     public Boolean isEmpty() {
-        return StreamSupport.stream(this.getStorage().keySet()).filter(key -> this.isEmpty(key)).findFirst().isPresent();
+        return this.getStorage().keySet().stream().filter(key -> this.isEmpty(key)).findFirst().isPresent();
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

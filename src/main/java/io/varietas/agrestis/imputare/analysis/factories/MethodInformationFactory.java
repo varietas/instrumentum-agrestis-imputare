@@ -18,7 +18,7 @@ package io.varietas.agrestis.imputare.analysis.factories;
 import io.varietas.agrestis.imputare.analysis.containers.DependencyInformation;
 import io.varietas.agrestis.imputare.analysis.containers.MethodInformation;
 import java.lang.reflect.Method;
-import java8.util.function.Function;
+import java.util.function.Function;
 
 /**
  * <h2>MethodInformationFactory</h2>

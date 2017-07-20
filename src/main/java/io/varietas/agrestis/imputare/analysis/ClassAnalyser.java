@@ -39,7 +39,7 @@ import io.varietas.agrestis.imputare.utils.analysis.dependency.DependencyMetaDat
 import io.varietas.agrestis.imputare.utils.analysis.fields.FieldMetaDataExtractorUtils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java8.util.Optional;
+import java.util.Optional;
 
 /**
  * <h2>ClassAnalyser</h2>

@@ -21,9 +21,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java8.util.Optional;
-import java8.util.stream.Collectors;
-import java8.util.stream.StreamSupport;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * <h2>BeanDefinitionStorage</h2>
@@ -41,12 +40,16 @@ public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>
 
     @Override
     public Optional<BeanDefinition> findForIdentifier(String identifier) {
-        return StreamSupport.stream(this.storage).filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst();
+        return this.storage.stream()
+            .filter(entry -> Objects.equals(entry.identifier(), identifier))
+            .findFirst();
     }
 
     @Override
     public List<BeanDefinition> findForType(Class<?> type) {
-        return StreamSupport.stream(this.storage).filter(entry -> Objects.equals(entry.type(), type)).collect(Collectors.toList());
+        return this.storage.stream()
+            .filter(entry -> Objects.equals(entry.type(), type))
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -58,13 +61,11 @@ public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>
     public List<BeanDefinition> findForDependencies(List<DependencyInformation> dependencies) {
         List<BeanDefinition> res = new ArrayList<>();
 
-        for (DependencyInformation dependencyInformation : dependencies) {
-            Optional<BeanDefinition> dependency = this.findForDependency(dependencyInformation);
-            if (!dependency.isPresent()) {
-                continue;
-            }
-            res.add(dependency.get());
-        }
+        dependencies.stream()
+            .map((dependencyInformation) -> this.findForDependency(dependencyInformation))
+            .filter((dependency) -> !(!dependency.isPresent()))
+            .map(Optional::get)
+            .forEachOrdered(storage::add);
 
         return res;
     }
@@ -114,6 +115,9 @@ public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>
 
     @Override
     public Boolean contains(String identifier) {
-        return StreamSupport.stream(this.storage).filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst().isPresent();
+        return this.storage.stream()
+            .filter(entry -> Objects.equals(entry.identifier(), identifier))
+            .findFirst()
+            .isPresent();
     }
 }

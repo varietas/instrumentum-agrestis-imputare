@@ -20,7 +20,7 @@ import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.agrestis.imputare.storage.impl.SortedStorageImpl;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
-import java8.util.Optional;
+import java.util.Optional;
 
 /**
  * <h2>ClassSorter</h2>

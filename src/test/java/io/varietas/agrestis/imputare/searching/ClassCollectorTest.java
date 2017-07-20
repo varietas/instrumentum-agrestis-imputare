@@ -26,7 +26,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.rmi.UnexpectedException;
 import java.util.Arrays;
-import java8.util.Optional;
+import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * <h2>ClassCollectorTest</h2>
  *
  * @author Michael Rhöse
- * @since Di, Jun 28, 2016
+ * @version 1.0.0, 6/28/2016
  */
 public class ClassCollectorTest {
 

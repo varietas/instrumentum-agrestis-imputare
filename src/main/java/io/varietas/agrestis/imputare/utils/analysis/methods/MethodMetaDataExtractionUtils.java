@@ -22,10 +22,9 @@ import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtract
 import io.varietas.agrestis.imputare.utils.common.NamingUtils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
-import java8.util.stream.Collectors;
-import java8.util.stream.StreamSupport;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * <h2>MethodMetaDataExtractionUtils</h2>
@@ -45,7 +44,9 @@ public class MethodMetaDataExtractionUtils {
      * @return
      */
     public static List<Method> getAnnotatedMethods(Class<?> clazz, Class<? extends Annotation> annotationType) {
-        return StreamSupport.stream(Arrays.asList(clazz.getDeclaredMethods())).filter(method -> method.isAnnotationPresent(annotationType)).collect(Collectors.toList());
+        return Stream.of(clazz.getDeclaredMethods())
+            .filter(method -> method.isAnnotationPresent(annotationType))
+            .collect(Collectors.toList());
     }
 
     public static BeanScopes getBeanScope(final Method method) {
@@ -92,7 +93,7 @@ public class MethodMetaDataExtractionUtils {
             return ClassMetaDataExtractionUtils.AnnotationPosition.METHOD;
         }
 
-        if (StreamSupport.stream(Arrays.asList(method.getParameters())).filter(param -> param.isAnnotationPresent(Autowire.class)).findFirst().isPresent()) {
+        if (Stream.of(method.getParameters()).filter(param -> param.isAnnotationPresent(Autowire.class)).findFirst().isPresent()) {
             return ClassMetaDataExtractionUtils.AnnotationPosition.METHOD_PARAMETER;
         }
 

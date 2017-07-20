@@ -31,11 +31,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
-import java8.util.Optional;
-import java8.util.stream.Collectors;
-import java8.util.stream.StreamSupport;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * <h2>ClassMetaDataExtractionUtils</h2>
@@ -61,8 +60,7 @@ public class ClassMetaDataExtractionUtils {
      */
     public static final Constructor getConstructor(Class<?> clazz) throws ToManyInjectedConstructorsException, NoSuchMethodException {
         ///< Constructor dependencies
-        List<Constructor> injectedConstructors = StreamSupport
-            .stream(Arrays.asList(clazz.getConstructors()))
+        List<Constructor> injectedConstructors = Stream.of(clazz.getConstructors())
             .filter(constructor -> constructor.isAnnotationPresent(Autowire.class))
             .collect(Collectors.toList());
 
@@ -74,9 +72,9 @@ public class ClassMetaDataExtractionUtils {
             return injectedConstructors.get(0);
         }
 
-        List<Constructor> annotatedParamsConstructor = StreamSupport
-            .stream(Arrays.asList(clazz.getConstructors())).filter(constructor -> StreamSupport
-            .stream(Arrays.asList(constructor.getParameters())).filter(parameter -> parameter.isAnnotationPresent(Autowire.class)).findFirst().isPresent())
+        List<Constructor> annotatedParamsConstructor = Stream.of(clazz.getConstructors())
+            .filter(constructor -> Stream.of(constructor.getParameters())
+            .filter(parameter -> parameter.isAnnotationPresent(Autowire.class)).findFirst().isPresent())
             .collect(Collectors.toList());
 
         if (annotatedParamsConstructor.size() > 1) {
@@ -235,7 +233,10 @@ public class ClassMetaDataExtractionUtils {
      */
     public static Boolean isFieldDependenciesExist(final Class<?> clazz) {
 
-        return StreamSupport.stream(Arrays.asList(clazz.getDeclaredFields())).filter(field -> field.isAnnotationPresent(Autowire.class)).findFirst().isPresent();
+        return Stream.of(clazz.getDeclaredFields())
+            .filter(field -> field.isAnnotationPresent(Autowire.class))
+            .findFirst()
+            .isPresent();
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -295,7 +296,7 @@ public class ClassMetaDataExtractionUtils {
      * </ul>
      *
      * @author Michael Rhöse
-     * @since Di, Jun 28, 2016
+     * @version 1.0.0, 6/28/2016
      */
     public static class AnnotationCodes {
 
@@ -320,7 +321,7 @@ public class ClassMetaDataExtractionUtils {
      * </ul>
      *
      * @author Michael Rhöse
-     * @since D0, Jun 30, 2016
+     * @version 1.0.0, 6/30/2016
      */
     public static class AnnotationPosition {
 

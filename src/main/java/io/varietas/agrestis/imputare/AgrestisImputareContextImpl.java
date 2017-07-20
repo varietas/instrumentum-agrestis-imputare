@@ -17,11 +17,11 @@ package io.varietas.agrestis.imputare;
 
 import io.varietas.agrestis.imputare.injection.containers.BeanDefinition;
 import io.varietas.agrestis.imputare.error.BeanLoadException;
-import java.util.Arrays;
 import java.util.List;
-import java8.util.Optional;
-import java8.util.stream.Collectors;
-import java8.util.stream.StreamSupport;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -68,9 +68,9 @@ public class AgrestisImputareContextImpl implements AgrestisImputareContext {
         return this.store.length;
     }
 
-    private <T> Optional<T> getBean(java8.util.function.Predicate<BeanDefinition> predicate, Class<T> targetType, String logObject, String logObjectType) {
+    private <T> Optional<T> getBean(Predicate<BeanDefinition> predicate, Class<T> targetType, String logObject, String logObjectType) {
 
-        List<BeanDefinition> res = StreamSupport.stream(Arrays.asList(this.store)).filter(predicate).collect(Collectors.toList());
+        List<BeanDefinition> res = Stream.of(this.store).filter(predicate).collect(Collectors.toList());
 
         try {
             if (res.size() > 1) {

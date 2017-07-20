@@ -18,7 +18,7 @@ package io.varietas.agrestis.imputare.analysis.factories;
 import io.varietas.agrestis.imputare.analysis.containers.ConstructorInformation;
 import io.varietas.agrestis.imputare.analysis.containers.DependencyInformation;
 import java.lang.reflect.Constructor;
-import java8.util.function.Function;
+import java.util.function.Function;
 
 /**
  * <h2>ConstructorInformationFactory</h2>

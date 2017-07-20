@@ -22,10 +22,9 @@ import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.containers.Pair;
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
 import java.util.List;
-import java8.util.stream.Collectors;
-import java8.util.stream.StreamSupport;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * <h2>ConstructorMetaDataExtractionUtils</h2>
@@ -50,7 +49,9 @@ public class ConstructorMetaDataExtractionUtils {
      */
     public static final Pair chooseConstructor(Class<?> clazz) throws ToManyInjectedConstructorsException, ConstructorAccessException {
         ///< Constructor dependencies
-        List<Constructor> injectedConstructors = StreamSupport.stream(Arrays.asList(clazz.getConstructors())).filter(constructor -> constructor.isAnnotationPresent(Autowire.class)).collect(Collectors.toList());
+        List<Constructor> injectedConstructors = Stream.of(clazz.getConstructors())
+            .filter(constructor -> constructor.isAnnotationPresent(Autowire.class))
+            .collect(Collectors.toList());
 
         if (injectedConstructors.size() > 1) {
             throw new ToManyInjectedConstructorsException(String.format("There are %d constructors injected. Only one is allowed.", injectedConstructors.size()));
@@ -60,9 +61,9 @@ public class ConstructorMetaDataExtractionUtils {
             return new Pair<>(ConstructorTypes.PARAMETERISED, injectedConstructors.get(0));
         }
 
-        List<Constructor> annotatedParamsConstructor = StreamSupport
-            .stream(Arrays.asList(clazz.getConstructors())).filter(constructor -> StreamSupport
-            .stream(Arrays.asList(constructor.getParameters())).filter(parameter -> parameter.isAnnotationPresent(Autowire.class)).findFirst().isPresent())
+        List<Constructor> annotatedParamsConstructor = Stream.of(clazz.getConstructors())
+            .filter(constructor -> Stream.of(constructor.getParameters())
+            .filter(parameter -> parameter.isAnnotationPresent(Autowire.class)).findFirst().isPresent())
             .collect(Collectors.toList());
 
         if (annotatedParamsConstructor.size() > 1) {
@@ -99,7 +100,10 @@ public class ConstructorMetaDataExtractionUtils {
             return ClassMetaDataExtractionUtils.AnnotationPosition.CONSTRUCTOR;
         }
 
-        boolean isAutowireAnnotationAvailable = StreamSupport.stream(Arrays.asList(constructor.getParameters())).filter(param -> param.isAnnotationPresent(Autowire.class)).findFirst().isPresent();
+        boolean isAutowireAnnotationAvailable = Stream.of(constructor.getParameters())
+            .filter(param -> param.isAnnotationPresent(Autowire.class))
+            .findFirst()
+            .isPresent();
 
         if (isAutowireAnnotationAvailable) {
             return ClassMetaDataExtractionUtils.AnnotationPosition.CONSTRUCTOR_PARAMETER;
