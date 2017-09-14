@@ -22,6 +22,7 @@ import io.varietas.agrestis.imputare.annotation.Configuration;
 import io.varietas.agrestis.imputare.annotation.Controller;
 import io.varietas.agrestis.imputare.annotation.Repository;
 import io.varietas.agrestis.imputare.annotation.Service;
+import io.varietas.agrestis.imputare.annotation.resources.Settings;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,6 +40,12 @@ public class ClazzCollectorUtils {
         ScanResult res = new FastClasspathScanner().scan();
 
         ///< Load all classes from the given package
-        return res.classNamesToClassRefs(res.getNamesOfClassesWithAnnotationsAnyOf(Repository.class, Service.class, Controller.class, Component.class, Configuration.class));
+        return res.classNamesToClassRefs(res.getNamesOfClassesWithAnnotationsAnyOf(
+            Repository.class,
+            Service.class,
+            Controller.class,
+            Component.class,
+            Configuration.class,
+            Settings.class));
     }
 }

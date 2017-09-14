@@ -32,7 +32,7 @@ import java.util.Optional;
  */
 public final class ClassSorter {
 
-    private final SortedStorageImpl sortedClassStorage;
+    private final SortedStorage<Integer, Class<?>> sortedClassStorage;
     private final UnsortedStorage classStorage;
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
