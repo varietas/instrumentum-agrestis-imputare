@@ -15,15 +15,14 @@
  */
 package io.varietas.agrestis.imputare.storage;
 
-import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.agrestis.imputare.analysis.containers.BeanInformation;
 import io.varietas.agrestis.imputare.error.StorageInitialisingException;
+import io.varietas.agrestis.imputare.storage.impl.SortedStorageImpl;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -38,15 +37,7 @@ import lombok.extern.slf4j.Slf4j;
  * @version 1.0.0, 7/1/2016
  */
 @Slf4j
-public class SortedBeanInformationStorage implements SortedStorage<Integer, BeanInformation> {
-
-    private final Map<Integer, List<BeanInformation>> storage;
-
-    public SortedBeanInformationStorage() throws StorageInitialisingException {
-        this.storage = new HashMap<>();
-
-        this.initialiseStorage();
-    }
+public class SortedBeanInformationStorage extends SortedStorageImpl<Integer, BeanInformation> implements SortedTypedStorage<Integer, BeanInformation> {
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     /**
@@ -60,7 +51,7 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
         final List<BeanInformation> res = new ArrayList<>();
 
         this.storage.entrySet().stream().forEach(storageEntry -> {
-            res.addAll(storageEntry.getValue().stream().filter(storageEntryEntry -> Objects.equals(storageEntryEntry.type(), entry.type())).collect(Collectors.toList()));
+            res.addAll(storageEntry.getValue().stream().filter(storageEntryEntry -> Objects.equals(storageEntryEntry.getType(), entry.getType())).collect(Collectors.toList()));
         });
 
         return res;
@@ -78,7 +69,7 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     public List<BeanInformation> findByTypesAndAnnotationCode(BeanInformation entry, Integer code) {
         final List<BeanInformation> res = new ArrayList<>();
 
-        res.addAll(this.storage.get(code).stream().filter(storageEntry -> Objects.equals(storageEntry.type(), entry.type())).collect(Collectors.toList()));
+        res.addAll(this.storage.get(code).stream().filter(storageEntry -> Objects.equals(storageEntry.getType(), entry.getType())).collect(Collectors.toList()));
 
         return res;
     }
@@ -87,7 +78,7 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
 
         for (Map.Entry<Integer, List<BeanInformation>> set : this.storage.entrySet()) {
             Optional<BeanInformation> res = set.getValue().stream()
-                .filter(entry -> Objects.equals(entry.identifier(), identifier))
+                .filter(entry -> Objects.equals(entry.getIdentifier(), identifier))
                 .findFirst();
 
             if (res.isPresent()) {
@@ -135,11 +126,11 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
      * <ul>
      * <li><b>>= 0:</b> Number of currently stored entries.</li>
      * <li><b>-1:</b> New entry not stored.</li>
-     * <li><b>-2:</b> An bean information with this identifier already exists.</li>
+     * <li><b>-2:</b> An bean information with this getIdentifier already exists.</li>
      * </ul>
      *
      * @param entry Bean information to be stored.
-     * @param code Annotation type code where the class should be stored for.
+     * @param code Annotation getType code where the class should be stored for.
      * @return Number of stored classes or -1 for an error.
      */
     @Override
@@ -164,11 +155,11 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
      * <ul>
      * <li><b>>= 0:</b> Number of currently stored entries.</li>
      * <li><b>-1:</b> New entry not stored.</li>
-     * <li><b>-2:</b> An bean information with this identifier already exists.</li>
+     * <li><b>-2:</b> An bean information with this getIdentifier already exists.</li>
      * </ul>
      *
      * @param entries bean information to be stored.
-     * @param code Annotation type code where the class should be stored for.
+     * @param code Annotation getType code where the class should be stored for.
      * @return Number of stored classes or -1 for an error.
      */
     @Override
@@ -205,13 +196,13 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     }
 
     public Boolean contains(final BeanInformation beanInformation) {
-        Integer code = ClassMetaDataExtractionUtils.getPresentAnnotationCode(beanInformation.type());
+        Integer code = ClassMetaDataExtractionUtils.getPresentAnnotationCode(beanInformation.getType());
         return this.isContainsBeanWithIdentifier(beanInformation, code);
     }
 
     public Boolean contains(final String identifier) {
         return this.storage.entrySet().stream()
-            .anyMatch((set) -> (set.getValue().stream().filter(entry -> Objects.equals(entry.identifier(), identifier)).findFirst().isPresent()));
+            .anyMatch((set) -> (set.getValue().stream().filter(entry -> Objects.equals(entry.getIdentifier(), identifier)).findFirst().isPresent()));
     }
 
     public Boolean isContainsBeanWithIdentifier(final BeanInformation beanInformation, Integer code) {
@@ -220,8 +211,8 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
             return Boolean.FALSE;
         }
 
-        if (this.storage.get(code).stream().filter(entry -> Objects.equals(entry.identifier(), beanInformation.identifier())).findFirst().isPresent()) {
-            LOGGER.info("Bean information for identifier {} already exists.", beanInformation.identifier());
+        if (this.storage.get(code).stream().filter(entry -> Objects.equals(entry.getIdentifier(), beanInformation.getIdentifier())).findFirst().isPresent()) {
+            LOGGER.info("Bean information for identifier {} already exists.", beanInformation.getIdentifier());
             return Boolean.TRUE;
         }
 
@@ -229,7 +220,8 @@ public class SortedBeanInformationStorage implements SortedStorage<Integer, Bean
     }
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    private void initialiseStorage() throws StorageInitialisingException {
+    @Override
+    protected final void initialiseStorage() {
 
         try {
             Object annotationCodesInstance = MethodMetaDataExtractionUtils.AnnotationCodes.class.newInstance();

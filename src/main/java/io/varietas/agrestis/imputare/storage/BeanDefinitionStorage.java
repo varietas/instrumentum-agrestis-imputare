@@ -54,7 +54,7 @@ public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>
 
     @Override
     public Optional<BeanDefinition> findForDependency(DependencyInformation dependency) {
-        return this.findForIdentifier(dependency.identifier());
+        return this.findForIdentifier(dependency.getIdentifier());
     }
 
     @Override

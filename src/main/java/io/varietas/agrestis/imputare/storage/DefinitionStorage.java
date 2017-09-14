@@ -25,16 +25,19 @@ import java.util.Optional;
  *
  * @author Michael Rhöse
  * @version 1.0.0, 7/7/2016
+ * @param <IDENTIFIER> Generic identifier of stored definitions.
+ * @param <TYPE> Generic type for the value which is stored.
+ * @param <ENTRY>
  */
-public interface DefinitionStorage<Identifier, Type, Entry> extends UnsortedStorage<Entry> {
+public interface DefinitionStorage<IDENTIFIER, TYPE, ENTRY> extends UnsortedStorage<ENTRY> {
 
-    public Optional<Entry> findForIdentifier(final Identifier identifier);
+    public Optional<ENTRY> findForIdentifier(final IDENTIFIER identifier);
 
-    public List<Entry> findForType(final Type type);
+    public List<ENTRY> findForType(final TYPE type);
 
-    public Optional<Entry> findForDependency(final DependencyInformation dependency);
+    public Optional<ENTRY> findForDependency(final DependencyInformation dependency);
 
-    public List<Entry> findForDependencies(final List<DependencyInformation> dependencies);
+    public List<ENTRY> findForDependencies(final List<DependencyInformation> dependencies);
 
-    public Boolean contains(final Identifier identifier);
+    public Boolean contains(final IDENTIFIER identifier);
 }

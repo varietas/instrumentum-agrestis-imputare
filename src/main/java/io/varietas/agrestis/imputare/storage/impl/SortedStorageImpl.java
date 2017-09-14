@@ -17,15 +17,13 @@ package io.varietas.agrestis.imputare.storage.impl;
 
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * <h2>SortedStorageImpl</h2>
@@ -34,23 +32,25 @@ import java.util.stream.Collectors;
  *
  * @author Michael Rhöse
  * @version 1.0.0, 6/30/2016
+ * @param <CODE> Generic code type.
+ * @param <TYPE> Generic type which is stored.
  */
-public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
+public class SortedStorageImpl<CODE extends Serializable, TYPE> implements SortedStorage<CODE, TYPE> {
 
-    private final Map<Integer, List<Class<?>>> clazzes;
+    protected final Map<CODE, List<TYPE>> storage;
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public SortedStorageImpl() throws IllegalArgumentException, IllegalAccessException, InstantiationException {
-        this.clazzes = new HashMap<>();
+    public SortedStorageImpl() {
+        this.storage = new HashMap<>();
 
         this.initialiseStorage();
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @Override
-    public Optional<Class<?>> next() {
+    public Optional<TYPE> next() {
 
-        final Optional<List<Class<?>>> nextList = this.clazzes.values()
+        final Optional<List<TYPE>> nextList = this.storage.values()
             .stream()
             .filter(list -> !list.isEmpty())
             .findFirst();
@@ -59,61 +59,25 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
             return Optional.empty();
         }
 
-        Class<?> res = nextList.get().get(nextList.get().size() - 1);
+        TYPE res = nextList.get().get(nextList.get().size() - 1);
         nextList.get().remove(res);
 
         return Optional.of(res);
     }
 
     @Override
-    public Optional<Class<?>> next(final Integer code) {
+    public Optional<TYPE> next(final CODE code) {
 
-        final List<Class<?>> nextList = this.clazzes.get(code);
+        final List<TYPE> nextList = this.storage.get(code);
 
         if (nextList.isEmpty()) {
             return Optional.empty();
         }
 
-        Class<?> res = nextList.get(nextList.size() - 1);
+        TYPE res = nextList.get(nextList.size() - 1);
         nextList.remove(res);
 
         return Optional.of(res);
-    }
-
-    /**
-     * Searches for a given class all available classes. If is no class available an empty list will returned. Internally the {@link ClassMetaDataExtractionUtils.AnnotationCodes} will searched.
-     *
-     * @param entry Equal classes searched for.
-     * @return
-     */
-    @Override
-    public List<Class<?>> findByTypes(final Class<?> entry) {
-        List<Class<?>> res = new ArrayList<>();
-
-        this.findByTypesAndAnnotationCode(entry, ClassMetaDataExtractionUtils.getPresentAnnotationCode(entry));
-
-        return res;
-    }
-
-    /**
-     * Searches for a given class and {@link ClassMetaDataExtractionUtils.AnnotationCodes} all available classes. If is no class available an empty list will returned.
-     *
-     * @param entry Equal classes searched for.
-     * @param code Annotation code.
-     * @return
-     */
-    @Override
-    public List<Class<?>> findByTypesAndAnnotationCode(final Class<?> entry, final Integer code) {
-
-        List<Class<?>> res = new ArrayList<>();
-
-        if (Objects.equals(code, ClassMetaDataExtractionUtils.AnnotationCodes.NONE)) {
-            return res;
-        }
-
-        res.addAll(this.clazzes.get(code).stream().filter(clazz -> clazz.equals(entry)).collect(Collectors.toList()));
-
-        return res;
     }
 
     /**
@@ -124,16 +88,16 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
      * @return Number of stored classes or -1 for an error.
      */
     @Override
-    public int store(final Class<?> entry, final Integer code) {
+    public int store(final TYPE entry, final CODE code) {
         if (Objects.equals(code, ClassMetaDataExtractionUtils.AnnotationCodes.NONE)) {
             return -1;
         }
 
-        if (!this.clazzes.get(code).add(entry)) {
+        if (!this.storage.get(code).add(entry)) {
             return -1;
         }
 
-        return this.clazzes.get(code).size();
+        return this.storage.get(code).size();
     }
 
     /**
@@ -144,26 +108,26 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
      * @return Number of stored classes or -1 for an error.
      */
     @Override
-    public int storeAll(Collection<Class<?>> entries, final Integer code) {
+    public int storeAll(Collection<TYPE> entries, final CODE code) {
 
-        for (Class<?> clazz : entries) {
+        for (TYPE clazz : entries) {
             if (this.store(clazz, code) == -1) {
                 return -1;
             }
         }
 
-        return this.clazzes.get(code).size();
+        return this.storage.get(code).size();
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @Override
-    public Map<Integer, List<Class<?>>> getStorage() {
-        return this.clazzes;
+    public Map<CODE, List<TYPE>> getStorage() {
+        return this.storage;
     }
 
     @Override
-    public Boolean isEmpty(Integer code) {
-        return this.clazzes.get(code).isEmpty();
+    public Boolean isEmpty(CODE code) {
+        return this.storage.get(code).isEmpty();
     }
 
     @Override
@@ -172,14 +136,7 @@ public class SortedStorageImpl implements SortedStorage<Integer, Class<?>> {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    private void initialiseStorage() throws IllegalArgumentException, IllegalAccessException, InstantiationException {
-
-        Object annotationCodesInstance = ClassMetaDataExtractionUtils.AnnotationCodes.class.newInstance();
-        Field[] annotationCodesFields = ClassMetaDataExtractionUtils.AnnotationCodes.class.getDeclaredFields();
-
-        for (int index = 1; index < annotationCodesFields.length; ++index) {
-            Integer code = (Integer) annotationCodesFields[index].get(annotationCodesInstance);
-            this.clazzes.put(code, new ArrayList<>(0));
-        }
+    protected void initialiseStorage()
+    {
     }
 }
