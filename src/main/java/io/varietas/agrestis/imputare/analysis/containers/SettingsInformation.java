@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 varietas.io
+ * Copyright 2017 Michael Rhöse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,19 @@
  */
 package io.varietas.agrestis.imputare.analysis.containers;
 
-import java.lang.reflect.Constructor;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
 
 /**
- * <h2>ConstructorInformation</h2>
+ * <h2>SettingsInformation</h2>
+ *
+ * The settings information contains 
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/1/2016
+ * @version 1.0.0, 09/13/2017
  */
-public class ConstructorInformation extends AbstractDependencyRequester {
+@AllArgsConstructor
+public class SettingsInformation {
 
-    @Getter
-    private final Constructor constructor;
-
-    public ConstructorInformation(Constructor constructor, DependencyInformation... dependencies) {
-        super(dependencies, constructor.getParameterCount());
-        this.constructor = constructor;
-    }
+    private final String file;
+    private final String path;
 }

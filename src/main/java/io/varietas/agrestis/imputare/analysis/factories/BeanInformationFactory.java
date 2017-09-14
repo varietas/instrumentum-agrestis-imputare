@@ -20,6 +20,8 @@ import io.varietas.agrestis.imputare.analysis.containers.DependencyInformation;
 import io.varietas.agrestis.imputare.enumerations.BeanScopes;
 import java.util.Objects;
 import java.util.function.Function;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * <h2>BeanInformationFactory</h2>
@@ -27,41 +29,16 @@ import java.util.function.Function;
  * @author Michael Rhöse
  * @version 1.0.0, 7/30/2016
  */
+@Accessors(fluent = true, chain = true)
+@Setter
 public class BeanInformationFactory implements InformationFactory<BeanInformation> {
 
+    
     private Object creationInformation;
     private BeanScopes scope;
     private String identifier;
     private Class<?> type;
     Function<Class<?>, DependencyInformation[]> operator;
-
-    public BeanInformationFactory() {
-    }
-
-    public BeanInformationFactory setCreationInformation(Object creationInformation) {
-        this.creationInformation = creationInformation;
-        return this;
-    }
-
-    public BeanInformationFactory setScope(BeanScopes scope) {
-        this.scope = scope;
-        return this;
-    }
-
-    public BeanInformationFactory setIdentifier(String identifier) {
-        this.identifier = identifier;
-        return this;
-    }
-
-    public BeanInformationFactory setType(Class<?> type) {
-        this.type = type;
-        return this;
-    }
-
-    public BeanInformationFactory setDependencyOperator(Function<Class<?>, DependencyInformation[]> operation) {
-        this.operator = operation;
-        return this;
-    }
 
     @Override
     public BeanInformation get() {

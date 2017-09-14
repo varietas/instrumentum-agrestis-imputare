@@ -16,6 +16,7 @@
 package io.varietas.agrestis.imputare.analysis.containers;
 
 import java.lang.reflect.Field;
+import lombok.Getter;
 
 /**
  * <h2>FieldDependencyInformation</h2>
@@ -23,6 +24,7 @@ import java.lang.reflect.Field;
  * @author Michael Rhöse
  * @version 1.0.0, 7/8/2016
  */
+@Getter
 public class FieldDependencyInformation extends DependencyInformation {
 
     private final Field field;
@@ -30,9 +32,5 @@ public class FieldDependencyInformation extends DependencyInformation {
     public FieldDependencyInformation(Field field, String identifier, Class<?> type) {
         super(identifier, type);
         this.field = field;
-    }
-
-    public Field field() {
-        return this.field;
     }
 }

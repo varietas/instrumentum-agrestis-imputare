@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 varietas.io
+ * Copyright 2017 Michael Rhöse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,27 @@
  */
 package io.varietas.agrestis.imputare.analysis.containers;
 
-import java.lang.reflect.Constructor;
-import lombok.Getter;
-
 /**
- * <h2>ConstructorInformation</h2>
+ * <h2>Information</h2>
+ *
+ * This interface is the minimum API an information container requires.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/1/2016
+ * @version 1.0.0, 09/14/2017
  */
-public class ConstructorInformation extends AbstractDependencyRequester {
+public interface Information {
 
-    @Getter
-    private final Constructor constructor;
+    /**
+     * Gets the specific identifier of an object.
+     *
+     * @return Identifier.
+     */
+    String getIdentifier();
 
-    public ConstructorInformation(Constructor constructor, DependencyInformation... dependencies) {
-        super(dependencies, constructor.getParameterCount());
-        this.constructor = constructor;
-    }
+    /**
+     * Gets the specific type of an object. The type is used for the creation of an instance.
+     *
+     * @return Type.
+     */
+    Class<?> getType();
 }

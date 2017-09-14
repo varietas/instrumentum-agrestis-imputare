@@ -15,13 +15,16 @@
  */
 package io.varietas.agrestis.imputare.analysis.containers;
 
+import lombok.Getter;
+
 /**
  * <h2>DependencyInformation</h2>
  *
  * @author Michael Rhöse
  * @version 1.0.0, 7/1/2016
  */
-public class DependencyInformation {
+@Getter
+public class DependencyInformation implements Information{
 
     private final String identifier;
     private final Class<?> type;
@@ -29,13 +32,5 @@ public class DependencyInformation {
     public DependencyInformation(String identifier, Class<?> type) {
         this.identifier = identifier;
         this.type = type;
-    }
-
-    public String identifier() {
-        return identifier;
-    }
-
-    public Class<?> type() {
-        return type;
     }
 }

@@ -19,6 +19,8 @@ import io.varietas.agrestis.imputare.analysis.containers.ConstructorInformation;
 import io.varietas.agrestis.imputare.analysis.containers.DependencyInformation;
 import java.lang.reflect.Constructor;
 import java.util.function.Function;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * <h2>ConstructorInformationFactory</h2>
@@ -26,22 +28,14 @@ import java.util.function.Function;
  * @author Michael Rhöse
  * @version 1.0.0, 7/31/2016
  */
+@Accessors(fluent = true, chain = true)
+@Setter
 public class ConstructorInformationFactory implements InformationFactory<ConstructorInformation> {
 
     private Constructor constructor;
     Function<Constructor, DependencyInformation[]> operator;
 
     public ConstructorInformationFactory() {
-    }
-
-    public ConstructorInformationFactory setConstructor(Constructor constructor) {
-        this.constructor = constructor;
-        return this;
-    }
-
-    public ConstructorInformationFactory setDependencyOperator(Function<Constructor, DependencyInformation[]> operation) {
-        this.operator = operation;
-        return this;
     }
 
     @Override

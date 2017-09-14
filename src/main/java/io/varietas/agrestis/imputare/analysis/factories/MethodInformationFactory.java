@@ -19,6 +19,8 @@ import io.varietas.agrestis.imputare.analysis.containers.DependencyInformation;
 import io.varietas.agrestis.imputare.analysis.containers.MethodInformation;
 import java.lang.reflect.Method;
 import java.util.function.Function;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * <h2>MethodInformationFactory</h2>
@@ -26,6 +28,8 @@ import java.util.function.Function;
  * @author Michael Rhöse
  * @version 1.0.0, 7/4/2016
  */
+@Accessors(fluent = true, chain = true)
+@Setter
 public class MethodInformationFactory implements InformationFactory<MethodInformation> {
 
     private Class<?> parent;
@@ -33,21 +37,6 @@ public class MethodInformationFactory implements InformationFactory<MethodInform
     Function<Method, DependencyInformation[]> operator;
 
     public MethodInformationFactory() {
-    }
-
-    public MethodInformationFactory setParent(Class<?> parent) {
-        this.parent = parent;
-        return this;
-    }
-
-    public MethodInformationFactory setMethod(Method method) {
-        this.method = method;
-        return this;
-    }
-
-    public MethodInformationFactory setDependencyOperator(Function<Method, DependencyInformation[]> operation) {
-        this.operator = operation;
-        return this;
     }
 
     @Override

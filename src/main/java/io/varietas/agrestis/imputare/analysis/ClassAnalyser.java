@@ -39,6 +39,7 @@ import io.varietas.agrestis.imputare.utils.analysis.dependency.DependencyMetaDat
 import io.varietas.agrestis.imputare.utils.analysis.fields.FieldMetaDataExtractorUtils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -54,7 +55,7 @@ import java.util.Optional;
  * @author Michael Rhöse
  * @version 1.0.0, 7/1/2016
  */
-public final class ClassAnalyser {
+public final class ClassAnalyser implements Analyser<SortedBeanInformationStorage> {
 
     private final SortedBeanInformationStorage sortedBeanInformationStorage;
     private final SortedStorage<Integer, Class<?>> sortedClassesStorage;
@@ -74,17 +75,19 @@ public final class ClassAnalyser {
      * @throws ConstructorAccessException Thrown if a bean producing method isn't accessible.
      * @throws io.varietas.agrestis.imputare.error.InternalException
      */
+    @Override
     public final ClassAnalyser doAnalysis() throws ToManyInjectedConstructorsException, DuplicatedIdentifierException, InternalException, ConstructorAccessException {
 
-        ///< Do configuration class analysis
-        this.doMethodBeanAnalysis();
-
-        ///< Do bean class analysis
-        this.doBeanAnalysis();
+        this
+            ///< Do configuration class analysis
+            .doMethodBeanAnalysis()
+            ///< Do bean class analysis
+            .doBeanAnalysis();
 
         return this;
     }
 
+    @Override
     public SortedBeanInformationStorage getStorage() {
         return this.sortedBeanInformationStorage;
     }
@@ -117,8 +120,13 @@ public final class ClassAnalyser {
 
         for (Integer annotationType : this.sortedClassesStorage.getStorage().keySet()) {
 
-            ///< Skip type category if is there no entry
+            ///< Skip type category if no annotation type is available.
             if (this.sortedClassesStorage.isEmpty(annotationType)) {
+                continue;
+            }
+
+            ///< Skip type category if category is SETTINGS
+            if (Objects.equals(annotationType, ClassMetaDataExtractionUtils.AnnotationCodes.SETTINGS)) {
                 continue;
             }
 
@@ -148,16 +156,16 @@ public final class ClassAnalyser {
         ///< Depednency meta data
         ///< Collect Dependencies
         final MethodInformation methodInformation = new MethodInformationFactory()
-            .setMethod(method)
-            .setParent(parent)
-            .setDependencyOperator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier)
+            .method(method)
+            .parent(parent)
+            .operator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier)
             .get();
 
         return new BeanInformationFactory()
-            .setCreationInformation(methodInformation)
-            .setScope(MethodMetaDataExtractionUtils.getBeanScope(method))
-            .setIdentifier(MethodMetaDataExtractionUtils.getBeanIdentifier(method))
-            .setType(method.getReturnType())
+            .creationInformation(methodInformation)
+            .scope(MethodMetaDataExtractionUtils.getBeanScope(method))
+            .identifier(MethodMetaDataExtractionUtils.getBeanIdentifier(method))
+            .type(method.getReturnType())
             .get();
     }
 
@@ -168,22 +176,22 @@ public final class ClassAnalyser {
 
         ///< Constructor parameter analysis
         ConstructorInformation constructorInformation = new ConstructorInformationFactory()
-            .setConstructor(chosenConstructor.getValue2())
-            .setDependencyOperator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier)
+            .constructor(chosenConstructor.getValue2())
+            .operator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier)
             .get();
 
         BeanInformationFactory informationFactory = new BeanInformationFactory();
 
         ///< Bean field analysis
         if (FieldMetaDataExtractorUtils.isDependenciesExist(beanType)) {
-            informationFactory.setDependencyOperator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier);
+            informationFactory.operator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier);
         }
 
         return informationFactory
-            .setCreationInformation(constructorInformation)
-            .setScope(ClassMetaDataExtractionUtils.getBeanScope(beanType, annotationType))
-            .setIdentifier(ClassMetaDataExtractionUtils.getBeanIdentifier(beanType, annotationType))
-            .setType(beanType)
+            .creationInformation(constructorInformation)
+            .scope(ClassMetaDataExtractionUtils.getBeanScope(beanType, annotationType))
+            .identifier(ClassMetaDataExtractionUtils.getBeanIdentifier(beanType, annotationType))
+            .type(beanType)
             .get();
     }
 }

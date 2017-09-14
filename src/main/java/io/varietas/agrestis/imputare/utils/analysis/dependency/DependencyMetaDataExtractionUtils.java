@@ -42,7 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DependencyMetaDataExtractionUtils {
 
     /**
-     * Extracts the dependencies from a given method. The method will analysed for the presents of the {@link Autowire} annotation. For later operations the type and the identifier will be extracted.
+     * Extracts the dependencies from a given method. The method will analysed for the presents of the {@link Autowire} annotation. For later operations the getType and the getIdentifier will be extracted.
      *
      * @param method
      * @return
@@ -74,8 +74,8 @@ public class DependencyMetaDataExtractionUtils {
     }
 
     /**
-     * Extracts the dependencies from a given constructor. The constructor will analysed for the presents of the {@link Autowire} annotation. For later operations the type and the identifier will be
-     * extracted.
+     * Extracts the dependencies from a given constructor. The constructor will analysed for the presents of the {@link Autowire} annotation. For later operations the getType and the getIdentifier will be
+ extracted.
      *
      * @param constructor
      * @return
@@ -119,9 +119,9 @@ public class DependencyMetaDataExtractionUtils {
     }
 
     /**
-     * Creates the {@link DependencyInformation} for identifiers and types. The {@link Executable} parameters will iterated and with the identifier on the same index stored.
-     *
-     * Could used if no android support is required anymore.
+     * Creates the {@link DependencyInformation} for identifiers and types. The {@link Executable} parameters will iterated and with the getIdentifier on the same index stored.
+
+ Could used if no android support is required anymore.
      *
      * @param method
      * @param identifiers

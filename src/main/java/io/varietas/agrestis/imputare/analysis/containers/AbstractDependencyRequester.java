@@ -15,6 +15,8 @@
  */
 package io.varietas.agrestis.imputare.analysis.containers;
 
+import lombok.Getter;
+
 /**
  * <h2>AbstractDependencyRequester</h2>
  *
@@ -23,17 +25,13 @@ package io.varietas.agrestis.imputare.analysis.containers;
  */
 public class AbstractDependencyRequester implements DependencyRequester {
 
+    @Getter
     private final DependencyInformation[] dependencies;
     private final Integer parameterCount;
 
     public AbstractDependencyRequester(DependencyInformation[] dependencies, Integer parameterCount) {
         this.dependencies = dependencies;
         this.parameterCount = parameterCount;
-    }
-
-    @Override
-    public DependencyInformation[] getDependencies() {
-        return dependencies;
     }
 
     @Override

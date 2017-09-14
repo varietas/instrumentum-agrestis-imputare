@@ -21,6 +21,7 @@ import io.varietas.agrestis.imputare.annotation.Controller;
 import io.varietas.agrestis.imputare.annotation.Repository;
 import io.varietas.agrestis.imputare.annotation.Service;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.annotation.resources.Settings;
 import io.varietas.agrestis.imputare.contants.AnnotationConstants;
 import io.varietas.agrestis.imputare.contants.AnnotationMethodIndices;
 import io.varietas.agrestis.imputare.enumerations.BeanScopes;
@@ -132,6 +133,7 @@ public class ClassMetaDataExtractionUtils {
      * <li>[4] Controller</li>
      * <li>[8] Component</li>
      * <li>[16] Configuration</li>
+     * <li>[32] Settings</li>
      * </ul>
      *
      * All other numbers are additions of the types above. For better use the available codes are stored in the {@link AnnotationCodes}.
@@ -143,21 +145,23 @@ public class ClassMetaDataExtractionUtils {
         if (clazz.isAnnotationPresent(Repository.class)) {
             return ClassMetaDataExtractionUtils.AnnotationCodes.REPOSITORY;
         }
-
         if (clazz.isAnnotationPresent(Service.class)) {
             return ClassMetaDataExtractionUtils.AnnotationCodes.SERVICE;
         }
-
         if (clazz.isAnnotationPresent(Controller.class)) {
             return ClassMetaDataExtractionUtils.AnnotationCodes.CONTROLLER;
         }
-
         if (clazz.isAnnotationPresent(Component.class)) {
             return ClassMetaDataExtractionUtils.AnnotationCodes.COMPONENT;
         }
-
         if (clazz.isAnnotationPresent(Configuration.class)) {
             return ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION;
+        }
+        if (clazz.isAnnotationPresent(Configuration.class)) {
+            return ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION;
+        }
+        if (clazz.isAnnotationPresent(Settings.class)) {
+            return ClassMetaDataExtractionUtils.AnnotationCodes.SETTINGS;
         }
 
         return ClassMetaDataExtractionUtils.AnnotationCodes.NONE;
@@ -180,6 +184,9 @@ public class ClassMetaDataExtractionUtils {
         if (anntationAsString.contains(Configuration.class.getName())) {
             return ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION;
         }
+        if (anntationAsString.contains(Settings.class.getName())) {
+            return ClassMetaDataExtractionUtils.AnnotationCodes.SETTINGS;
+        }
 
         return ClassMetaDataExtractionUtils.AnnotationCodes.NONE;
     }
@@ -201,6 +208,9 @@ public class ClassMetaDataExtractionUtils {
         if (code.equals(AnnotationCodes.CONFIGURATION)) {
             return Optional.of(clazz.getAnnotation(Configuration.class));
         }
+        if (code.equals(AnnotationCodes.SETTINGS)) {
+            return Optional.of(clazz.getAnnotation(Settings.class));
+        }
 
         return Optional.empty();
     }
@@ -219,6 +229,9 @@ public class ClassMetaDataExtractionUtils {
             return Boolean.TRUE;
         }
         if (code.equals(AnnotationCodes.CONFIGURATION)) {
+            return Boolean.TRUE;
+        }
+        if (code.equals(AnnotationCodes.SETTINGS)) {
             return Boolean.TRUE;
         }
 
@@ -293,6 +306,7 @@ public class ClassMetaDataExtractionUtils {
      * <li>CONTROLLER = 4</li>
      * <li>COMPONENT = 8</li>
      * <li>CONFIGURATION = 16</li>
+     * <li>SETTINGS = 32</li>
      * </ul>
      *
      * @author Michael Rhöse
@@ -306,7 +320,8 @@ public class ClassMetaDataExtractionUtils {
             SERVICE = 2,
             CONTROLLER = 4,
             COMPONENT = 8,
-            CONFIGURATION = 16;
+            CONFIGURATION = 16,
+            SETTINGS = 32;
     }
 
     /**

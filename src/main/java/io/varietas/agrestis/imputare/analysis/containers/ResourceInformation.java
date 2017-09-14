@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 varietas.io
+ * Copyright 2017 Michael Rhöse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,20 +19,20 @@ import java.lang.reflect.Method;
 import lombok.Getter;
 
 /**
- * <h2>MethodInformation</h2>
+ * <h2>ResourceInformation</h2>
  *
- * The method information contains all information about the creation of an instance for a bean. The dependencies represents the required parameters if the method needs parameters.
+ * The resource information contains all information about the creation of values. The dependencies represents the required parameters if the method needs parameters.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/1/2016
+ * @version 1.0.0, 09/13/2017
  */
 @Getter
-public class MethodInformation extends AbstractDependencyRequester {
+public class ResourceInformation extends AbstractDependencyRequester {
 
     private final Class<?> parent;
     private final Method method;
 
-    public MethodInformation(final Class<?> parent, final Method method, final DependencyInformation... dependencies) {
+    public ResourceInformation(final Class<?> parent, final Method method, final DependencyInformation... dependencies) {
         super(dependencies, method.getParameterCount());
         this.parent = parent;
         this.method = method;
