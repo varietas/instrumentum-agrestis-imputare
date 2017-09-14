@@ -84,6 +84,12 @@
             <optional>true</optional>
         </dependency>
         
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <optional>true</optional>
+        </dependency>
+        
         <!-- Dependencies for testing -->
         <dependency>
             <groupId>junit</groupId>
@@ -102,25 +108,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>3.6.2</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>net.orfjackal.retrolambda</groupId>
-                <artifactId>retrolambda-maven-plugin</artifactId>
-                <version>2.5.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>process-main</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <target>1.7</target>
                 </configuration>
             </plugin>
             <plugin>
