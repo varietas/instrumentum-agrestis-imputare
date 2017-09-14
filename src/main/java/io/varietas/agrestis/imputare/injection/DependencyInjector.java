@@ -86,7 +86,7 @@ public final class DependencyInjector {
         ///< If dependencies required
         Object creationInformation = beanInformation.getCreationInformation();
 
-        String beanIdentifier = beanInformation.identifier();
+        String beanIdentifier = beanInformation.getIdentifier();
 
         Executable activationTarget = null;
         Optional<Class<?>> targetParent = null;
@@ -123,26 +123,26 @@ public final class DependencyInjector {
 
         final List<Pair<Field, Object>> dependencies = new ArrayList<>();
 
-        ///< Exctract field dependencies
+        ///< Exctract getField dependencies
         if (beanInformation.isDependenciesRequired()) {
 
             for (DependencyInformation dependencyInformation : beanInformation.getDependencies()) {
-                final Field field = ((FieldDependencyInformation) dependencyInformation).field();
+                final Field field = ((FieldDependencyInformation) dependencyInformation).getField();
 
-                if (this.definitionStorage.contains(dependencyInformation.identifier())) {
-                    dependencies.add(new Pair<>(field, this.definitionStorage.findForIdentifier(dependencyInformation.identifier())));
+                if (this.definitionStorage.contains(dependencyInformation.getIdentifier())) {
+                    dependencies.add(new Pair<>(field, this.definitionStorage.findForIdentifier(dependencyInformation.getIdentifier())));
                     continue;
                 }
 
-                if (!this.informationStorage.contains(dependencyInformation.identifier())) {
-                    throw new NullPointerException("No dependency information located for " + dependencyInformation.identifier());
+                if (!this.informationStorage.contains(dependencyInformation.getIdentifier())) {
+                    throw new NullPointerException("No dependency information located for " + dependencyInformation.getIdentifier());
                 }
 
-                dependencies.add(new Pair<>(field, this.singleInjectionWork(this.informationStorage.findByIdentifier(dependencyInformation.identifier()).get())));
+                dependencies.add(new Pair<>(field, this.singleInjectionWork(this.informationStorage.findByIdentifier(dependencyInformation.getIdentifier()).get())));
             }
         }
 
-        if (Objects.equals(beanInformation.scope(), BeanScopes.SINGELTON)) {
+        if (Objects.equals(beanInformation.getScope(), BeanScopes.SINGELTON)) {
             if (Objects.isNull(activationTargetPara)) {
                 activationTargetPara = new Object[0];
             }
@@ -151,14 +151,20 @@ public final class DependencyInjector {
 
             InjectionUtils.addDependenciesToBean(instance, dependencies);
 
-            return new SingletonBeanDefinition(instance, beanIdentifier, beanInformation.scope(), beanInformation.type());
+            return new SingletonBeanDefinition(instance, beanIdentifier, beanInformation.getScope(), beanInformation.getType());
         }
 
         if (isConstructor) {
-            return new ConstructorPrototypeBeanDefinition(fieldDependencies, (Constructor) activationTarget, activationTargetPara, beanIdentifier, beanInformation.scope(), beanInformation.type());
+            return new ConstructorPrototypeBeanDefinition(
+                fieldDependencies,
+                (Constructor) activationTarget,
+                activationTargetPara,
+                beanIdentifier,
+                beanInformation.getScope(),
+                beanInformation.getType());
         }
 
-        return new MethodPrototypeBeanDefinition(targetParent.get(), (Method) activationTarget, activationTargetPara, beanIdentifier, beanInformation.scope(), beanInformation.type());
+        return new MethodPrototypeBeanDefinition(targetParent.get(), (Method) activationTarget, activationTargetPara, beanIdentifier, beanInformation.getScope(), beanInformation.getType());
 
     }
 
@@ -166,20 +172,20 @@ public final class DependencyInjector {
         final List<BeanDefinition> dependencies = new ArrayList<>();
         for (DependencyInformation dependencyInformation : dependencyRequester.getDependencies()) {
             ///< if is in definition storage
-            if (this.definitionStorage.contains(dependencyInformation.identifier())) {
-                dependencies.add((BeanDefinition) this.definitionStorage.findForIdentifier(dependencyInformation.identifier()).get());
+            if (this.definitionStorage.contains(dependencyInformation.getIdentifier())) {
+                dependencies.add((BeanDefinition) this.definitionStorage.findForIdentifier(dependencyInformation.getIdentifier()).get());
                 continue;
             }
 
             ///< if is in information storage
-            if (!this.informationStorage.contains(dependencyInformation.identifier())) {
-                throw new NullPointerException("No dependency information located for " + dependencyInformation.identifier());
+            if (!this.informationStorage.contains(dependencyInformation.getIdentifier())) {
+                throw new NullPointerException("No dependency information located for " + dependencyInformation.getIdentifier());
             }
 
-            final Optional<BeanInformation> information = this.informationStorage.findByIdentifier(dependencyInformation.identifier());
+            final Optional<BeanInformation> information = this.informationStorage.findByIdentifier(dependencyInformation.getIdentifier());
 
             if (!information.isPresent()) {
-                throw new NullPointerException("No dependency information located for " + dependencyInformation.identifier());
+                throw new NullPointerException("No dependency information located for " + dependencyInformation.getIdentifier());
             }
 
             final BeanDefinition dependencyDefinition = this.singleInjectionWork(information.get());
