@@ -15,6 +15,7 @@
  */
 package io.varietas.agrestis.imputare.analysis.containers;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -24,13 +25,10 @@ import lombok.Getter;
  * @version 1.0.0, 7/1/2016
  */
 @Getter
+@AllArgsConstructor
 public class DependencyInformation implements Information{
 
     private final String identifier;
     private final Class<?> type;
-
-    public DependencyInformation(String identifier, Class<?> type) {
-        this.identifier = identifier;
-        this.type = type;
-    }
+    private final boolean bean;
 }

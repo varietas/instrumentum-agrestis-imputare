@@ -63,14 +63,14 @@ public class ClassSorterTest {
     public void categoryCreation() throws IOException, ClassNotFoundException, URISyntaxException {
         UnsortedStorage storage = ClassSorterTest.classCollector.collectAnnotatedClazzes().getStorage();
 
-        int count = storage.getStorage().size();
+        this.count = storage.getStorage().size();
 
-        Assertions.assertThat(count).isEqualTo(17);
-        LOGGER.info("Located classes: {}", count);
+        Assertions.assertThat(this.count).isEqualTo(17);
+        LOGGER.info("Located classes: {}", this.count);
 
-        count = ClassSorterTest.classSorter.getStorage().getStorage().size();
-        Assertions.assertThat(count).isEqualTo(5);
-        LOGGER.info("Lists for types: {}", count);
+        this.count = ClassSorterTest.classSorter.getStorage().getStorage().size();
+        Assertions.assertThat(this.count).isEqualTo(6);
+        LOGGER.info("Lists for types: {}", this.count);
     }
 
     @Test
@@ -78,9 +78,9 @@ public class ClassSorterTest {
 
         SortedStorage<Integer, Class<?>> sortedStorage = ClassSorterTest.classSorter.getStorage();
 
-        count = sortedStorage.getStorage().get(ClassMetaDataExtractionUtils.AnnotationCodes.REPOSITORY).size();
-        Assertions.assertThat(count).isEqualTo(0);
-        LOGGER.info("{} classes for {} stored.", count, ClassMetaDataExtractionUtils.AnnotationCodes.REPOSITORY);
+        this.count = sortedStorage.getStorage().get(ClassMetaDataExtractionUtils.AnnotationCodes.REPOSITORY).size();
+        Assertions.assertThat(this.count).isEqualTo(0);
+        LOGGER.info("{} classes for {} stored.", this.count, ClassMetaDataExtractionUtils.AnnotationCodes.REPOSITORY);
     }
 
     @Test
@@ -88,9 +88,9 @@ public class ClassSorterTest {
 
         SortedStorage<Integer, Class<?>> sortedStorage = ClassSorterTest.classSorter.getStorage();
 
-        count = sortedStorage.getStorage().get(ClassMetaDataExtractionUtils.AnnotationCodes.SERVICE).size();
-        Assertions.assertThat(count).isEqualTo(6);
-        LOGGER.info("{} classes for {} stored.", count, ClassMetaDataExtractionUtils.AnnotationCodes.SERVICE);
+        this.count = sortedStorage.getStorage().get(ClassMetaDataExtractionUtils.AnnotationCodes.SERVICE).size();
+        Assertions.assertThat(this.count).isEqualTo(6);
+        LOGGER.info("{} classes for {} stored.", this.count, ClassMetaDataExtractionUtils.AnnotationCodes.SERVICE);
     }
 
     @Test
@@ -98,9 +98,9 @@ public class ClassSorterTest {
 
         SortedStorage<Integer, Class<?>> sortedStorage = ClassSorterTest.classSorter.getStorage();
 
-        count = sortedStorage.getStorage().get(ClassMetaDataExtractionUtils.AnnotationCodes.CONTROLLER).size();
-        Assertions.assertThat(count).isEqualTo(0);
-        LOGGER.info("{} classes for {} stored.", count, ClassMetaDataExtractionUtils.AnnotationCodes.CONTROLLER);
+        this.count = sortedStorage.getStorage().get(ClassMetaDataExtractionUtils.AnnotationCodes.CONTROLLER).size();
+        Assertions.assertThat(this.count).isEqualTo(0);
+        LOGGER.info("{} classes for {} stored.", this.count, ClassMetaDataExtractionUtils.AnnotationCodes.CONTROLLER);
     }
 
     @Test
@@ -108,9 +108,9 @@ public class ClassSorterTest {
 
         SortedStorage<Integer, Class<?>> sortedStorage = ClassSorterTest.classSorter.getStorage();
 
-        count = sortedStorage.getStorage().get(ClassMetaDataExtractionUtils.AnnotationCodes.COMPONENT).size();
-        Assertions.assertThat(count).isEqualTo(6);
-        LOGGER.info("{} classes for {} stored.", count, ClassMetaDataExtractionUtils.AnnotationCodes.COMPONENT);
+        this.count = sortedStorage.getStorage().get(ClassMetaDataExtractionUtils.AnnotationCodes.COMPONENT).size();
+        Assertions.assertThat(this.count).isEqualTo(6);
+        LOGGER.info("{} classes for {} stored.", this.count, ClassMetaDataExtractionUtils.AnnotationCodes.COMPONENT);
     }
 
     @Test
@@ -118,8 +118,18 @@ public class ClassSorterTest {
 
         SortedStorage<Integer, Class<?>> sortedStorage = ClassSorterTest.classSorter.getStorage();
 
-        count = sortedStorage.getStorage().get(ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION).size();
-        Assertions.assertThat(count).isEqualTo(5);
-        LOGGER.info("{} classes for {} stored.", count, ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
+        this.count = sortedStorage.getStorage().get(ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION).size();
+        Assertions.assertThat(this.count).isEqualTo(5);
+        LOGGER.info("{} classes for {} stored.", this.count, ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
+    }
+
+    @Test
+    public void sortAnnotatedClassesForSettings() {
+
+        SortedStorage<Integer, Class<?>> sortedStorage = ClassSorterTest.classSorter.getStorage();
+
+        this.count = sortedStorage.getStorage().get(ClassMetaDataExtractionUtils.AnnotationCodes.SETTINGS).size();
+        Assertions.assertThat(this.count).isEqualTo(0);
+        LOGGER.info("{} classes for {} stored.", this.count, ClassMetaDataExtractionUtils.AnnotationCodes.SETTINGS);
     }
 }

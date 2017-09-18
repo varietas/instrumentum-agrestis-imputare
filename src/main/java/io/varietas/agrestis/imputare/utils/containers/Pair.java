@@ -15,27 +15,22 @@
  */
 package io.varietas.agrestis.imputare.utils.containers;
 
+import lombok.Getter;
+
 /**
  * <h2>Pair</h2>
  *
  * @author Michael Rhöse
  * @version 1.0.0, 7/4/2016
  */
-public class Pair<Value1, Value2> {
+@Getter
+public class Pair<VALUE_1, VALUE_2> {
 
-    private final Value1 value1;
-    private final Value2 value2;
+    private final VALUE_1 value1;
+    private final VALUE_2 value2;
 
-    public Pair(Value1 value1, Value2 value2) {
+    public Pair(VALUE_1 value1, VALUE_2 value2) {
         this.value1 = value1;
         this.value2 = value2;
-    }
-
-    public Value1 getValue1() {
-        return value1;
-    }
-
-    public Value2 getValue2() {
-        return value2;
     }
 }

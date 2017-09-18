@@ -107,7 +107,8 @@ public final class ClassAnalyser implements Analyser<SortedBeanInformationStorag
                 }
 
                 if (status == -2) {
-                    throw new DuplicatedIdentifierException("Critical error occured. Context initialising abourted. An bean information with this identifier already exists. (" + method.getName() + ")");
+                    throw new DuplicatedIdentifierException("Critical error occured. Context initialising abourted. An bean information with this identifier already exists. ("
+                        + method.getName() + ")");
                 }
             }
 

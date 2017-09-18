@@ -21,6 +21,7 @@ import io.varietas.agrestis.imputare.enumerations.BeanScopes;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.common.NamingUtils;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,7 +66,7 @@ public class MethodMetaDataExtractionUtils {
      * @param method Method where the annotation will searched on.
      * @return
      */
-    public static Boolean isDependenciesExist(final Method method) {
+    public static Boolean isDependenciesExist(final Executable method) {
 
         if (MethodMetaDataExtractionUtils.getAnnotationPosition(method) > ClassMetaDataExtractionUtils.AnnotationPosition.NONE) {
             return Boolean.TRUE;
@@ -88,7 +89,7 @@ public class MethodMetaDataExtractionUtils {
      * @param method Method where the annotation will searched on.
      * @return
      */
-    public static Integer getAnnotationPosition(Method method) {
+    public static Integer getAnnotationPosition(Executable method) {
         if (method.isAnnotationPresent(Autowire.class)) {
             return ClassMetaDataExtractionUtils.AnnotationPosition.METHOD;
         }

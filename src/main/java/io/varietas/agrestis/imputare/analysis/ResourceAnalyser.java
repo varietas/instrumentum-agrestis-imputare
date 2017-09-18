@@ -17,16 +17,18 @@ package io.varietas.agrestis.imputare.analysis;
 
 import io.varietas.agrestis.imputare.analysis.containers.ResourceInformation;
 import io.varietas.agrestis.imputare.analysis.containers.SettingsInformation;
+import io.varietas.agrestis.imputare.analysis.factories.ResourceInformationFactory;
+import io.varietas.agrestis.imputare.annotation.resources.File;
 import io.varietas.agrestis.imputare.annotation.resources.Resource;
 import io.varietas.agrestis.imputare.annotation.resources.Settings;
 import io.varietas.agrestis.imputare.storage.resources.SortedResourceInformationStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
-import io.varietas.agrestis.imputare.utils.analysis.dependency.DependencyMetaDataExtractionUtils;
-import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h2>ResourceAnalyser</h2>
@@ -37,6 +39,7 @@ import java.util.stream.Stream;
  * @author Michael Rhöse
  * @version 2.1.0, 07/18/2017
  */
+@Slf4j
 public class ResourceAnalyser implements Analyser<SortedStorage<Boolean, Object>> {
 
     private final SortedStorage<Integer, Class<?>> sortedClassesStorage;
@@ -72,47 +75,57 @@ public class ResourceAnalyser implements Analyser<SortedStorage<Boolean, Object>
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    // TODO:
-    //  - Search all settings files to extract settings.
-    //  - Search all Resource annotated methods to collect programmatically created values.
-    // Things to think about: what types of files should be supported?
-    private final ResourceAnalyser initResourceCollecting() {
+    private ResourceAnalyser initResourceCollecting() {
 
+        ///< Search all Resource annotated methods to collect programmatically created values.
         this.sortedClassesStorage.getStorage().values()
             .stream()
             .flatMap(List::stream)
             .filter(clazz -> Stream.of(clazz.getMethods()).anyMatch(method -> method.isAnnotationPresent(Resource.class)))
-            .forEach(clazz -> {
-                Stream.of(clazz.getMethods())
+            .forEach(parent -> {
+                Stream.of(parent.getMethods())
                     .filter(method -> method.isAnnotationPresent(Resource.class))
                     .map(method -> {
-                        if (MethodMetaDataExtractionUtils.isDependenciesExist(method)) {
-                            return new ResourceInformation(
-                                clazz,
-                                method,
-                                DependencyMetaDataExtractionUtils.getDependenciesWithIdentifier(method)
-                            );
-                        }
-                        return new ResourceInformation(clazz, method);
+                        return this.createResourceInformation(parent, method);
                     })
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
                     .forEach(information -> this.resourceInformationStorage.store(information, Boolean.FALSE));
             });
+
         return this;
     }
 
-    private final ResourceAnalyser initSettingsCollecting() {
+    private ResourceAnalyser initSettingsCollecting() {
+
+        ///< Search all settings files to extract settings.
         Optional<Class<?>> next = this.sortedClassesStorage.next(ClassMetaDataExtractionUtils.AnnotationCodes.SETTINGS);
 
         while (next.isPresent()) {
-            final Settings settings = next.get().getAnnotation(Settings.class);
+            final Class<?> parent = next.get();
+            final Settings settings = parent.getAnnotation(Settings.class);
 
             Stream.of(settings.files())
-                .map(file -> new SettingsInformation(file.file(), file.path()))
+                .map(file -> this.createSettingsInformation(parent, file))
                 .forEach(information -> this.resourceInformationStorage.store(information, Boolean.TRUE));
+
+            next = this.sortedClassesStorage.next(ClassMetaDataExtractionUtils.AnnotationCodes.SETTINGS);
         }
         return this;
     }
 
+    private Optional<ResourceInformation> createResourceInformation(final Class<?> parent, final Method method) {
+        try {
+            return Optional.of(new ResourceInformationFactory().parent(parent).method(method).get());
+        } catch (Exception ex) {
+            LOGGER.error(ex.getLocalizedMessage());
+        }
+        return Optional.empty();
+    }
+
+    private SettingsInformation createSettingsInformation(final Class<?> parent, final File file) {
+        return new SettingsInformation(parent, file.file(), file.path());
+    }
     // TODO: Write settings file extraction utils.
     // TODO: create ManagedValue
     //  - Get type of value

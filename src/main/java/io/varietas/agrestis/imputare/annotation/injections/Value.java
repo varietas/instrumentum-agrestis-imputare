@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 varietas.io
+ * Copyright 2017 Michael Rhöse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.agrestis.imputare.analysis.containers;
+package io.varietas.agrestis.imputare.annotation.injections;
 
-import java.lang.reflect.Field;
-import lombok.Getter;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * <h2>FieldDependencyInformation</h2>
+ * <h2>Value</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/8/2016
+ * @version 1.0.0, 09/16/2017
  */
-@Getter
-public class FieldDependencyInformation extends DependencyInformation {
-
-    private final Field field;
-
-    public FieldDependencyInformation(final Field field, final String identifier, final Class<?> type, final boolean bean) {
-        super(identifier, type, bean);
-        this.field = field;
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})
+public @interface Value {
+    String[] value();
 }

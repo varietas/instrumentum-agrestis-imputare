@@ -21,6 +21,7 @@ import io.varietas.agrestis.imputare.annotation.Controller;
 import io.varietas.agrestis.imputare.annotation.Repository;
 import io.varietas.agrestis.imputare.annotation.Service;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.annotation.injections.Value;
 import io.varietas.agrestis.imputare.annotation.resources.Settings;
 import io.varietas.agrestis.imputare.contants.AnnotationConstants;
 import io.varietas.agrestis.imputare.contants.AnnotationMethodIndices;
@@ -54,15 +55,16 @@ public class ClassMetaDataExtractionUtils {
      * <li>Standard constructor if is no annotation is located.</li>
      * </ol>
      *
-     * @param clazz Where the constructor is for.
+     * @param parent Where the constructor is for.
      * @return
      * @throws ToManyInjectedConstructorsException
      * @throws NoSuchMethodException
      */
-    public static final Constructor getConstructor(Class<?> clazz) throws ToManyInjectedConstructorsException, NoSuchMethodException {
+    public static final Constructor getConstructor(final Class<?> parent) throws ToManyInjectedConstructorsException, NoSuchMethodException {
         ///< Constructor dependencies
-        List<Constructor> injectedConstructors = Stream.of(clazz.getConstructors())
-            .filter(constructor -> constructor.isAnnotationPresent(Autowire.class))
+        final List<Constructor> injectedConstructors = Stream.of(parent.getConstructors())
+            .filter(constructor
+                -> constructor.isAnnotationPresent(Autowire.class) || constructor.isAnnotationPresent(Value.class))
             .collect(Collectors.toList());
 
         if (injectedConstructors.size() > 1) {
@@ -73,9 +75,11 @@ public class ClassMetaDataExtractionUtils {
             return injectedConstructors.get(0);
         }
 
-        List<Constructor> annotatedParamsConstructor = Stream.of(clazz.getConstructors())
+        final List<Constructor> annotatedParamsConstructor = Stream.of(parent.getConstructors())
             .filter(constructor -> Stream.of(constructor.getParameters())
-            .filter(parameter -> parameter.isAnnotationPresent(Autowire.class)).findFirst().isPresent())
+            .filter(parameter
+                -> parameter.isAnnotationPresent(Autowire.class) || parameter.isAnnotationPresent(Value.class))
+            .findFirst().isPresent())
             .collect(Collectors.toList());
 
         if (annotatedParamsConstructor.size() > 1) {
@@ -86,7 +90,7 @@ public class ClassMetaDataExtractionUtils {
             return annotatedParamsConstructor.get(0);
         }
 
-        return clazz.getConstructor();
+        return parent.getConstructor();
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -167,24 +171,24 @@ public class ClassMetaDataExtractionUtils {
         return ClassMetaDataExtractionUtils.AnnotationCodes.NONE;
     }
 
-    public static Integer getPresentAnnotationCodeForAnnotationAsString(final String anntationAsString) {
+    public static Integer getPresentAnnotationCodeForAnnotationAsString(final String annotationAsString) {
 
-        if (anntationAsString.contains(Repository.class.getName())) {
+        if (annotationAsString.contains(Repository.class.getName())) {
             return ClassMetaDataExtractionUtils.AnnotationCodes.REPOSITORY;
         }
-        if (anntationAsString.contains(Service.class.getName())) {
+        if (annotationAsString.contains(Service.class.getName())) {
             return ClassMetaDataExtractionUtils.AnnotationCodes.SERVICE;
         }
-        if (anntationAsString.contains(Controller.class.getName())) {
+        if (annotationAsString.contains(Controller.class.getName())) {
             return ClassMetaDataExtractionUtils.AnnotationCodes.CONTROLLER;
         }
-        if (anntationAsString.contains(Component.class.getName())) {
+        if (annotationAsString.contains(Component.class.getName())) {
             return ClassMetaDataExtractionUtils.AnnotationCodes.COMPONENT;
         }
-        if (anntationAsString.contains(Configuration.class.getName())) {
+        if (annotationAsString.contains(Configuration.class.getName())) {
             return ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION;
         }
-        if (anntationAsString.contains(Settings.class.getName())) {
+        if (annotationAsString.contains(Settings.class.getName())) {
             return ClassMetaDataExtractionUtils.AnnotationCodes.SETTINGS;
         }
 
@@ -247,7 +251,8 @@ public class ClassMetaDataExtractionUtils {
     public static Boolean isFieldDependenciesExist(final Class<?> clazz) {
 
         return Stream.of(clazz.getDeclaredFields())
-            .filter(field -> field.isAnnotationPresent(Autowire.class))
+            .filter(field
+                -> field.isAnnotationPresent(Autowire.class) || field.isAnnotationPresent(Value.class))
             .findFirst()
             .isPresent();
     }
@@ -257,7 +262,7 @@ public class ClassMetaDataExtractionUtils {
 
         Optional<Annotation> annotation = ClassMetaDataExtractionUtils.getAnnotation(clazz, code);
 
-        Method method = null;
+        String methodName = "unknown";
         BeanScopes scope = BeanScopes.SINGELTON;
 
         if (!annotation.isPresent()) {
@@ -265,10 +270,11 @@ public class ClassMetaDataExtractionUtils {
         }
 
         try {
-            method = annotation.get().annotationType().getMethods()[AnnotationMethodIndices.SCOPE];
+            Method method = annotation.get().annotationType().getMethods()[AnnotationMethodIndices.SCOPE];
+            methodName = method.getName();
             scope = (BeanScopes) method.invoke(annotation.get());
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            throw new InvokationException(String.format("Error while invoke annotation method %s.%s", annotation.get().annotationType().getName(), method.getName()), ex);
+            throw new InvokationException(String.format("Error while invoke annotation method %s.%s", annotation.get().annotationType().getName(), methodName), ex);
         }
 
         return scope;
@@ -278,7 +284,7 @@ public class ClassMetaDataExtractionUtils {
 
         Optional<Annotation> annotation = ClassMetaDataExtractionUtils.getAnnotation(clazz, code);
 
-        Method method = null;
+        String methodName = "unknown";
         String identifier = AnnotationConstants.ANNOTATION_BEAN_NAME_DEFAULT;
 
         if (!annotation.isPresent()) {
@@ -286,10 +292,11 @@ public class ClassMetaDataExtractionUtils {
         }
 
         try {
-            method = annotation.get().annotationType().getMethods()[AnnotationMethodIndices.NAME];
+            Method method = annotation.get().annotationType().getMethods()[AnnotationMethodIndices.NAME];
+            methodName = method.getName();
             identifier = (String) method.invoke(annotation.get());
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            throw new InvokationException(String.format("Error while invoke annotation method %s.%s", annotation.get().annotationType().getName(), method.getName()), ex);
+            throw new InvokationException(String.format("Error while invoke annotation method %s.%s", annotation.get().annotationType().getName(), methodName), ex);
         }
 
         return NamingUtils.formatIdentifier(identifier, clazz.getSimpleName());

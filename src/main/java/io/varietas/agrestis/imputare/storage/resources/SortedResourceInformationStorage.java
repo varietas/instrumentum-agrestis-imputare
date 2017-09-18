@@ -16,6 +16,7 @@
 package io.varietas.agrestis.imputare.storage.resources;
 
 import io.varietas.agrestis.imputare.storage.impl.SortedStorageImpl;
+import io.varietas.instrumentum.simul.storage.SortedStorage;
 import java.util.ArrayList;
 
 /**
@@ -27,10 +28,12 @@ import java.util.ArrayList;
 public class SortedResourceInformationStorage extends SortedStorageImpl<Boolean, Object> {
 
     @Override
-    protected void initialiseStorage() {
+    public SortedStorage initialiseStorage() {
         ///< True is the flag for settings files.
         this.storage.put(true, new ArrayList<>(0));
         ///< False is the flag for resources within source files.
         this.storage.put(false, new ArrayList<>(0));
+
+        return this;
     }
 }

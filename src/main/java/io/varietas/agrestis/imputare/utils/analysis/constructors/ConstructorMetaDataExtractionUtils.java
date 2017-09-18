@@ -16,6 +16,7 @@
 package io.varietas.agrestis.imputare.utils.analysis.constructors;
 
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.annotation.injections.Value;
 import io.varietas.agrestis.imputare.enumerations.ConstructorTypes;
 import io.varietas.agrestis.imputare.error.ConstructorAccessException;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
@@ -50,7 +51,8 @@ public class ConstructorMetaDataExtractionUtils {
     public static final Pair chooseConstructor(Class<?> clazz) throws ToManyInjectedConstructorsException, ConstructorAccessException {
         ///< Constructor dependencies
         List<Constructor> injectedConstructors = Stream.of(clazz.getConstructors())
-            .filter(constructor -> constructor.isAnnotationPresent(Autowire.class))
+            .filter(constructor
+                -> constructor.isAnnotationPresent(Autowire.class) || constructor.isAnnotationPresent(Value.class))
             .collect(Collectors.toList());
 
         if (injectedConstructors.size() > 1) {
@@ -63,7 +65,9 @@ public class ConstructorMetaDataExtractionUtils {
 
         List<Constructor> annotatedParamsConstructor = Stream.of(clazz.getConstructors())
             .filter(constructor -> Stream.of(constructor.getParameters())
-            .filter(parameter -> parameter.isAnnotationPresent(Autowire.class)).findFirst().isPresent())
+            .filter(parameter
+                -> parameter.isAnnotationPresent(Autowire.class) || parameter.isAnnotationPresent(Value.class))
+            .findFirst().isPresent())
             .collect(Collectors.toList());
 
         if (annotatedParamsConstructor.size() > 1) {
@@ -96,12 +100,13 @@ public class ConstructorMetaDataExtractionUtils {
      * @return
      */
     public static Integer getAnnotationPosition(Constructor constructor) {
-        if (constructor.isAnnotationPresent(Autowire.class)) {
+        if (constructor.isAnnotationPresent(Autowire.class) || constructor.isAnnotationPresent(Value.class)) {
             return ClassMetaDataExtractionUtils.AnnotationPosition.CONSTRUCTOR;
         }
 
         boolean isAutowireAnnotationAvailable = Stream.of(constructor.getParameters())
-            .filter(param -> param.isAnnotationPresent(Autowire.class))
+            .filter(param
+                -> param.isAnnotationPresent(Autowire.class) || param.isAnnotationPresent(Value.class))
             .findFirst()
             .isPresent();
 

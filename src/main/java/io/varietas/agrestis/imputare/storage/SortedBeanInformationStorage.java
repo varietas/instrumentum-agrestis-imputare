@@ -20,6 +20,7 @@ import io.varietas.agrestis.imputare.error.StorageInitialisingException;
 import io.varietas.agrestis.imputare.storage.impl.SortedStorageImpl;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
+import io.varietas.instrumentum.simul.storage.SortedStorage;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -221,7 +222,7 @@ public class SortedBeanInformationStorage extends SortedStorageImpl<Integer, Bea
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @Override
-    protected final void initialiseStorage() {
+    public final SortedStorage initialiseStorage() {
 
         try {
             Object annotationCodesInstance = MethodMetaDataExtractionUtils.AnnotationCodes.class.newInstance();
@@ -237,5 +238,7 @@ public class SortedBeanInformationStorage extends SortedStorageImpl<Integer, Bea
         } catch (IllegalArgumentException | IllegalAccessException | InstantiationException | SecurityException ex) {
             throw new StorageInitialisingException("Initialising of sorted storage not possible.", ex);
         }
+
+        return this;
     }
 }

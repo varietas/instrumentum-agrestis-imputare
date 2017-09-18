@@ -15,7 +15,7 @@
  */
 package io.varietas.agrestis.imputare.analysis.containers;
 
-import java.lang.reflect.Method;
+import java.util.Objects;
 import lombok.Getter;
 
 /**
@@ -27,14 +27,21 @@ import lombok.Getter;
  * @version 1.0.0, 09/13/2017
  */
 @Getter
-public class ResourceInformation extends AbstractDependencyRequester {
+public class ResourceInformation extends AbstractDependencyRequester implements Information {
 
-    private final Class<?> parent;
-    private final Method method;
+    private final MethodInformation creationInformation;
+    private final String identifier;
+    private final Class<?> type;
 
-    public ResourceInformation(final Class<?> parent, final Method method, final DependencyInformation... dependencies) {
-        super(dependencies, method.getParameterCount());
-        this.parent = parent;
-        this.method = method;
+    public ResourceInformation(
+        final MethodInformation creationInformation,
+        final String identifier,
+        final Class<?> type,
+        final DependencyInformation... dependencyInformations) {
+
+        super(dependencyInformations, (Objects.nonNull(dependencyInformations)) ? dependencyInformations.length : 0);
+        this.creationInformation = creationInformation;
+        this.identifier = identifier;
+        this.type = type;
     }
 }

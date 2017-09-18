@@ -42,8 +42,6 @@ public class SortedStorageImpl<CODE extends Serializable, TYPE> implements Sorte
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     public SortedStorageImpl() {
         this.storage = new HashMap<>();
-
-        this.initialiseStorage();
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -136,7 +134,7 @@ public class SortedStorageImpl<CODE extends Serializable, TYPE> implements Sorte
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    protected void initialiseStorage()
-    {
+    public SortedStorage initialiseStorage() {
+        return this;
     }
 }

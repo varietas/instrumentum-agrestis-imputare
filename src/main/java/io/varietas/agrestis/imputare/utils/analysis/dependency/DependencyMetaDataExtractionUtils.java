@@ -18,16 +18,19 @@ package io.varietas.agrestis.imputare.utils.analysis.dependency;
 import io.varietas.agrestis.imputare.analysis.containers.DependencyInformation;
 import io.varietas.agrestis.imputare.analysis.containers.FieldDependencyInformation;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
-import io.varietas.agrestis.imputare.utils.analysis.constructors.ConstructorMetaDataExtractionUtils;
+import io.varietas.agrestis.imputare.annotation.injections.Value;
+import io.varietas.agrestis.imputare.error.MismatchParameterException;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.common.NamingUtils;
 import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
-import java.lang.reflect.Constructor;
+import io.varietas.agrestis.imputare.utils.containers.Pair;
 import java.lang.reflect.Executable;
-import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
@@ -42,100 +45,103 @@ import lombok.extern.slf4j.Slf4j;
 public class DependencyMetaDataExtractionUtils {
 
     /**
-     * Extracts the dependencies from a given method. The method will analysed for the presents of the {@link Autowire} annotation. For later operations the getType and the getIdentifier will be extracted.
+     * Extracts the dependencies from a given executable. The executable will analysed for the presents of the {@link Autowire} and {@link Value} annotation. For later operations the getType and the
+     * getIdentifier will be extracted.
      *
-     * @param method
-     * @return
+     * @param executable Instance of executable where the identifiers are on.
+     * @return An array of dependency informations.
      */
-    public static DependencyInformation[] getDependenciesWithIdentifier(final Method method) {
+    public static DependencyInformation[] getDependenciesWithIdentifier(final Executable executable) {
 
-        String[] identifiers;
+        final boolean isMethodAnnotated = Objects.equals(MethodMetaDataExtractionUtils.getAnnotationPosition(executable), ClassMetaDataExtractionUtils.AnnotationPosition.METHOD);
 
-        if (Objects.equals(MethodMetaDataExtractionUtils.getAnnotationPosition(method), ClassMetaDataExtractionUtils.AnnotationPosition.METHOD)) {
-            ///< If is method annotated
-            identifiers = ((Autowire) method.getAnnotation(Autowire.class)).value();
+        final List<Pair<String, Boolean>> identifiers = new ArrayList<>();
+        if (isMethodAnnotated) {
+
+            identifiers.addAll(extractIdentifiersFromMethod(executable));
         } else {
-            ///< If are params annotated
-            identifiers = new String[method.getParameterCount()];
 
-            for (int index = 0; index < method.getParameterCount(); ++index) {
-                identifiers[index] = ((Autowire) method.getParameters()[index].getAnnotation(Autowire.class)).value()[0];
-            }
+            identifiers.addAll(extractIdentifiersFromParameters(executable));
         }
 
-        int parameterCount = method.getParameterCount();
+        int parameterCount = executable.getParameterCount();
+
+        if (parameterCount != identifiers.size()) {
+            throw new MismatchParameterException(parameterCount, executable);
+        }
+
         DependencyInformation[] res = new DependencyInformation[parameterCount];
 
-        for (int index = 0; index < method.getParameterCount(); ++index) {
-            res[index] = new DependencyInformation(identifiers[index], method.getParameters()[index].getType());
+        for (int index = 0; index < executable.getParameterCount(); ++index) {
+            final Pair<String, Boolean> identifier = identifiers.get(index);
+            res[index] = new DependencyInformation(identifier.getValue1(), executable.getParameters()[index].getType(), identifier.getValue2());
         }
 
         return res;
+    }
+
+    private static List<Pair<String, Boolean>> extractIdentifiersFromMethod(final Executable method) {
+        final List<Pair<String, Boolean>> res = new ArrayList<>();
+        if (method.isAnnotationPresent(Autowire.class)) {
+
+            Arrays.asList(((Autowire) method.getAnnotation(Autowire.class)).value())
+                .stream()
+                .map(entry -> new Pair<>(entry, true))
+                .forEach(res::add);
+        }
+
+        if (method.isAnnotationPresent(Value.class)) {
+            Arrays.asList(((Autowire) method.getAnnotation(Value.class)).value())
+                .stream()
+                .map(entry -> new Pair<>(entry, false))
+                .forEach(res::add);
+        }
+
+        return res;
+    }
+
+    private static List<Pair<String, Boolean>> extractIdentifiersFromParameters(final Executable method) {
+        return Stream.of(method.getParameters()).map((Parameter param) -> {
+            if (param.isAnnotationPresent(Autowire.class)) {
+                return Optional.of(new Pair<>(param.getAnnotation(Autowire.class).value()[0], true));
+            }
+
+            if (param.isAnnotationPresent(Value.class)) {
+                return Optional.of(new Pair<>(param.getAnnotation(Value.class).value()[0], false));
+            }
+
+            return Optional.empty();
+        })
+            .filter(ident -> ident.isPresent())
+            .map(ident -> (Pair<String, Boolean>) ident.get())
+            .collect(Collectors.toList());
     }
 
     /**
-     * Extracts the dependencies from a given constructor. The constructor will analysed for the presents of the {@link Autowire} annotation. For later operations the getType and the getIdentifier will be
- extracted.
+     * Extracts the dependencies from a given class. The class will analysed for the presents of the {@link Autowire} and {@link Value} annotation. For later operations the getType and the
+     * getIdentifier will be extracted.
      *
-     * @param constructor
-     * @return
+     * @param clazz Class where the identifiers are on.
+     * @return An array of dependency informations.
      */
-    public static DependencyInformation[] getDependenciesWithIdentifier(final Constructor constructor) {
-
-        String[] identifiers;
-
-        if (Objects.equals(ConstructorMetaDataExtractionUtils.getAnnotationPosition(constructor), ClassMetaDataExtractionUtils.AnnotationPosition.CONSTRUCTOR)) {
-            ///< If is method annotated
-            identifiers = ((Autowire) constructor.getAnnotation(Autowire.class)).value();
-        } else {
-            ///< If are params annotated
-            identifiers = new String[constructor.getParameterCount()];
-
-            for (int index = 0; index < constructor.getParameterCount(); ++index) {
-                identifiers[index] = ((Autowire) constructor.getParameters()[index].getAnnotation(Autowire.class)).value()[0];
-            }
-        }
-
-        int parameterCount = constructor.getParameterCount();
-        DependencyInformation[] res = new DependencyInformation[parameterCount];
-
-        for (int index = 0; index < constructor.getParameterCount(); ++index) {
-            res[index] = new DependencyInformation(identifiers[index], constructor.getParameters()[index].getType());
-        }
-
-        return res;
-    }
-
     public static DependencyInformation[] getDependenciesWithIdentifier(final Class<?> clazz) {
 
         final List<DependencyInformation> res = new ArrayList<>();
 
-        Stream.of(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(Autowire.class)).collect(Collectors.toList()).forEach(field -> {
-            String identifier = NamingUtils.formatIdentifier(((Autowire) field.getAnnotation(Autowire.class)).value()[0], field.getName());
-            res.add(new FieldDependencyInformation(field, identifier, field.getType()));
-        });
+        Stream.of(clazz.getDeclaredFields())
+            .filter(field -> field.isAnnotationPresent(Autowire.class))
+            .forEach(field -> {
+                String identifier = NamingUtils.formatIdentifier(((Autowire) field.getAnnotation(Autowire.class)).value()[0], field.getName());
+                res.add(new FieldDependencyInformation(field, identifier, field.getType(), true));
+            });
+
+        Stream.of(clazz.getDeclaredFields())
+            .filter(field -> field.isAnnotationPresent(Value.class))
+            .forEach(field -> {
+                String identifier = NamingUtils.formatIdentifier(((Autowire) field.getAnnotation(Autowire.class)).value()[0], field.getName());
+                res.add(new FieldDependencyInformation(field, identifier, field.getType(), false));
+            });
 
         return (DependencyInformation[]) res.toArray();
-    }
-
-    /**
-     * Creates the {@link DependencyInformation} for identifiers and types. The {@link Executable} parameters will iterated and with the getIdentifier on the same index stored.
-
- Could used if no android support is required anymore.
-     *
-     * @param method
-     * @param identifiers
-     * @return
-     */
-    @Deprecated
-    public static DependencyInformation[] createDependencyInformation(final Executable method, final String[] identifiers) {
-        int parameterCount = method.getParameterCount();
-        DependencyInformation[] res = new DependencyInformation[parameterCount];
-
-        for (int index = 0; index < method.getParameterCount(); ++index) {
-            res[index] = new DependencyInformation(identifiers[index], method.getParameters()[index].getType());
-        }
-
-        return res;
     }
 }

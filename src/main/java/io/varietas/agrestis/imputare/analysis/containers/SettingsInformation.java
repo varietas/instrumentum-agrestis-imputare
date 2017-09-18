@@ -16,18 +16,21 @@
 package io.varietas.agrestis.imputare.analysis.containers;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * <h2>SettingsInformation</h2>
  *
- * The settings information contains 
+ * The settings information contains which are required for a application component. These information can be database settings or something like this.
  *
  * @author Michael Rhöse
  * @version 1.0.0, 09/13/2017
  */
+@Getter
 @AllArgsConstructor
 public class SettingsInformation {
 
+    private final Class<?> parent;
     private final String file;
     private final String path;
 }

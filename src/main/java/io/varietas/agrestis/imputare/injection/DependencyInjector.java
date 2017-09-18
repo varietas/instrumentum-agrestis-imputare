@@ -84,33 +84,31 @@ public final class DependencyInjector {
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private BeanDefinition singleInjectionWork(final BeanInformation beanInformation) {
         ///< If dependencies required
-        Object creationInformation = beanInformation.getCreationInformation();
+        final Object creationInformation = beanInformation.getCreationInformation();
 
-        String beanIdentifier = beanInformation.getIdentifier();
+        final String beanIdentifier = beanInformation.getIdentifier();
 
         Executable activationTarget = null;
-        Optional<Class<?>> targetParent = null;
+        Optional<Class<?>> targetParent = Optional.empty();
 
         Object[] activationTargetPara = null;
 
-        Boolean isConstructor = Boolean.FALSE;
+        boolean isConstructor = creationInformation instanceof ConstructorInformation;
 
         final List<Pair<Field, Object>> fieldDependencies = new ArrayList<>();
 
-        if (creationInformation instanceof ConstructorInformation) {
-            isConstructor = Boolean.TRUE;
-
-            ConstructorInformation constructorInformation = (ConstructorInformation) creationInformation;
+        if (isConstructor) {
+            
+            final ConstructorInformation constructorInformation = (ConstructorInformation) creationInformation;
 
             activationTarget = constructorInformation.getConstructor();
-            targetParent = Optional.empty();
 
             if (constructorInformation.isDependenciesRequired()) {
                 activationTargetPara = this.loadDependencies(constructorInformation);
             }
         }
 
-        if (creationInformation instanceof MethodInformation) {
+        if (!isConstructor) {
             MethodInformation methodInformation = (MethodInformation) creationInformation;
 
             activationTarget = methodInformation.getMethod();
@@ -171,13 +169,13 @@ public final class DependencyInjector {
     private Object[] loadDependencies(final AbstractDependencyRequester dependencyRequester) {
         final List<BeanDefinition> dependencies = new ArrayList<>();
         for (DependencyInformation dependencyInformation : dependencyRequester.getDependencies()) {
-            ///< if is in definition storage
+            ///< if a definition is in the storage
             if (this.definitionStorage.contains(dependencyInformation.getIdentifier())) {
                 dependencies.add((BeanDefinition) this.definitionStorage.findForIdentifier(dependencyInformation.getIdentifier()).get());
                 continue;
             }
 
-            ///< if is in information storage
+            ///< if an information is in the storage
             if (!this.informationStorage.contains(dependencyInformation.getIdentifier())) {
                 throw new NullPointerException("No dependency information located for " + dependencyInformation.getIdentifier());
             }

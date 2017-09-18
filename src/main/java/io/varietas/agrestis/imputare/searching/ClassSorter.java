@@ -16,8 +16,8 @@
 package io.varietas.agrestis.imputare.searching;
 
 import io.varietas.agrestis.imputare.error.IllegalAnnotationException;
+import io.varietas.agrestis.imputare.storage.impl.SortedClazzStorageImpl;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
-import io.varietas.agrestis.imputare.storage.impl.SortedStorageImpl;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import java.util.Optional;
@@ -38,7 +38,7 @@ public final class ClassSorter {
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     public ClassSorter(UnsortedStorage classStorage) throws IllegalArgumentException, IllegalAccessException, InstantiationException {
         this.classStorage = classStorage;
-        this.sortedClassStorage = new SortedStorageImpl();
+        this.sortedClassStorage = new SortedClazzStorageImpl().initialiseStorage();
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
