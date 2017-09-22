@@ -16,7 +16,7 @@
 package io.varietas.agrestis.imputare.storage;
 
 import io.varietas.agrestis.imputare.analysis.containers.DependencyInformation;
-import io.varietas.agrestis.imputare.injection.containers.BeanDefinition;
+import io.varietas.agrestis.imputare.injection.containers.Definition;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -30,36 +30,36 @@ import java.util.stream.Collectors;
  * @author Michael Rhöse
  * @version 1.0.0, 7/7/2016
  */
-public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>, BeanDefinition> {
+public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>, Definition> {
 
-    private final List<BeanDefinition> storage;
+    private final List<Definition> storage;
 
     public BeanDefinitionStorage() {
         this.storage = new ArrayList<>();
     }
 
     @Override
-    public Optional<BeanDefinition> findForIdentifier(String identifier) {
+    public Optional<Definition> findForIdentifier(String identifier) {
         return this.storage.stream()
             .filter(entry -> Objects.equals(entry.identifier(), identifier))
             .findFirst();
     }
 
     @Override
-    public List<BeanDefinition> findForType(Class<?> type) {
+    public List<Definition> findForType(Class<?> type) {
         return this.storage.stream()
             .filter(entry -> Objects.equals(entry.type(), type))
             .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<BeanDefinition> findForDependency(DependencyInformation dependency) {
+    public Optional<Definition> findForDependency(DependencyInformation dependency) {
         return this.findForIdentifier(dependency.getIdentifier());
     }
 
     @Override
-    public List<BeanDefinition> findForDependencies(List<DependencyInformation> dependencies) {
-        List<BeanDefinition> res = new ArrayList<>();
+    public List<Definition> findForDependencies(List<DependencyInformation> dependencies) {
+        List<Definition> res = new ArrayList<>();
 
         dependencies.stream()
             .map((dependencyInformation) -> this.findForDependency(dependencyInformation))
@@ -71,7 +71,7 @@ public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>
     }
 
     @Override
-    public int store(BeanDefinition entry) {
+    public int store(Definition entry) {
         if (this.storage.add(entry)) {
             return this.storage.size();
         }
@@ -80,8 +80,8 @@ public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>
     }
 
     @Override
-    public int storeAll(Collection<BeanDefinition> entries) {
-        for (BeanDefinition beanDefinition : entries) {
+    public int storeAll(Collection<Definition> entries) {
+        for (Definition beanDefinition : entries) {
             if (this.store(beanDefinition) == -1) {
                 return -1;
             }
@@ -91,18 +91,18 @@ public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>
     }
 
     @Override
-    public List<BeanDefinition> getStorage() {
+    public List<Definition> getStorage() {
         return this.storage;
     }
 
     @Override
-    public Optional<BeanDefinition> next() {
+    public Optional<Definition> next() {
 
         if (this.isEmpty()) {
             return Optional.empty();
         }
 
-        BeanDefinition res = this.storage.get(this.storage.size() - 1);
+        Definition res = this.storage.get(this.storage.size() - 1);
         this.storage.remove(res);
 
         return Optional.ofNullable(res);

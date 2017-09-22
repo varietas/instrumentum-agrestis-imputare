@@ -69,7 +69,7 @@ public class ClassSorterTest {
         LOGGER.info("Located classes: {}", this.count);
 
         this.count = ClassSorterTest.classSorter.getStorage().getStorage().size();
-        Assertions.assertThat(this.count).isEqualTo(6);
+        Assertions.assertThat(this.count).isEqualTo(7);
         LOGGER.info("Lists for types: {}", this.count);
     }
 
@@ -123,6 +123,16 @@ public class ClassSorterTest {
         LOGGER.info("{} classes for {} stored.", this.count, ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
     }
 
+    @Test
+    public void sortAnnotatedClassesForResourcess() {
+
+        SortedStorage<Integer, Class<?>> sortedStorage = ClassSorterTest.classSorter.getStorage();
+
+        this.count = sortedStorage.getStorage().get(ClassMetaDataExtractionUtils.AnnotationCodes.RESOURCE).size();
+        Assertions.assertThat(this.count).isEqualTo(0);
+        LOGGER.info("{} classes for {} stored.", this.count, ClassMetaDataExtractionUtils.AnnotationCodes.RESOURCE);
+    }
+    
     @Test
     public void sortAnnotatedClassesForSettings() {
 

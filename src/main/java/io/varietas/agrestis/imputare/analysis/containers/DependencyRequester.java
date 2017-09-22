@@ -25,7 +25,7 @@ public interface DependencyRequester {
 
     public DependencyInformation[] getDependencies();
 
-    public Boolean isDependenciesRequired();
+    public Boolean isParametersRequired();
 
     public Boolean isDependenciesAvailable();
 }

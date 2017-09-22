@@ -15,6 +15,8 @@
  */
 package io.varietas.agrestis.imputare.analysis.containers;
 
+import io.varietas.agrestis.imputare.analysis.InformationType;
+
 /**
  * <h2>Information</h2>
  *
@@ -38,4 +40,11 @@ public interface Information {
      * @return Type.
      */
     Class<?> getType();
+
+    /**
+     * Gets the specific type of the information container. This is used in the injection process to identify the required handling.
+     *
+     * @return Information type.
+     */
+    InformationType getInformationType();
 }

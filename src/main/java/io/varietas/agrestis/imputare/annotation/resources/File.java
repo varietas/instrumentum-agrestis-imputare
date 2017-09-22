@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
  * <h2>File</h2>
  *
  * This annotation provides all information about a settings file. The settings file contains a map of identifier/value pairs.
- * 
+ *
  * @author Michael Rhöse
  * @version 1.0.0, 07/20/2017
  */
@@ -38,11 +38,18 @@ public @interface File {
      * @return File name with extension.
      */
     String file();
-    
+
     /**
-     * Path to the settings file. If the file is in the class path the path isn't required.
-     * 
+     * Path to the settings file.
+     *
      * @return Path to the settings file.
      */
-    String path() default "CLASSPATH";
+    String path() default "";
+
+    /**
+     * Flag to signal agrestis imputare that the file has to be loaded with a class loader.
+     *
+     * @return True for file within the class path, otherwise false.
+     */
+    boolean isInClassPath() default true;
 }

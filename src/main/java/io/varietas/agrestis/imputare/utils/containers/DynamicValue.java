@@ -32,7 +32,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @AllArgsConstructor
-public class DynamicValue {
+public class DynamicValue<TYPE> {
 
-    private Object value;
+    private TYPE value;
 }

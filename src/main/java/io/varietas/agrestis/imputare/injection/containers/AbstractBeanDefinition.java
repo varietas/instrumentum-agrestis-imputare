@@ -18,6 +18,8 @@ package io.varietas.agrestis.imputare.injection.containers;
 import io.varietas.agrestis.imputare.enumerations.BeanScopes;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * <h2>AbstractBeanDefinition</h2>
@@ -29,12 +31,14 @@ public abstract class AbstractBeanDefinition implements BeanDefinition {
 
     protected final String beanIdentifier;
     protected final BeanScopes beanScope;
-    protected final Class beanClazz;
+    protected final Class<?> beanClazz;
+    protected Object[] args;
 
     public AbstractBeanDefinition(final String beanIdentifier, final BeanScopes beanScope, final Class beanClazz) {
         this.beanIdentifier = beanIdentifier;
         this.beanScope = beanScope;
         this.beanClazz = beanClazz;
+        this.args = null;
     }
 
     @Override
@@ -43,7 +47,7 @@ public abstract class AbstractBeanDefinition implements BeanDefinition {
     }
 
     @Override
-    public Class type() {
+    public Class<?> type() {
         return this.beanClazz;
     }
 
@@ -57,12 +61,10 @@ public abstract class AbstractBeanDefinition implements BeanDefinition {
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     protected Object[] convertToArgs(List<BeanDefinition> beanDefinitions) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        Object[] res = new Object[beanDefinitions.size()];
-
-        for (int index = 0; index < beanDefinitions.size(); ++index) {
-            res[index] = beanDefinitions.get(index).get();
+        if (Objects.isNull(this.args)) {
+            Object[] res = new Object[beanDefinitions.size()];
+            this.args = beanDefinitions.stream().map(beanDefinition -> beanDefinition.get()).collect(Collectors.toList()).toArray(res);
         }
-
-        return res;
+        return this.args;
     }
 }

@@ -54,7 +54,7 @@ public class InjectionUtils {
             return;
         }
 
-        dependencies.stream().forEach(pair -> {
+        dependencies.forEach(pair -> {
             try {
                 Field field = pair.getValue1();
 
@@ -71,7 +71,11 @@ public class InjectionUtils {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public static final <ActivationTarget extends Executable> Object invokeMethod(final ActivationTarget activationTarget, final Object[] activationTargetParams, final String beanIdentifier, Optional<Class<?>> targetParent) {
+    public static final <ActivationTarget extends Executable> Object invokeMethod(
+        final ActivationTarget activationTarget,
+        final Object[] activationTargetParams,
+        final String beanIdentifier, Optional<Class<?>> targetParent
+    ) {
         try {
             Method targetAsMethod = (Method) activationTarget;
 
@@ -80,6 +84,27 @@ public class InjectionUtils {
             }
 
             return targetAsMethod.invoke(targetParent.get().newInstance(), activationTargetParams);
+
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException | NullPointerException ex) {
+            throw new InvokationException("Instance of bean " + beanIdentifier + " couldn't be created.", ex);
+        }
+    }
+    public static final <ActivationTarget extends Executable> Object invokeMethod(
+        final ActivationTarget activationTarget,
+        final Object[] activationTargetParams,
+        final String beanIdentifier, Optional<Class<?>> targetParent,
+        final List<Pair<Field, Object>> beanDependencies
+    ) {
+        try {
+            Method targetAsMethod = (Method) activationTarget;
+
+            if (!targetParent.isPresent()) {
+                throw new NullPointerException("There is no parent class available but it is required for the creation of an method bean instance.");
+            }
+            
+            Object parentInstance = targetParent.get().newInstance();
+            addDependenciesToBean(parentInstance, beanDependencies);
+            return targetAsMethod.invoke(parentInstance, activationTargetParams);
 
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException | NullPointerException ex) {
             throw new InvokationException("Instance of bean " + beanIdentifier + " couldn't be created.", ex);

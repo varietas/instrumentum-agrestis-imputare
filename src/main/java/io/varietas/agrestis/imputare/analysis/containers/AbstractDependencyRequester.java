@@ -35,7 +35,7 @@ public class AbstractDependencyRequester implements DependencyRequester {
     }
 
     @Override
-    public Boolean isDependenciesRequired() {
+    public Boolean isParametersRequired() {
         return this.parameterCount > 0;
     }
 

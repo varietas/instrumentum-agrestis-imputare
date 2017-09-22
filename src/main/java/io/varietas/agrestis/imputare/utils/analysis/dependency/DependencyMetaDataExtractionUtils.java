@@ -91,7 +91,7 @@ public class DependencyMetaDataExtractionUtils {
         }
 
         if (method.isAnnotationPresent(Value.class)) {
-            Arrays.asList(((Autowire) method.getAnnotation(Value.class)).value())
+            Arrays.asList(((Value) method.getAnnotation(Value.class)).value())
                 .stream()
                 .map(entry -> new Pair<>(entry, false))
                 .forEach(res::add);
@@ -126,22 +126,24 @@ public class DependencyMetaDataExtractionUtils {
      */
     public static DependencyInformation[] getDependenciesWithIdentifier(final Class<?> clazz) {
 
-        final List<DependencyInformation> res = new ArrayList<>();
+        final List<DependencyInformation> collectedFields = new ArrayList<>();
 
         Stream.of(clazz.getDeclaredFields())
             .filter(field -> field.isAnnotationPresent(Autowire.class))
             .forEach(field -> {
                 String identifier = NamingUtils.formatIdentifier(((Autowire) field.getAnnotation(Autowire.class)).value()[0], field.getName());
-                res.add(new FieldDependencyInformation(field, identifier, field.getType(), true));
+                collectedFields.add(new FieldDependencyInformation(field, identifier, field.getType(), true));
             });
 
         Stream.of(clazz.getDeclaredFields())
             .filter(field -> field.isAnnotationPresent(Value.class))
             .forEach(field -> {
-                String identifier = NamingUtils.formatIdentifier(((Autowire) field.getAnnotation(Autowire.class)).value()[0], field.getName());
-                res.add(new FieldDependencyInformation(field, identifier, field.getType(), false));
+                String identifier = NamingUtils.formatIdentifier(((Value) field.getAnnotation(Value.class)).value()[0], field.getName());
+                collectedFields.add(new FieldDependencyInformation(field, identifier, field.getType(), false));
             });
 
-        return (DependencyInformation[]) res.toArray();
+        DependencyInformation[] res = new DependencyInformation[collectedFields.size()];
+
+        return collectedFields.toArray(res);
     }
 }

@@ -15,7 +15,7 @@
  */
 package io.varietas.agrestis.imputare.analysis.containers;
 
-import lombok.AllArgsConstructor;
+import io.varietas.agrestis.imputare.analysis.InformationType;
 import lombok.Getter;
 
 /**
@@ -27,10 +27,25 @@ import lombok.Getter;
  * @version 1.0.0, 09/13/2017
  */
 @Getter
-@AllArgsConstructor
-public class SettingsInformation {
+public class SettingsInformation implements Information {
 
     private final Class<?> parent;
     private final String file;
     private final String path;
+    private final boolean inClassPath;
+
+    private final String identifier;
+    private final Class<?> type;
+    private final InformationType informationType;
+
+    public SettingsInformation(final Class<?> parent, final String file, final String path, final boolean inClassPath) {
+        this.parent = parent;
+        this.file = file;
+        this.path = path;
+        this.inClassPath = inClassPath;
+
+        this.identifier = "";
+        this.type = null;
+        this.informationType = InformationType.SETTINGS;
+    }
 }

@@ -29,13 +29,14 @@ import java.util.Optional;
  *
  * @author Michael Rhöse
  * @version 1.0.0, 7/7/2016
+ * @param <ACTIVATION_TARGET> Executable which is used to create the bean instance.
  */
-public abstract class AbstractPrototypeBeanDefinition<ActivationTarget extends Executable> extends AbstractBeanDefinition {
+public abstract class AbstractPrototypeBeanDefinition<ACTIVATION_TARGET extends Executable> extends AbstractBeanDefinition {
 
-    private final ActivationTarget activationTarget;
-    private final Object[] activationTargetParam;
+    protected final ACTIVATION_TARGET activationTarget;
+    protected final Object[] activationTargetParam;
 
-    public AbstractPrototypeBeanDefinition(ActivationTarget activationTarget, Object[] activationTargetParam, String beanIdentifier, BeanScopes beanScope, Class beanClazz) {
+    public AbstractPrototypeBeanDefinition(ACTIVATION_TARGET activationTarget, Object[] activationTargetParam, String beanIdentifier, BeanScopes beanScope, Class beanClazz) {
         super(beanIdentifier, beanScope, beanClazz);
         this.activationTarget = activationTarget;
         this.activationTargetParam = activationTargetParam;

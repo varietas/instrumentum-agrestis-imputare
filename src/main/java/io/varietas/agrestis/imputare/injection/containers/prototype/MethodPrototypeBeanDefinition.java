@@ -17,9 +17,9 @@ package io.varietas.agrestis.imputare.injection.containers.prototype;
 
 import io.varietas.agrestis.imputare.enumerations.BeanScopes;
 import io.varietas.agrestis.imputare.utils.containers.Pair;
+import io.varietas.agrestis.imputare.utils.injection.InjectionUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,10 +32,20 @@ import java.util.Optional;
 public class MethodPrototypeBeanDefinition extends AbstractPrototypeBeanDefinition<Method> {
 
     private final Class<?> parent;
+    private final List<Pair<Field, Object>> beanDependencies;
 
-    public MethodPrototypeBeanDefinition(Class<?> parent, Method activationTarget, Object[] activationTargetParam, String beanIdentifier, BeanScopes beanScope, Class beanClazz) {
+    public MethodPrototypeBeanDefinition(
+        final Class<?> parent,
+        final Method activationTarget,
+        final Object[] activationTargetParam,
+        final String beanIdentifier,
+        final BeanScopes beanScope,
+        final Class beanClazz,
+        final List<Pair<Field, Object>> beanDependencies
+    ) {
         super(activationTarget, activationTargetParam, beanIdentifier, beanScope, beanClazz);
         this.parent = parent;
+        this.beanDependencies = beanDependencies;
     }
 
     @Override
@@ -45,6 +55,12 @@ public class MethodPrototypeBeanDefinition extends AbstractPrototypeBeanDefiniti
 
     @Override
     public List<Pair<Field, Object>> beanDependencies() {
-        return new ArrayList<>(0);
+        return this.beanDependencies;
+    }
+
+    @Override
+    public Object get() {
+
+        return InjectionUtils.invokeMethod(this.activationTarget, this.activationTargetParam, this.beanIdentifier, this.targetParent(), this.beanDependencies);
     }
 }

@@ -235,6 +235,9 @@ public class ClassMetaDataExtractionUtils {
         if (code.equals(AnnotationCodes.CONFIGURATION)) {
             return Boolean.TRUE;
         }
+        if (code.equals(AnnotationCodes.RESOURCE)) {
+            return Boolean.TRUE;
+        }
         if (code.equals(AnnotationCodes.SETTINGS)) {
             return Boolean.TRUE;
         }
@@ -313,7 +316,8 @@ public class ClassMetaDataExtractionUtils {
      * <li>CONTROLLER = 4</li>
      * <li>COMPONENT = 8</li>
      * <li>CONFIGURATION = 16</li>
-     * <li>SETTINGS = 32</li>
+     * <li>RESOURCE = 32</li>
+     * <li>SETTINGS = 64</li>
      * </ul>
      *
      * @author Michael Rhöse
@@ -328,7 +332,8 @@ public class ClassMetaDataExtractionUtils {
             CONTROLLER = 4,
             COMPONENT = 8,
             CONFIGURATION = 16,
-            SETTINGS = 32;
+            RESOURCE = 32,
+            SETTINGS = 64;
     }
 
     /**

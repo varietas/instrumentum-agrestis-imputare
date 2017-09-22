@@ -26,52 +26,64 @@ import io.varietas.agrestis.imputare.error.SortingException;
 import io.varietas.agrestis.imputare.error.StorageInitialisingException;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import io.varietas.agrestis.imputare.injection.DependencyInjector;
-import io.varietas.agrestis.imputare.injection.containers.BeanDefinition;
+import io.varietas.agrestis.imputare.injection.containers.Definition;
 import io.varietas.agrestis.imputare.injection.containers.singleton.SingletonBeanDefinition;
+import io.varietas.agrestis.imputare.searching.ClassCollector;
 import io.varietas.agrestis.imputare.searching.ClassSorter;
 import io.varietas.agrestis.imputare.storage.DefinitionStorage;
-import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
+import io.varietas.agrestis.imputare.storage.SortedInformationStorage;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * <h2>AbstractContextInitialiser</h2>
+ * <h2>ContextInitialiser</h2>
  *
- * This class is used to implement different context initialiser. For example if agrestis imputare is used on android a different handling of class scan is required.
+ * This class represents the context initialiser implementation for Oracle Java based platforms.
  *
  * @author Michael Rhöse
  * @version 1.0.0, 12/8/2016
- * @param <ContextInitialiserType> Type of specific context initialiser implementation.
  */
 @Slf4j
-public abstract class AbstractContextInitialiser<ContextInitialiserType extends AbstractContextInitialiser> {
+public class ContextInitialiser {
 
-    protected DefinitionStorage<String, Class<?>, BeanDefinition> beanStorage;
+    private final Package applicationPackage;
+
+    protected DefinitionStorage<String, Class<?>, Definition> beanStorage;
+
+    public ContextInitialiser(final Class<?> application) {
+        this.applicationPackage = application.getPackage();
+    }
 
     /**
      * Starts the whole initialising process of agrestis imputare. This includes all required operations for searching, analysing and injecting.
      *
      * @return Current instance of the initialiser for fluent like API.
      */
-    public abstract ContextInitialiserType initializeContext();
+    public ContextInitialiser initializeContext() {
+        UnsortedStorage unsortedStorage = this.initSearching(this.applicationPackage);
+        SortedStorage sortetStorage = this.initSorting(unsortedStorage);
+        SortedInformationStorage beanInformationStorage = this.initBeanAnalysis(sortetStorage);
+        this.beanStorage = this.initInjection(beanInformationStorage);
+
+        return this;
+    }
 
     public AgrestisImputareContext createContext() {
 
         final AgrestisImputareContextImpl agrestisImputareContext = new AgrestisImputareContextImpl();
-
-        BeanDefinition[] definitions = new BeanDefinition[this.beanStorage.getStorage().size()];
-        for (int index = 0; index < this.beanStorage.getStorage().size(); ++index) {
-            definitions[index] = this.beanStorage.getStorage().get(index);
-        }
-        agrestisImputareContext.addBeanDefinitions(definitions);
-
+        agrestisImputareContext.addDefinitions(this.beanStorage.getStorage());
         agrestisImputareContext.addContextDefinition(new SingletonBeanDefinition(agrestisImputareContext, AgrestisImputareContext.class.getSimpleName(), BeanScopes.SINGELTON, AgrestisImputareContext.class));
 
         return agrestisImputareContext;
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    protected UnsortedStorage initSearching(final Package applicationPackage) {
+        LOGGER.debug("Searching classes in package {}.", applicationPackage.getName());
+        return new ClassCollector(applicationPackage).collectAnnotatedClazzes().getStorage();
+    }
+
     protected SortedStorage initSorting(final UnsortedStorage unsortedStorage) throws SortingException {
         try {
             return new ClassSorter(unsortedStorage).sortLocatedClazzes().getStorage();
@@ -80,7 +92,7 @@ public abstract class AbstractContextInitialiser<ContextInitialiserType extends 
         }
     }
 
-    protected SortedBeanInformationStorage initAnalysis(final SortedStorage sortetStorage) throws AnalysisException {
+    protected SortedInformationStorage initBeanAnalysis(final SortedStorage sortetStorage) throws AnalysisException {
         try {
             return new ClassAnalyser(sortetStorage).doAnalysis().getStorage();
         } catch (ToManyInjectedConstructorsException | ConstructorAccessException | DuplicatedIdentifierException | InternalException | StorageInitialisingException ex) {
@@ -88,7 +100,7 @@ public abstract class AbstractContextInitialiser<ContextInitialiserType extends 
         }
     }
 
-    protected DefinitionStorage<String, Class<?>, BeanDefinition> initInjection(final SortedBeanInformationStorage beanInformationStorage) {
+    protected DefinitionStorage<String, Class<?>, Definition> initInjection(final SortedInformationStorage beanInformationStorage) {
         return new DependencyInjector(beanInformationStorage).doInjectionWork().getStorage();
     }
 }

@@ -15,6 +15,7 @@
  */
 package io.varietas.agrestis.imputare.analysis.containers;
 
+import io.varietas.agrestis.imputare.analysis.InformationType;
 import io.varietas.agrestis.imputare.enumerations.BeanScopes;
 import java.util.Objects;
 import lombok.Getter;
@@ -32,6 +33,7 @@ public class BeanInformation extends AbstractDependencyRequester implements Info
     private final BeanScopes scope;
     private final String identifier;
     private final Class<?> type;
+    private final InformationType informationType;
 
     public BeanInformation(Object creationInformation, BeanScopes scope, String identifier, Class<?> type) {
         this(creationInformation, scope, identifier, type, new DependencyInformation[0]);
@@ -43,5 +45,6 @@ public class BeanInformation extends AbstractDependencyRequester implements Info
         this.scope = scope;
         this.identifier = identifier;
         this.type = type;
+        this.informationType = InformationType.BEAN;
     }
 }

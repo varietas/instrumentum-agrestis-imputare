@@ -15,6 +15,8 @@
  */
 package io.varietas.agrestis.imputare.analysis.containers;
 
+import io.varietas.agrestis.imputare.analysis.InformationType;
+import io.varietas.agrestis.imputare.enumerations.ResourceType;
 import java.util.Objects;
 import lombok.Getter;
 
@@ -32,16 +34,21 @@ public class ResourceInformation extends AbstractDependencyRequester implements 
     private final MethodInformation creationInformation;
     private final String identifier;
     private final Class<?> type;
+    private final ResourceType resourceType;
+    private final InformationType informationType;
 
     public ResourceInformation(
         final MethodInformation creationInformation,
         final String identifier,
         final Class<?> type,
+        final ResourceType resourceType,
         final DependencyInformation... dependencyInformations) {
 
         super(dependencyInformations, (Objects.nonNull(dependencyInformations)) ? dependencyInformations.length : 0);
         this.creationInformation = creationInformation;
         this.identifier = identifier;
         this.type = type;
+        this.resourceType = resourceType;
+        this.informationType = InformationType.RESOURCE;
     }
 }

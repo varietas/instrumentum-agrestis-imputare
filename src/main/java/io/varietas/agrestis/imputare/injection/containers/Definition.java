@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 varietas.io
+ * Copyright 2017 Michael Rhöse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,32 @@
  */
 package io.varietas.agrestis.imputare.injection.containers;
 
-import io.varietas.agrestis.imputare.enumerations.BeanScopes;
-
 /**
- * <h2>BeanDefinition</h2>
+ * <h2>Definition</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 5/7/2016
+ * @version 1.0.0, 09/19/2017
  */
-public interface BeanDefinition extends Definition<Object>{
+public interface Definition<TYPE> {
 
     /**
-     * Returns the scope of the bean. This is required to know how the instance of the bean have to be created.
+     * Returns the identifier of the bean. This is required for the iteration of the bean lists at runtime by identifier.
      *
      * @return
      */
-    public BeanScopes scope();
+    public String identifier();
+
+    /**
+     * Returns the class of the bean. This is required for the iteration of the bean lists at runtime by class.
+     *
+     * @return
+     */
+    public Class<?> type();
+    
+    /**
+     * Creates and returns an instance of the bean. If the bean has the scope {@link BeanScopes}.PROTOTYPE a new instance will created.
+     *
+     * @return
+     */
+    public TYPE get();
 }

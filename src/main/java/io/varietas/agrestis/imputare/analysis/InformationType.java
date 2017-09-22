@@ -13,28 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.varietas.agrestis.imputare.storage.resources;
-
-import io.varietas.agrestis.imputare.enumerations.ResourceType;
-import io.varietas.agrestis.imputare.utils.containers.ManagedValue;
-import java.util.List;
-import java.util.Map;
+package io.varietas.agrestis.imputare.analysis;
 
 /**
- * <h2>ResourceStorage</h2>
+ * <h2>InformationType</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 06/22/2017
+ * @version 1.0.0, 09/19/2017
  */
-public interface ResourceStorage {
-
-    public int store(String identifier, ResourceType type, Object value);
-
-    int storeAllForResourceType(ResourceType type, Map<String, Object> values);
-
-    List<ManagedValue> getStorage();
-
-    boolean reload(String identifier, Object value);
-
-    Boolean isEmpty();
+public enum InformationType {
+    BEAN,
+    DEPENDENCY,
+    RESOURCE,
+    SETTINGS
 }

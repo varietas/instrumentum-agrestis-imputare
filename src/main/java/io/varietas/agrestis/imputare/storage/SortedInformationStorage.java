@@ -15,7 +15,7 @@
  */
 package io.varietas.agrestis.imputare.storage;
 
-import io.varietas.agrestis.imputare.analysis.containers.BeanInformation;
+import io.varietas.agrestis.imputare.analysis.containers.Information;
 import io.varietas.agrestis.imputare.error.StorageInitialisingException;
 import io.varietas.agrestis.imputare.storage.impl.SortedStorageImpl;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
@@ -32,24 +32,24 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * <h2>SortedBeanInformationStorage</h2>
+ * <h2>SortedInformationStorage</h2>
  *
  * @author Michael Rhöse
  * @version 1.0.0, 7/1/2016
  */
 @Slf4j
-public class SortedBeanInformationStorage extends SortedStorageImpl<Integer, BeanInformation> implements SortedTypedStorage<Integer, BeanInformation> {
+public class SortedInformationStorage extends SortedStorageImpl<Integer, Information> implements SortedTypedStorage<Integer, Information> {
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     /**
-     * Searches for a given entry all available {@link BeanInformation}. If is no {@link BeanInformation} available an empty list will returned.
+     * Searches for a given entry all available {@link Information}. If is no {@link Information} available an empty list will returned.
      *
      * @param entry Equal entries searched for.
      * @return
      */
     @Override
-    public List<BeanInformation> findByTypes(BeanInformation entry) {
-        final List<BeanInformation> res = new ArrayList<>();
+    public List<Information> findByTypes(Information entry) {
+        final List<Information> res = new ArrayList<>();
 
         this.storage.entrySet().stream().forEach(storageEntry -> {
             res.addAll(storageEntry.getValue().stream().filter(storageEntryEntry -> Objects.equals(storageEntryEntry.getType(), entry.getType())).collect(Collectors.toList()));
@@ -59,26 +59,25 @@ public class SortedBeanInformationStorage extends SortedStorageImpl<Integer, Bea
     }
 
     /**
-     * Searches for a given entry and {@link ClassMetaDataExtractionUtils.AnnotationCodes} all available {@link BeanInformation}. If is no {@link BeanInformation} available an empty list will
-     * returned.
+     * Searches for a given entry and {@link ClassMetaDataExtractionUtils.AnnotationCodes} all available {@link Information}. If is no {@link Information} available an empty list will returned.
      *
      * @param entry Equal entries searched for.
      * @param code Annotation code.
      * @return
      */
     @Override
-    public List<BeanInformation> findByTypesAndAnnotationCode(BeanInformation entry, Integer code) {
-        final List<BeanInformation> res = new ArrayList<>();
+    public List<Information> findByTypesAndAnnotationCode(Information entry, Integer code) {
+        final List<Information> res = new ArrayList<>();
 
         res.addAll(this.storage.get(code).stream().filter(storageEntry -> Objects.equals(storageEntry.getType(), entry.getType())).collect(Collectors.toList()));
 
         return res;
     }
 
-    public Optional<BeanInformation> findByIdentifier(final String identifier) {
+    public Optional<Information> findByIdentifier(final String identifier) {
 
-        for (Map.Entry<Integer, List<BeanInformation>> set : this.storage.entrySet()) {
-            Optional<BeanInformation> res = set.getValue().stream()
+        for (Map.Entry<Integer, List<Information>> set : this.storage.entrySet()) {
+            Optional<Information> res = set.getValue().stream()
                 .filter(entry -> Objects.equals(entry.getIdentifier(), identifier))
                 .findFirst();
 
@@ -91,9 +90,9 @@ public class SortedBeanInformationStorage extends SortedStorageImpl<Integer, Bea
     }
 
     @Override
-    public Optional<BeanInformation> next() {
+    public Optional<Information> next() {
 
-        final Optional<List<BeanInformation>> nextList = this.storage.values().stream()
+        final Optional<List<Information>> nextList = this.storage.values().stream()
             .filter(list -> !list.isEmpty())
             .findFirst();
 
@@ -101,22 +100,22 @@ public class SortedBeanInformationStorage extends SortedStorageImpl<Integer, Bea
             return Optional.empty();
         }
 
-        BeanInformation res = nextList.get().get(nextList.get().size() - 1);
+        Information res = nextList.get().get(nextList.get().size() - 1);
         nextList.get().remove(res);
 
         return Optional.of(res);
     }
 
     @Override
-    public Optional<BeanInformation> next(final Integer code) {
+    public Optional<Information> next(final Integer code) {
 
-        final List<BeanInformation> nextList = this.storage.get(code);
+        final List<Information> nextList = this.storage.get(code);
 
         if (nextList.isEmpty()) {
             return Optional.empty();
         }
 
-        BeanInformation res = nextList.get(nextList.size() - 1);
+        Information res = nextList.get(nextList.size() - 1);
         nextList.remove(res);
 
         return Optional.of(res);
@@ -135,7 +134,7 @@ public class SortedBeanInformationStorage extends SortedStorageImpl<Integer, Bea
      * @return Number of stored classes or -1 for an error.
      */
     @Override
-    public int store(final BeanInformation entry, final Integer code) {
+    public int store(final Information entry, final Integer code) {
         if (Objects.equals(code, MethodMetaDataExtractionUtils.AnnotationCodes.NONE)) {
             return -1;
         }
@@ -164,8 +163,8 @@ public class SortedBeanInformationStorage extends SortedStorageImpl<Integer, Bea
      * @return Number of stored classes or -1 for an error.
      */
     @Override
-    public int storeAll(final Collection<BeanInformation> entries, Integer code) {
-        for (BeanInformation entry : entries) {
+    public int storeAll(final Collection<Information> entries, Integer code) {
+        for (Information entry : entries) {
 
             int status = this.store(entry, code);
 
@@ -179,6 +178,9 @@ public class SortedBeanInformationStorage extends SortedStorageImpl<Integer, Bea
 
     @Override
     public Boolean isEmpty(Integer code) {
+        if(!this.storage.keySet().contains(code)){
+            return true;
+        }
         return this.storage.get(code).isEmpty();
     }
 
@@ -192,11 +194,11 @@ public class SortedBeanInformationStorage extends SortedStorageImpl<Integer, Bea
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     @Override
-    public Map<Integer, List<BeanInformation>> getStorage() {
+    public Map<Integer, List<Information>> getStorage() {
         return this.storage;
     }
 
-    public Boolean contains(final BeanInformation beanInformation) {
+    public Boolean contains(final Information beanInformation) {
         Integer code = ClassMetaDataExtractionUtils.getPresentAnnotationCode(beanInformation.getType());
         return this.isContainsBeanWithIdentifier(beanInformation, code);
     }
@@ -206,7 +208,7 @@ public class SortedBeanInformationStorage extends SortedStorageImpl<Integer, Bea
             .anyMatch((set) -> (set.getValue().stream().filter(entry -> Objects.equals(entry.getIdentifier(), identifier)).findFirst().isPresent()));
     }
 
-    public Boolean isContainsBeanWithIdentifier(final BeanInformation beanInformation, Integer code) {
+    public Boolean isContainsBeanWithIdentifier(final Information beanInformation, Integer code) {
 
         if (this.isEmpty(code)) {
             return Boolean.FALSE;

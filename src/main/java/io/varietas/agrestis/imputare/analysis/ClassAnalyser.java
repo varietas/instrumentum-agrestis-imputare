@@ -18,29 +18,38 @@ package io.varietas.agrestis.imputare.analysis;
 import io.varietas.agrestis.imputare.analysis.containers.BeanInformation;
 import io.varietas.agrestis.imputare.analysis.containers.ConstructorInformation;
 import io.varietas.agrestis.imputare.analysis.containers.MethodInformation;
+import io.varietas.agrestis.imputare.analysis.containers.ResourceInformation;
+import io.varietas.agrestis.imputare.analysis.containers.SettingsInformation;
 import io.varietas.agrestis.imputare.analysis.factories.BeanInformationFactory;
 import io.varietas.agrestis.imputare.analysis.factories.ConstructorInformationFactory;
 import io.varietas.agrestis.imputare.analysis.factories.MethodInformationFactory;
+import io.varietas.agrestis.imputare.analysis.factories.ResourceInformationFactory;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.analysis.methods.MethodMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.annotation.Bean;
 import io.varietas.agrestis.imputare.annotation.Configuration;
+import io.varietas.agrestis.imputare.annotation.resources.File;
+import io.varietas.agrestis.imputare.annotation.resources.Resource;
+import io.varietas.agrestis.imputare.annotation.resources.Settings;
 import io.varietas.agrestis.imputare.enumerations.ConstructorTypes;
 import io.varietas.agrestis.imputare.error.ConstructorAccessException;
 import io.varietas.agrestis.imputare.error.DuplicatedIdentifierException;
 import io.varietas.agrestis.imputare.error.InternalException;
 import io.varietas.agrestis.imputare.error.StorageInitialisingException;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
-import io.varietas.agrestis.imputare.storage.SortedBeanInformationStorage;
+import io.varietas.agrestis.imputare.storage.SortedInformationStorage;
 import io.varietas.agrestis.imputare.utils.analysis.constructors.ConstructorMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.containers.Pair;
 import io.varietas.agrestis.imputare.utils.analysis.dependency.DependencyMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.analysis.fields.FieldMetaDataExtractorUtils;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h2>ClassAnalyser</h2>
@@ -55,14 +64,16 @@ import java.util.Optional;
  * @author Michael Rhöse
  * @version 1.0.0, 7/1/2016
  */
-public final class ClassAnalyser implements Analyser<SortedBeanInformationStorage> {
+@Slf4j
+public final class ClassAnalyser implements Analyser<SortedInformationStorage> {
 
-    private final SortedBeanInformationStorage sortedBeanInformationStorage;
+    private final SortedInformationStorage sortedBeanInformationStorage;
     private final SortedStorage<Integer, Class<?>> sortedClassesStorage;
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     public ClassAnalyser(SortedStorage<Integer, Class<?>> storage) throws StorageInitialisingException {
-        this.sortedBeanInformationStorage = new SortedBeanInformationStorage();
+        this.sortedBeanInformationStorage = new SortedInformationStorage();
+        this.sortedBeanInformationStorage.initialiseStorage();
         this.sortedClassesStorage = storage;
     }
 
@@ -79,6 +90,10 @@ public final class ClassAnalyser implements Analyser<SortedBeanInformationStorag
     public final ClassAnalyser doAnalysis() throws ToManyInjectedConstructorsException, DuplicatedIdentifierException, InternalException, ConstructorAccessException {
 
         this
+            ///< Do resources analysis
+            .doResourceAnalysis()
+            ///< Do settings files analysis
+            .doSettingsAnalysis()
             ///< Do configuration class analysis
             .doMethodBeanAnalysis()
             ///< Do bean class analysis
@@ -88,11 +103,63 @@ public final class ClassAnalyser implements Analyser<SortedBeanInformationStorag
     }
 
     @Override
-    public SortedBeanInformationStorage getStorage() {
+    public SortedInformationStorage getStorage() {
         return this.sortedBeanInformationStorage;
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    private ClassAnalyser doResourceAnalysis() {
+
+        ///< Search all Resource annotated methods to collect programmatically created values.
+        this.sortedClassesStorage.getStorage().values()
+            .parallelStream()
+            .flatMap(List::stream)
+            .filter(clazz -> Stream.of(clazz.getMethods()).anyMatch(method -> method.isAnnotationPresent(Resource.class)))
+            .forEach(parent -> {
+                Stream.of(parent.getMethods())
+                    .filter(method -> method.isAnnotationPresent(Resource.class))
+                    .map(method -> {
+                        return this.createResourceInformation(parent, method);
+                    })
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .forEach(information -> this.sortedBeanInformationStorage.store(information, ClassMetaDataExtractionUtils.AnnotationCodes.RESOURCE));
+            });
+
+        return this;
+    }
+
+    private ClassAnalyser doSettingsAnalysis() {
+
+        ///< Search all settings files to extract settings.
+        Optional<Class<?>> next = this.sortedClassesStorage.next(ClassMetaDataExtractionUtils.AnnotationCodes.SETTINGS);
+
+        while (next.isPresent()) {
+            final Class<?> parent = next.get();
+            final Settings settings = parent.getAnnotation(Settings.class);
+
+            Stream.of(settings.files())
+                .map(file -> this.createSettingsInformation(parent, file))
+                .forEach(information -> this.sortedBeanInformationStorage.store(information, ClassMetaDataExtractionUtils.AnnotationCodes.SETTINGS));
+
+            next = this.sortedClassesStorage.next(ClassMetaDataExtractionUtils.AnnotationCodes.SETTINGS);
+        }
+        return this;
+    }
+
+    private Optional<ResourceInformation> createResourceInformation(final Class<?> parent, final Method method) {        
+        try {
+            return Optional.of(new ResourceInformationFactory().parent(parent).method(method).get());
+        } catch (Exception ex) {
+            LOGGER.error(ex.getLocalizedMessage());
+        }
+        return Optional.empty();
+    }
+
+    private SettingsInformation createSettingsInformation(final Class<?> parent, final File file) {
+        return new SettingsInformation(parent, file.file(), file.path(), file.isInClassPath());
+    }
+
     private ClassAnalyser doMethodBeanAnalysis() throws DuplicatedIdentifierException, InternalException {
 
         Optional<Class<?>> next = this.sortedClassesStorage.next(ClassMetaDataExtractionUtils.AnnotationCodes.CONFIGURATION);
@@ -162,11 +229,19 @@ public final class ClassAnalyser implements Analyser<SortedBeanInformationStorag
             .operator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier)
             .get();
 
-        return new BeanInformationFactory()
+        BeanInformationFactory informationFactory = new BeanInformationFactory();
+        
+        ///< Bean field analysis
+        if (FieldMetaDataExtractorUtils.isDependenciesExist(parent)) {
+            informationFactory.operator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier);
+        }
+        
+        return informationFactory
             .creationInformation(methodInformation)
             .scope(MethodMetaDataExtractionUtils.getBeanScope(method))
             .identifier(MethodMetaDataExtractionUtils.getBeanIdentifier(method))
             .type(method.getReturnType())
+            .constructor(false)
             .get();
     }
 
@@ -193,6 +268,7 @@ public final class ClassAnalyser implements Analyser<SortedBeanInformationStorag
             .scope(ClassMetaDataExtractionUtils.getBeanScope(beanType, annotationType))
             .identifier(ClassMetaDataExtractionUtils.getBeanIdentifier(beanType, annotationType))
             .type(beanType)
+            .constructor(true)
             .get();
     }
 }

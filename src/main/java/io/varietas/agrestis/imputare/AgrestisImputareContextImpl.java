@@ -15,13 +15,12 @@
  */
 package io.varietas.agrestis.imputare;
 
-import io.varietas.agrestis.imputare.injection.containers.BeanDefinition;
+import io.varietas.agrestis.imputare.injection.containers.Definition;
 import io.varietas.agrestis.imputare.error.BeanLoadException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -33,9 +32,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AgrestisImputareContextImpl implements AgrestisImputareContext {
 
-    private BeanDefinition[] store;
+    private List<Definition> store;
 
-    private BeanDefinition contextDefinition;
+    private Definition contextDefinition;
 
     public AgrestisImputareContextImpl() {
     }
@@ -56,21 +55,21 @@ public class AgrestisImputareContextImpl implements AgrestisImputareContext {
         return Optional.of((AgrestisImputareContext) this.contextDefinition.get());
     }
 
-    public void addContextDefinition(BeanDefinition contextDefinition) {
+    public void addContextDefinition(Definition contextDefinition) {
         this.contextDefinition = contextDefinition;
     }
 
-    public void addBeanDefinitions(BeanDefinition... beanDefinitions) {
+    public void addDefinitions(List<Definition> beanDefinitions) {
         this.store = beanDefinitions;
     }
 
     public Integer beanCount() {
-        return this.store.length;
+        return this.store.size();
     }
 
-    private <T> Optional<T> getBean(Predicate<BeanDefinition> predicate, Class<T> targetType, String logObject, String logObjectType) {
+    private <T> Optional<T> getBean(Predicate<Definition> predicate, Class<T> targetType, String logObject, String logObjectType) {
 
-        List<BeanDefinition> res = Stream.of(this.store).filter(predicate).collect(Collectors.toList());
+        List<Definition> res = this.store.stream().filter(predicate).collect(Collectors.toList());
 
         try {
             if (res.size() > 1) {

@@ -17,7 +17,9 @@ package io.varietas.agrestis.imputare.utils.analysis.methods;
 
 import io.varietas.agrestis.imputare.annotation.Bean;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.annotation.resources.Resource;
 import io.varietas.agrestis.imputare.enumerations.BeanScopes;
+import io.varietas.agrestis.imputare.enumerations.ResourceType;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
 import io.varietas.agrestis.imputare.utils.common.NamingUtils;
 import java.lang.annotation.Annotation;
@@ -51,13 +53,23 @@ public class MethodMetaDataExtractionUtils {
     }
 
     public static BeanScopes getBeanScope(final Method method) {
-        Bean beanAnnotation = (Bean) method.getAnnotation(Bean.class);
-        return beanAnnotation.scope();
+        Bean annotation = method.getAnnotation(Bean.class);
+        return annotation.scope();
     }
 
     public static String getBeanIdentifier(final Method method) {
-        Bean beanAnnotation = (Bean) method.getAnnotation(Bean.class);
-        return NamingUtils.formatIdentifier(beanAnnotation.name(), method.getName());
+        Bean annotation = method.getAnnotation(Bean.class);
+        return NamingUtils.formatIdentifier(annotation.name(), method.getName());
+    }
+    
+    public static String getResourceIdentifier(final Method method) {
+        Resource annotation = method.getAnnotation(Resource.class);
+        return NamingUtils.formatIdentifier(annotation.name(), method.getName());
+    }
+    
+    public static ResourceType getResourceType(final Method method){
+        Resource annotation = method.getAnnotation(Resource.class);
+        return annotation.type();
     }
 
     /**

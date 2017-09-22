@@ -17,6 +17,7 @@ package io.varietas.agrestis.imputare.analysis.factories;
 
 import io.varietas.agrestis.imputare.analysis.containers.BeanInformation;
 import io.varietas.agrestis.imputare.analysis.containers.DependencyInformation;
+import io.varietas.agrestis.imputare.analysis.containers.MethodInformation;
 import io.varietas.agrestis.imputare.enumerations.BeanScopes;
 import java.util.Objects;
 import java.util.function.Function;
@@ -33,12 +34,13 @@ import lombok.experimental.Accessors;
 @Setter
 public class BeanInformationFactory implements InformationFactory<BeanInformation> {
 
-    
     private Object creationInformation;
     private BeanScopes scope;
     private String identifier;
     private Class<?> type;
-    Function<Class<?>, DependencyInformation[]> operator;
+    private Function<Class<?>, DependencyInformation[]> operator;
+
+    private boolean constructor;
 
     @Override
     public BeanInformation get() {
@@ -47,6 +49,13 @@ public class BeanInformationFactory implements InformationFactory<BeanInformatio
             return new BeanInformation(this.creationInformation, this.scope, this.identifier, this.type);
         }
 
-        return new BeanInformation(this.creationInformation, this.scope, this.identifier, this.type, this.operator.apply(this.type));
+        DependencyInformation[] fieldDependencies;
+        if (constructor) {
+            fieldDependencies = this.operator.apply(this.type);
+        } else {
+            fieldDependencies = this.operator.apply(((MethodInformation) this.creationInformation).getParent());
+        }
+
+        return new BeanInformation(this.creationInformation, this.scope, this.identifier, this.type, fieldDependencies);
     }
 }
