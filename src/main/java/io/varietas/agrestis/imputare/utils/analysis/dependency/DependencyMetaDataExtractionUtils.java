@@ -67,7 +67,7 @@ public class DependencyMetaDataExtractionUtils {
         int parameterCount = executable.getParameterCount();
 
         if (parameterCount != identifiers.size()) {
-            throw new MismatchParameterException(parameterCount, executable);
+            throw new MismatchParameterException(identifiers.size(), executable);
         }
 
         DependencyInformation[] res = new DependencyInformation[parameterCount];
