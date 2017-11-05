@@ -36,7 +36,7 @@ public interface Definition<TYPE> {
      * @return
      */
     public Class<?> type();
-    
+
     /**
      * Creates and returns an instance of the bean. If the bean has the scope {@link BeanScopes}.PROTOTYPE a new instance will created.
      *

@@ -31,7 +31,6 @@ import org.junit.runners.JUnit4;
 @Ignore
 public class BeanScanUtilsTests {
 
-
 //    @Test
 //    public void getBeanIdentifierFromFieldCustomIdentifier() throws NoSuchFieldException {
 //        Field field = SimpleBeanWithAnnotatedField1.class.getDeclaredField("intValue");

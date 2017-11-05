@@ -61,13 +61,13 @@ public class MethodMetaDataExtractionUtils {
         Bean annotation = method.getAnnotation(Bean.class);
         return NamingUtils.formatIdentifier(annotation.name(), method.getName());
     }
-    
+
     public static String getResourceIdentifier(final Method method) {
         Resource annotation = method.getAnnotation(Resource.class);
         return NamingUtils.formatIdentifier(annotation.name(), method.getName());
     }
-    
-    public static ResourceType getResourceType(final Method method){
+
+    public static ResourceType getResourceType(final Method method) {
         Resource annotation = method.getAnnotation(Resource.class);
         return annotation.type();
     }

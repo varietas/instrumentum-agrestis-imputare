@@ -89,6 +89,7 @@ public class InjectionUtils {
             throw new InvokationException("Instance of bean " + beanIdentifier + " couldn't be created.", ex);
         }
     }
+
     public static final <ActivationTarget extends Executable> Object invokeMethod(
         final ActivationTarget activationTarget,
         final Object[] activationTargetParams,
@@ -101,7 +102,7 @@ public class InjectionUtils {
             if (!targetParent.isPresent()) {
                 throw new NullPointerException("There is no parent class available but it is required for the creation of an method bean instance.");
             }
-            
+
             Object parentInstance = targetParent.get().newInstance();
             addDependenciesToBean(parentInstance, beanDependencies);
             return targetAsMethod.invoke(parentInstance, activationTargetParams);

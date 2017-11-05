@@ -27,7 +27,7 @@ import lombok.Getter;
  * @version 1.0.0, 7/1/2016
  */
 @Getter
-public class BeanInformation extends AbstractDependencyRequester implements Information{
+public class BeanInformation extends AbstractDependencyRequester implements Information {
 
     private final Object creationInformation;
     private final BeanScopes scope;

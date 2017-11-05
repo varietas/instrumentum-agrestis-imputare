@@ -31,7 +31,6 @@ import java.lang.reflect.Field;
  * @author Michael Rhöse
  * @version 1.0.0, 09/13/2017
  */
-
 public class SortedClazzStorageImpl extends SortedStorageImpl<Integer, Class<?>> implements SortedTypedStorage<Integer, Class<?>> {
 
     /**
@@ -83,7 +82,7 @@ public class SortedClazzStorageImpl extends SortedStorageImpl<Integer, Class<?>>
         } catch (IllegalArgumentException | IllegalAccessException | InstantiationException | SecurityException ex) {
             throw new StorageInitialisingException("Initialising of sorted storage not possible.", ex);
         }
-        
+
         return this;
     }
 }

@@ -25,9 +25,9 @@ import java.util.Optional;
  */
 public interface AgrestisImputareContext {
 
-    public <T> Optional<T> getBean(Class<T> beanClazz);
+    <T> Optional<T> getBean(Class<T> beanClazz);
 
-    public <T> Optional<T> getBean(String beanIdentifier, Class<T> targetType);
+    <T> Optional<T> getBean(String beanIdentifier, Class<T> targetType);
 
-    public Optional<AgrestisImputareContext> getContext();
+    Optional<AgrestisImputareContext> getContext();
 }

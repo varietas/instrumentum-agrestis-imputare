@@ -132,7 +132,7 @@ public class ClassSorterTest {
         Assertions.assertThat(this.count).isEqualTo(0);
         LOGGER.info("{} classes for {} stored.", this.count, ClassMetaDataExtractionUtils.AnnotationCodes.RESOURCE);
     }
-    
+
     @Test
     public void sortAnnotatedClassesForSettings() {
 

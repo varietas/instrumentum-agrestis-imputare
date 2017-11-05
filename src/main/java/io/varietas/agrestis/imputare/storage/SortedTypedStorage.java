@@ -26,7 +26,7 @@ import java.util.List;
  * @param <CODE> Generic code type.
  * @param <TYPE> Generic type which is stored.
  */
-public interface SortedTypedStorage<CODE extends Serializable, TYPE>{
+public interface SortedTypedStorage<CODE extends Serializable, TYPE> {
 
     /**
      * Searches for a given entry all available entries. If is no class available an empty list will returned.

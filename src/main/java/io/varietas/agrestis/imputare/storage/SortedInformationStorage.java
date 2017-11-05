@@ -178,7 +178,7 @@ public class SortedInformationStorage extends SortedStorageImpl<Integer, Informa
 
     @Override
     public Boolean isEmpty(Integer code) {
-        if(!this.storage.keySet().contains(code)){
+        if (!this.storage.keySet().contains(code)) {
             return true;
         }
         return this.storage.get(code).isEmpty();

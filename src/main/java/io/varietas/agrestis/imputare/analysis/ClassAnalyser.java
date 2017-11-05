@@ -147,7 +147,7 @@ public final class ClassAnalyser implements Analyser<SortedInformationStorage> {
         return this;
     }
 
-    private Optional<ResourceInformation> createResourceInformation(final Class<?> parent, final Method method) {        
+    private Optional<ResourceInformation> createResourceInformation(final Class<?> parent, final Method method) {
         try {
             return Optional.of(new ResourceInformationFactory().parent(parent).method(method).get());
         } catch (Exception ex) {
@@ -230,12 +230,12 @@ public final class ClassAnalyser implements Analyser<SortedInformationStorage> {
             .get();
 
         BeanInformationFactory informationFactory = new BeanInformationFactory();
-        
+
         ///< Bean field analysis
         if (FieldMetaDataExtractorUtils.isDependenciesExist(parent)) {
             informationFactory.operator(DependencyMetaDataExtractionUtils::getDependenciesWithIdentifier);
         }
-        
+
         return informationFactory
             .creationInformation(methodInformation)
             .scope(MethodMetaDataExtractionUtils.getBeanScope(method))

@@ -23,7 +23,7 @@ import io.varietas.agrestis.imputare.enumerations.BeanScopes;
  * @author Michael Rhöse
  * @version 1.0.0, 5/7/2016
  */
-public interface BeanDefinition extends Definition<Object>{
+public interface BeanDefinition extends Definition<Object> {
 
     /**
      * Returns the scope of the bean. This is required to know how the instance of the bean have to be created.
