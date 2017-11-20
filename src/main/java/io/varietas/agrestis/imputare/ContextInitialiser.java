@@ -26,12 +26,14 @@ import io.varietas.agrestis.imputare.error.SortingException;
 import io.varietas.agrestis.imputare.error.StorageInitialisingException;
 import io.varietas.agrestis.imputare.error.ToManyInjectedConstructorsException;
 import io.varietas.agrestis.imputare.injection.DependencyInjector;
+import io.varietas.agrestis.imputare.injection.containers.BeanDefinition;
 import io.varietas.agrestis.imputare.injection.containers.Definition;
 import io.varietas.agrestis.imputare.injection.containers.singleton.SingletonBeanDefinition;
 import io.varietas.agrestis.imputare.searching.ClassCollector;
 import io.varietas.agrestis.imputare.searching.ClassSorter;
 import io.varietas.agrestis.imputare.storage.DefinitionStorage;
 import io.varietas.agrestis.imputare.storage.SortedInformationStorage;
+import io.varietas.agrestis.imputare.utils.common.NamingUtils;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import lombok.extern.slf4j.Slf4j;
@@ -51,8 +53,11 @@ public class ContextInitialiser {
 
     protected DefinitionStorage<String, Class<?>, Definition> beanStorage;
 
+    private final AgrestisImputareContextImpl agrestisImputareContext;
+
     public ContextInitialiser(final Class<?> application) {
         this.applicationPackage = application.getPackage();
+        this.agrestisImputareContext = new AgrestisImputareContextImpl();
     }
 
     /**
@@ -61,21 +66,27 @@ public class ContextInitialiser {
      * @return Current instance of the initialiser for fluent like API.
      */
     public ContextInitialiser initializeContext() {
+        final BeanDefinition contextDefinition = new SingletonBeanDefinition(
+            agrestisImputareContext,
+            NamingUtils.formatIdentifier(AgrestisImputareContext.class.getSimpleName(), "ApplicationContext"),
+            BeanScopes.SINGELTON,
+            AgrestisImputareContext.class);
+
+        this.agrestisImputareContext.addContextDefinition(contextDefinition);
+
         UnsortedStorage unsortedStorage = this.initSearching(this.applicationPackage);
         SortedStorage sortetStorage = this.initSorting(unsortedStorage);
         SortedInformationStorage beanInformationStorage = this.initBeanAnalysis(sortetStorage);
-        this.beanStorage = this.initInjection(beanInformationStorage);
+        this.beanStorage = this.initInjection(beanInformationStorage, contextDefinition);
 
         return this;
     }
 
     public AgrestisImputareContext createContext() {
 
-        final AgrestisImputareContextImpl agrestisImputareContext = new AgrestisImputareContextImpl();
-        agrestisImputareContext.addDefinitions(this.beanStorage.getStorage());
-        agrestisImputareContext.addContextDefinition(new SingletonBeanDefinition(agrestisImputareContext, AgrestisImputareContext.class.getSimpleName(), BeanScopes.SINGELTON, AgrestisImputareContext.class));
+        this.agrestisImputareContext.addDefinitions(this.beanStorage.getStorage());
 
-        return agrestisImputareContext;
+        return this.agrestisImputareContext;
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -96,11 +107,11 @@ public class ContextInitialiser {
         try {
             return new ClassAnalyser(sortetStorage).doAnalysis().getStorage();
         } catch (ToManyInjectedConstructorsException | ConstructorAccessException | DuplicatedIdentifierException | InternalException | StorageInitialisingException ex) {
-            throw new AnalysisException("Something goes wrong while analysing dependency graph.", ex);
+            throw new AnalysisException("Something goes wrong while analysing dependency graph. " + ex.getLocalizedMessage());
         }
     }
 
-    protected DefinitionStorage<String, Class<?>, Definition> initInjection(final SortedInformationStorage beanInformationStorage) {
-        return new DependencyInjector(beanInformationStorage).doInjectionWork().getStorage();
+    protected DefinitionStorage<String, Class<?>, Definition> initInjection(final SortedInformationStorage beanInformationStorage, final BeanDefinition contextDefinition) {
+        return new DependencyInjector(beanInformationStorage, contextDefinition).doInjectionWork().getStorage();
     }
 }

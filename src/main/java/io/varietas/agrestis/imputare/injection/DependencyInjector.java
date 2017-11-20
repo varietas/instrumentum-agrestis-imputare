@@ -75,10 +75,10 @@ public final class DependencyInjector {
 
     private final Yaml SettingsReader;
 
-    public DependencyInjector(SortedInformationStorage informationStorage) {
+    public DependencyInjector(SortedInformationStorage informationStorage, final BeanDefinition contextDefinition) {
         this.informationStorage = informationStorage;
         this.definitionStorage = new BeanDefinitionStorage();
-
+        this.definitionStorage.store(contextDefinition);
         this.SettingsReader = new Yaml();
     }
 

@@ -81,7 +81,7 @@ public class ConstructorMetaDataExtractionUtils {
         try {
             return new Pair<>(ConstructorTypes.STANDARD, clazz.getConstructor());
         } catch (NoSuchMethodException | SecurityException ex) {
-            throw new ConstructorAccessException("Constructor can not used to create bean.", ex);
+            throw new ConstructorAccessException("Constructor can not used to create bean. " + ex.getLocalizedMessage());
         }
     }
 
