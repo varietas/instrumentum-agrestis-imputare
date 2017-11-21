@@ -18,6 +18,8 @@ package io.varietas.agrestis.imputare.searching;
 import io.varietas.agrestis.imputare.storage.impl.UnsortedStorageImpl;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import io.varietas.agrestis.imputare.utils.searching.ClazzCollectorUtils;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -31,17 +33,38 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public final class ClassCollector {
 
-    private final String applicationPackage;
+    private final List<String> sources;
     private final UnsortedStorage clazzStorage;
+    private final List<ClassLoader> additionalClassLoaders;
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public ClassCollector(String applicationPackage) {
-        this.applicationPackage = applicationPackage;
+    public ClassCollector(final String... sources) {
+        this.sources = new ArrayList<>();
         this.clazzStorage = new UnsortedStorageImpl();
+        this.additionalClassLoaders = new ArrayList<>();
     }
 
-    public ClassCollector(final Package applicationPackage) {
-        this(applicationPackage.toString());
+    public ClassCollector additionalClassLoader(final ClassLoader classLoader) {
+        this.additionalClassLoaders.add(classLoader);
+        return this;
+    }
+
+    public ClassCollector addApplicationPackage(final Package appPackage) {
+        if (!this.sources.contains(appPackage.toString())) {
+            this.sources.add(appPackage.toString());
+        }
+        return this;
+    }
+
+    public ClassCollector addApplicationPackage(final String appPackage) {
+        return this.addOther(appPackage);
+    }
+
+    public ClassCollector addOther(final String other) {
+        if (!this.sources.contains(other)) {
+            this.sources.add(other);
+        }
+        return this;
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -64,6 +87,6 @@ public final class ClassCollector {
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private void doClazzCollection() {
 
-        this.clazzStorage.storeAll(ClazzCollectorUtils.loadClazzes());
+        this.clazzStorage.storeAll(ClazzCollectorUtils.loadClazzes(this.additionalClassLoaders, this.sources));
     }
 }

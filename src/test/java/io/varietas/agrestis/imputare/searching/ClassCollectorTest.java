@@ -16,19 +16,16 @@
 package io.varietas.agrestis.imputare.searching;
 
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
-import io.varietas.test.TestHelper;
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.URISyntaxException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.rmi.UnexpectedException;
-import java.util.Arrays;
-import java.util.Optional;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,44 +38,38 @@ import org.junit.Test;
 @Slf4j
 public class ClassCollectorTest {
 
+    private Path tempJar;
+    private URLClassLoader classLoader;
+    
     @Before
-    public void setUp() throws UnexpectedException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        URL jarUrl = this.getClass().getResource("/bins/lib-with-beans.jar");
-
-        Optional<URLClassLoader> urlClassLoader = Optional.ofNullable(((URLClassLoader) ClassLoader.getSystemClassLoader()));
-
-        if (!urlClassLoader.isPresent()) {
-            throw new UnexpectedException("Class loader not available.");
-        }
-
-        this.printClasspath();
-
-        Class urlClass = URLClassLoader.class;
-        Method method = urlClass.getDeclaredMethod("addURL", new Class[]{URL.class});
-        method.setAccessible(true);
-        method.invoke(urlClassLoader.get(), new Object[]{jarUrl});
-
-        this.printClasspath();
+    public void setup() throws IOException{
+        this.tempJar = Files.createTempFile("lib-with-beans", ".jar");
+        Files.copy(this.getClass().getResourceAsStream("/bins/lib-with-beans.jar"), this.tempJar, StandardCopyOption.REPLACE_EXISTING);
+        
+        this.classLoader = new URLClassLoader(new URL[]{tempJar.toUri().toURL()});
     }
-
-    private void printClasspath() {
-        String classpath = System.getProperty("java.class.path");
-        Arrays.asList(classpath.split(File.pathSeparator)).forEach(LOGGER::info);
+    
+    @After
+    public void clean() throws IOException{
+        this.classLoader.close();
+        Files.deleteIfExists(this.tempJar);
     }
-
+    
     @Test
-    public void collectAnnotatedClazzes() throws IOException, ClassNotFoundException, URISyntaxException {
-
-        ClassCollector classCollector = new ClassCollector(TestHelper.class.getPackage());
-
+    public void collectAnnotatedClazzes() throws MalformedURLException {
+        
+        ClassCollector classCollector = new ClassCollector()
+            .additionalClassLoader(this.classLoader)
+            .addOther("-io.varietas.test.environments");
+        
         UnsortedStorage storage = classCollector.collectAnnotatedClazzes().getStorage();
-
+        
         int count = storage.getStorage().size();
-
+        
         LOGGER.info("Located classes: {}", count);
-
-        Assertions.assertThat(count).isEqualTo(17);
-
+        
+        Assertions.assertThat(count).isEqualTo(5);
+        
         for (Object clazz : storage.getStorage()) {
             LOGGER.info("Class: {}", ((Class<?>) clazz).getName());
         }

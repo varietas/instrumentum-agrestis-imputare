@@ -18,7 +18,6 @@ package io.varietas.agrestis.imputare.searching;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
 import io.varietas.agrestis.imputare.utils.analysis.classes.ClassMetaDataExtractionUtils;
-import io.varietas.test.TestHelper;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +43,8 @@ public class ClassSorterTest {
     @BeforeClass
     public static void oneTimeSetUp() throws IOException, ClassNotFoundException, URISyntaxException, IllegalArgumentException, IllegalAccessException, InstantiationException {
 
-        ClassSorterTest.classCollector = new ClassCollector(TestHelper.class.getPackage());
+        ClassSorterTest.classCollector = new ClassCollector()
+            .addApplicationPackage("io.varietas.test");
         UnsortedStorage storage = classCollector.collectAnnotatedClazzes().getStorage();
         ClassSorterTest.classSorter = new ClassSorter(storage);
         ClassSorterTest.classSorter.sortLocatedClazzes();

@@ -92,7 +92,10 @@ public class ContextInitialiser {
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     protected UnsortedStorage initSearching(final Package applicationPackage) {
         LOGGER.debug("Searching classes in package {}.", applicationPackage.getName());
-        return new ClassCollector(applicationPackage).collectAnnotatedClazzes().getStorage();
+        return new ClassCollector()
+            .addApplicationPackage(applicationPackage)
+            .collectAnnotatedClazzes()
+            .getStorage();
     }
 
     protected SortedStorage initSorting(final UnsortedStorage unsortedStorage) throws SortingException {

@@ -24,6 +24,7 @@ import io.varietas.agrestis.imputare.annotation.Repository;
 import io.varietas.agrestis.imputare.annotation.Service;
 import io.varietas.agrestis.imputare.annotation.resources.Settings;
 import java.util.List;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -35,9 +36,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ClazzCollectorUtils {
 
-    public static final List<Class<?>> loadClazzes() {
+    public static final List<Class<?>> loadClazzes(final List<ClassLoader> additionalClassLoaders, final List<String> packagesToScans) {
 
-        ScanResult res = new FastClasspathScanner().scan();
+        final FastClasspathScanner scanner = ClazzCollectorUtils.createScanner(packagesToScans);
+        
+        if(Objects.nonNull(additionalClassLoaders)){
+            additionalClassLoaders.forEach(scanner::addClassLoader);
+        }
+        
+        final ScanResult res = scanner.scan();
 
         ///< Load all classes from the given package
         return res.classNamesToClassRefs(res.getNamesOfClassesWithAnnotationsAnyOf(
@@ -47,5 +54,15 @@ public class ClazzCollectorUtils {
             Component.class,
             Configuration.class,
             Settings.class));
+    }
+    
+    private static FastClasspathScanner createScanner(final List<String> packagesToScans){
+        boolean packagesNotAvailable = packagesToScans.isEmpty();
+        
+        if(packagesNotAvailable){
+            return new FastClasspathScanner();
+        }
+        
+        return new FastClasspathScanner(packagesToScans.toArray(new String[packagesToScans.size()]));
     }
 }
