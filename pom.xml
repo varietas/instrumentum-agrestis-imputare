@@ -5,13 +5,14 @@
     <artifactId>instrumentum-agrestis-imputare</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     
-    <name>agrestis imputare - The smart Dependency Injection</name>
+    <name>|VCI| agrestis imputare - The smart Dependency Injection</name>
     <description>The agrestis imputare - DI is a smart library to get dependency injection to android or cross-platform applications (means gnenerated cross-platform applications for example build by gluon).</description>
     <url>https://varietas.io</url>
     
