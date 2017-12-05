@@ -36,6 +36,8 @@ import io.varietas.agrestis.imputare.storage.SortedInformationStorage;
 import io.varietas.agrestis.imputare.utils.common.NamingUtils;
 import io.varietas.instrumentum.simul.storage.SortedStorage;
 import io.varietas.instrumentum.simul.storage.UnsortedStorage;
+import java.util.Objects;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -74,7 +76,10 @@ public class ContextInitialiser {
 
         this.agrestisImputareContext.addContextDefinition(contextDefinition);
 
-        UnsortedStorage unsortedStorage = this.initSearching(this.applicationPackage);
+        UnsortedStorage unsortedStorage = this.initSearching(
+            this.applicationPackage,
+            "io.varietas"
+        );
         SortedStorage sortetStorage = this.initSorting(unsortedStorage);
         SortedInformationStorage beanInformationStorage = this.initBeanAnalysis(sortetStorage);
         this.beanStorage = this.initInjection(beanInformationStorage, contextDefinition);
@@ -90,10 +95,16 @@ public class ContextInitialiser {
     }
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    protected UnsortedStorage initSearching(final Package applicationPackage) {
+    protected UnsortedStorage initSearching(final Package applicationPackage, final String... others) {
         LOGGER.debug("Searching classes in package {}.", applicationPackage.getName());
-        return new ClassCollector()
-            .addApplicationPackage(applicationPackage)
+        final ClassCollector collector = new ClassCollector()
+            .addApplicationPackage(applicationPackage);
+
+        if(Objects.nonNull(others)){
+            Stream.of(others).forEach(collector::addOther);
+        }
+        
+        return collector
             .collectAnnotatedClazzes()
             .getStorage();
     }
