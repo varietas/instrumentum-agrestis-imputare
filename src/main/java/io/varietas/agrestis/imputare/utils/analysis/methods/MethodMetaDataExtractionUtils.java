@@ -17,6 +17,7 @@ package io.varietas.agrestis.imputare.utils.analysis.methods;
 
 import io.varietas.agrestis.imputare.annotation.Bean;
 import io.varietas.agrestis.imputare.annotation.injections.Autowire;
+import io.varietas.agrestis.imputare.annotation.injections.Value;
 import io.varietas.agrestis.imputare.annotation.resources.Resource;
 import io.varietas.agrestis.imputare.enumerations.BeanScopes;
 import io.varietas.agrestis.imputare.enumerations.ResourceType;
@@ -102,11 +103,11 @@ public class MethodMetaDataExtractionUtils {
      * @return
      */
     public static Integer getAnnotationPosition(Executable method) {
-        if (method.isAnnotationPresent(Autowire.class)) {
+        if (method.isAnnotationPresent(Autowire.class) || method.isAnnotationPresent(Value.class)) {
             return ClassMetaDataExtractionUtils.AnnotationPosition.METHOD;
         }
 
-        if (Stream.of(method.getParameters()).filter(param -> param.isAnnotationPresent(Autowire.class)).findFirst().isPresent()) {
+        if (Stream.of(method.getParameters()).filter(param -> param.isAnnotationPresent(Autowire.class) || param.isAnnotationPresent(Value.class)).findFirst().isPresent()) {
             return ClassMetaDataExtractionUtils.AnnotationPosition.METHOD_PARAMETER;
         }
 

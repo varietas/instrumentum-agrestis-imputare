@@ -65,7 +65,7 @@ public class InjectionUtils {
 
                 field.setAccessible(isAccessible);
             } catch (IllegalArgumentException | IllegalAccessException ex) {
-                LOGGER.error(ex.getLocalizedMessage(), ex);
+                LOGGER.error( ex.getLocalizedMessage() + " of bean " + beanInstance.getClass().getName(), ex);
             }
         });
     }
