@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
  * <h2>SortedInformationStorage</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/1/2016
+ * @version 1.0.0.0, 7/1/2016
  */
 @Slf4j
 public class SortedInformationStorage extends SortedStorageImpl<Integer, Information> implements SortedTypedStorage<Integer, Information> {

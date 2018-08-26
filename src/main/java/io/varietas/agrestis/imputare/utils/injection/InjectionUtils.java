@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  * <h2>InjectionUtils</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/8/2016
+ * @version 1.0.0.0, 7/8/2016
  */
 @Slf4j
 public class InjectionUtils {

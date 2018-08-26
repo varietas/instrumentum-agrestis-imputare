@@ -24,7 +24,7 @@ package io.varietas.agrestis.imputare.analysis.factories;
  * @param <Info>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/30/2016
+ * @version 1.0.0.0, 7/30/2016
  */
 public interface InformationFactory<Info> {
 

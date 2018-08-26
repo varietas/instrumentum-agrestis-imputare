@@ -36,7 +36,7 @@ import java.util.stream.Stream;
  * This class is a collection of useful methods to collect information from methods.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/1/2016
+ * @version 1.0.0.0, 7/1/2016
  */
 public class MethodMetaDataExtractionUtils {
 

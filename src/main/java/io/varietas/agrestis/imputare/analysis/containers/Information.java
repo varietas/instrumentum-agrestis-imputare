@@ -23,7 +23,7 @@ import io.varietas.agrestis.imputare.analysis.InformationType;
  * This interface is the minimum API an information container requires.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 09/14/2017
+ * @version 1.0.0.0, 09/14/2017
  */
 public interface Information {
 

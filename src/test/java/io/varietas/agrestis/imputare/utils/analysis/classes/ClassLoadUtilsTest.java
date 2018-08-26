@@ -27,7 +27,7 @@ import org.junit.runners.JUnit4;
  * <h2>ClassLoadUtilsTest</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 04/7/2017
+ * @version 1.0.0.0, 04/7/2017
  */
 @Slf4j
 @RunWith(JUnit4.class)

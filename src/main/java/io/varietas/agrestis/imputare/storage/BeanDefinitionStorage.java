@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * <h2>BeanDefinitionStorage</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/7/2016
+ * @version 1.0.0.0, 7/7/2016
  */
 public class BeanDefinitionStorage implements DefinitionStorage<String, Class<?>, Definition> {
 

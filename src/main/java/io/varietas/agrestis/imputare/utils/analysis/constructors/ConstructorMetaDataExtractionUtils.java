@@ -31,7 +31,7 @@ import java.util.stream.Stream;
  * <h2>ConstructorMetaDataExtractionUtils</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/6/2016
+ * @version 1.0.0.0, 7/6/2016
  */
 public class ConstructorMetaDataExtractionUtils {
 

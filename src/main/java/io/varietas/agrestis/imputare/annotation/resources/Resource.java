@@ -30,7 +30,7 @@ import java.lang.annotation.Target;
  * If the type is {@link ResourceType#SETTING} the value type has to be {@link DynamicValue}.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 06/20/2017
+ * @version 1.0.0.0, 06/20/2017
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})

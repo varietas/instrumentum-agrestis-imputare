@@ -62,7 +62,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/1/2016
+ * @version 1.0.0.0, 7/1/2016
  */
 @Slf4j
 public final class ClassAnalyser implements Analyser<SortedInformationStorage> {

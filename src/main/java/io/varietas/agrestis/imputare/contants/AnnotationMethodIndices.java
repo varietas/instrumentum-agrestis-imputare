@@ -21,7 +21,7 @@ package io.varietas.agrestis.imputare.contants;
  * This class contains the indeces used for programmatically access of annotation methods. This makes the code more readable.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 5/10/2016
+ * @version 1.0.0.0, 5/10/2016
  */
 public class AnnotationMethodIndices {
 

@@ -34,7 +34,7 @@ import org.junit.Test;
  * <h2>MethodMetaDataExtractionUtilsTest</h2>
  *
  * @author Michael Rhöse
- * @since @version 1.0.0, 7/9/2016
+ * @since @version 1.0.0.0, 7/9/2016
  */
 @Slf4j
 public class MethodMetaDataExtractionUtilsTest {

@@ -21,7 +21,7 @@ package io.varietas.agrestis.imputare.contants;
  * This class contains all required constants used as default values in annotation types.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 5/7/2016
+ * @version 1.0.0.0, 5/7/2016
  */
 public class AnnotationConstants {
 

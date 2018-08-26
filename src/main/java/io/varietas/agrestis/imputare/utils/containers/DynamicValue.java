@@ -25,7 +25,7 @@ import lombok.ToString;
  * <h2>DynamicValue</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 07/18/2017
+ * @version 1.0.0.0, 07/18/2017
  */
 @ToString
 @EqualsAndHashCode

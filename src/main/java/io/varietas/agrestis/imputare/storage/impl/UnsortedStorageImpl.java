@@ -29,7 +29,7 @@ import java.util.Set;
  * This class represents a container to store all located, annotated classes. Additionally there are a number of useful methods.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 6/28/2016
+ * @version 1.0.0.0, 6/28/2016
  */
 public class UnsortedStorageImpl implements UnsortedStorage<Class<?>> {
 

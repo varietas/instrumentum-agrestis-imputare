@@ -22,7 +22,7 @@ package io.varietas.agrestis.imputare.enumerations;
  * {@link ConstructorTypes} is used to signal agrestis imputare how it has to handle the instantiation process.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 5/17/2016
+ * @version 1.0.0.0, 5/17/2016
  */
 public enum ConstructorTypes {
     STANDARD, PARAMETERISED, COPY, INJECTED

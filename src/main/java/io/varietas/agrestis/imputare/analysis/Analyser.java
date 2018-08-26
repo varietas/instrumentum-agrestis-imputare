@@ -21,7 +21,7 @@ import io.varietas.instrumentum.simul.storage.Storage;
  * <h2>Analyser</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 09/14/2017
+ * @version 1.0.0.0, 09/14/2017
  * @param <STORAGE> Generic type of storage.
  */
 public interface Analyser<STORAGE extends Storage> {

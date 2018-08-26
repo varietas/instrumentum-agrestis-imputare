@@ -23,6 +23,6 @@
  * </ul>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 03/30/2017
+ * @version 1.0.0.0, 03/30/2017
  */
 package io.varietas.agrestis.imputare.analysis;

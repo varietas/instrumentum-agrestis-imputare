@@ -28,7 +28,7 @@ import java.util.Optional;
  * <h2>AbstractPrototypeBeanDefinition</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/7/2016
+ * @version 1.0.0.0, 7/7/2016
  * @param <ACTIVATION_TARGET> Executable which is used to create the bean instance.
  */
 public abstract class AbstractPrototypeBeanDefinition<ACTIVATION_TARGET extends Executable> extends AbstractBeanDefinition {

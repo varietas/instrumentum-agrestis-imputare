@@ -65,7 +65,7 @@ import org.yaml.snakeyaml.Yaml;
  * The dependency injector process the recursive injection for beans and resources.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/7/2016
+ * @version 1.0.0.0, 7/7/2016
  */
 @Slf4j
 public final class DependencyInjector {

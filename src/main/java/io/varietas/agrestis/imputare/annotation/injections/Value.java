@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
  * <h2>Value</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 09/16/2017
+ * @version 1.0.0.0, 09/16/2017
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})

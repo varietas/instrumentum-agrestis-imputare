@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
  * <h2>ClazzCollectorUtils</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 12/1/2016
+ * @version 1.0.0.0, 12/1/2016
  */
 @Slf4j
 public class ClazzCollectorUtils {

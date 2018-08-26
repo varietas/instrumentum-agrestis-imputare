@@ -5,17 +5,17 @@
     <artifactId>instrumentum-agrestis-imputare</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-    
+
     <name>|VCI| agrestis imputare - The smart Dependency Injection</name>
     <description>The agrestis imputare - DI is a smart library to get dependency injection to android or cross-platform applications (means gnenerated cross-platform applications for example build by gluon).</description>
     <url>https://varietas.io</url>
-    
+
     <developers>
         <developer>
             <name>Michael Rhöse</name>
@@ -35,25 +35,20 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.varietas</groupId>
-                <artifactId>varietas-bom</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-    
+
+    <parent>
+        <groupId>io.varietas</groupId>
+        <artifactId>varietas-bom</artifactId>
+        <version>1.0.1</version>
+    </parent>
+
     <dependencies>
         <dependency>
             <groupId>io.varietas</groupId>
             <artifactId>instrumentum-simul</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
-        
+
         <!-- Dependency for byte code analysis. The internal used asm classes couldn't be used. -->
         <dependency>
             <groupId>io.github.lukehutch</groupId>
@@ -72,25 +67,25 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>                                    
-            <groupId>org.slf4j</groupId>                
-            <artifactId>jcl-over-slf4j</artifactId>     
-            <optional>true</optional>  
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <optional>true</optional>
         </dependency>
-        
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
-        
+
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
             <optional>true</optional>
         </dependency>
-        
+
         <!-- Dependencies for testing -->
         <dependency>
             <groupId>junit</groupId>
@@ -103,7 +98,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
             <plugin>

@@ -21,7 +21,7 @@ package io.varietas.agrestis.imputare.contants;
  * This constants are used to specify a file type to extract from a jar.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 11/5/2015
+ * @version 1.0.0.0, 11/5/2015
  */
 public class ExtractionFileTypes {
 

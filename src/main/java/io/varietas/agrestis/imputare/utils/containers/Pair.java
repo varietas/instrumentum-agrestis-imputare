@@ -21,7 +21,7 @@ import lombok.Getter;
  * <h2>Pair</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/4/2016
+ * @version 1.0.0.0, 7/4/2016
  */
 @Getter
 public class Pair<VALUE_1, VALUE_2> {

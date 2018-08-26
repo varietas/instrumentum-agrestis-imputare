@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
  * <h2>Autowire</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 5/9/2016
+ * @version 1.0.0.0, 5/9/2016
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})

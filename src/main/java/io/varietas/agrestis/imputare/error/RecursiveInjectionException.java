@@ -19,7 +19,7 @@ package io.varietas.agrestis.imputare.error;
  * <h2>RecursiveInjectionException</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 5/18/2016
+ * @version 1.0.0.0, 5/18/2016
  */
 public class RecursiveInjectionException extends Exception {
 

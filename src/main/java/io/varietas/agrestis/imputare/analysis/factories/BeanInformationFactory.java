@@ -28,7 +28,7 @@ import lombok.experimental.Accessors;
  * <h2>BeanInformationFactory</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/30/2016
+ * @version 1.0.0.0, 7/30/2016
  */
 @Accessors(fluent = true, chain = true)
 @Setter

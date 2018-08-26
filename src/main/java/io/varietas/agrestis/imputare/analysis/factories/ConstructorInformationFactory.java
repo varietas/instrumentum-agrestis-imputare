@@ -26,7 +26,7 @@ import lombok.experimental.Accessors;
  * <h2>ConstructorInformationFactory</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/31/2016
+ * @version 1.0.0.0, 7/31/2016
  */
 @Accessors(fluent = true, chain = true)
 @Setter

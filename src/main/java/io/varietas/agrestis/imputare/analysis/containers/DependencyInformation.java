@@ -22,7 +22,7 @@ import lombok.Getter;
  * <h2>DependencyInformation</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/1/2016
+ * @version 1.0.0.0, 7/1/2016
  */
 @Getter
 public class DependencyInformation implements Information {

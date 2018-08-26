@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  * This annotation provides all information about a settings file. The settings file contains a map of identifier/value pairs.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 07/20/2017
+ * @version 1.0.0.0, 07/20/2017
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.ANNOTATION_TYPE})

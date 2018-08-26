@@ -22,7 +22,7 @@ import lombok.Getter;
  * <h2>FieldDependencyInformation</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/8/2016
+ * @version 1.0.0.0, 7/8/2016
  */
 @Getter
 public class FieldDependencyInformation extends DependencyInformation {

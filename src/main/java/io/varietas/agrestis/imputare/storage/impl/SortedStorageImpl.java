@@ -31,7 +31,7 @@ import java.util.Optional;
  * This class represents a container to store all classes sorted by {@link ClassMetaDataExtractionUtils.AnnotationCodes}. Additionally there are a number of useful methods.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 6/30/2016
+ * @version 1.0.0.0, 6/30/2016
  * @param <CODE> Generic code type.
  * @param <TYPE> Generic type which is stored.
  */

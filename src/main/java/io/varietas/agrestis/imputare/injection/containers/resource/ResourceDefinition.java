@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
  * <h2>ResourceDefinition</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 09/20/2017
+ * @version 1.0.0.0, 09/20/2017
  * @param <TYPE> Generic type of value. It allows the usage of different primitives and dynamic value container.
  */
 @AllArgsConstructor

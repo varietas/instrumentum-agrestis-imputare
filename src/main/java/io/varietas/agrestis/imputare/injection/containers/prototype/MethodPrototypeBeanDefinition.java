@@ -27,7 +27,7 @@ import java.util.Optional;
  * <h2>MethodPrototypeBeanDefinition</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/7/2016
+ * @version 1.0.0.0, 7/7/2016
  */
 public class MethodPrototypeBeanDefinition extends AbstractPrototypeBeanDefinition<Method> {
 

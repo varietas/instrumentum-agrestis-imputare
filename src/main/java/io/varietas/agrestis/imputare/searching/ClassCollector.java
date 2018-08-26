@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  * This class is the entry point to the collection of all annotated classes of the current application. All classes contained in the packages and used libraries will scanned and loaded.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 6/28/2016
+ * @version 1.0.0.0, 6/28/2016
  */
 @Slf4j
 public final class ClassCollector {

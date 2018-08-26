@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
  * <h2>TestHelper</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 6/28/2016
+ * @version 1.0.0.0, 6/28/2016
  */
 @Slf4j
 public class TestHelper {

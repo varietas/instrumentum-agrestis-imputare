@@ -22,7 +22,7 @@ import lombok.Getter;
  * <h2>ConstructorInformation</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/1/2016
+ * @version 1.0.0.0, 7/1/2016
  */
 public class ConstructorInformation extends AbstractDependencyRequester {
 

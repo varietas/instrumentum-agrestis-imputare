@@ -19,7 +19,7 @@ package io.varietas.agrestis.imputare.error;
  * <h2>ConstructorAccessException</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 03/30/2017
+ * @version 1.0.0.0, 03/30/2017
  */
 public class ConstructorAccessException extends RuntimeException {
 

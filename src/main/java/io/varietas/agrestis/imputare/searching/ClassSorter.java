@@ -28,7 +28,7 @@ import java.util.Optional;
  * The class sorter is used to order the classes for the destined bean type. This is required to implement the injection rules.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 6/30/2016
+ * @version 1.0.0.0, 6/30/2016
  */
 public final class ClassSorter {
 

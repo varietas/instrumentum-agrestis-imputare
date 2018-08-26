@@ -29,7 +29,7 @@ import java.lang.reflect.Field;
  * <h2>SortedClazzStorageImpl</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 09/13/2017
+ * @version 1.0.0.0, 09/13/2017
  */
 public class SortedClazzStorageImpl extends SortedStorageImpl<Integer, Class<?>> implements SortedTypedStorage<Integer, Class<?>> {
 

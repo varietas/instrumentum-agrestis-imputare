@@ -44,7 +44,7 @@ import java.util.stream.Stream;
  * This class is a collection of useful methods to collect information from classes.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 6/28/2016
+ * @version 1.0.0.0, 6/28/2016
  */
 public class ClassMetaDataExtractionUtils {
 
@@ -321,7 +321,7 @@ public class ClassMetaDataExtractionUtils {
      * </ul>
      *
      * @author Michael Rhöse
-     * @version 1.0.0, 6/28/2016
+     * @version 1.0.0.0, 6/28/2016
      */
     public static class AnnotationCodes {
 
@@ -348,7 +348,7 @@ public class ClassMetaDataExtractionUtils {
      * </ul>
      *
      * @author Michael Rhöse
-     * @version 1.0.0, 6/30/2016
+     * @version 1.0.0.0, 6/30/2016
      */
     public static class AnnotationPosition {
 

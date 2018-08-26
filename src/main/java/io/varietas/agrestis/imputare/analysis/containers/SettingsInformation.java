@@ -24,7 +24,7 @@ import lombok.Getter;
  * The settings information contains which are required for a application component. These information can be database settings or something like this.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 09/13/2017
+ * @version 1.0.0.0, 09/13/2017
  */
 @Getter
 public class SettingsInformation implements Information {

@@ -19,7 +19,7 @@ package io.varietas.agrestis.imputare.injection.containers;
  * <h2>Definition</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 09/19/2017
+ * @version 1.0.0.0, 09/19/2017
  */
 public interface Definition<TYPE> {
 

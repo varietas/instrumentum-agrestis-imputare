@@ -26,7 +26,7 @@ import lombok.Getter;
  * The resource information contains all information about the creation of values. The dependencies represents the required parameters if the method needs parameters.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 09/13/2017
+ * @version 1.0.0.0, 09/13/2017
  */
 @Getter
 public class ResourceInformation extends AbstractDependencyRequester implements Information {

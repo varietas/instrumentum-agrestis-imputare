@@ -46,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
  * This class represents the context initialiser implementation for Oracle Java based platforms.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 12/8/2016
+ * @version 1.0.0.0, 12/8/2016
  */
 @Slf4j
 public class ContextInitialiser {

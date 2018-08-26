@@ -22,7 +22,7 @@ import java.util.List;
  * <h2>SortedTypedStorage</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 09/13/2017
+ * @version 1.0.0.0, 09/13/2017
  * @param <CODE> Generic code type.
  * @param <TYPE> Generic type which is stored.
  */

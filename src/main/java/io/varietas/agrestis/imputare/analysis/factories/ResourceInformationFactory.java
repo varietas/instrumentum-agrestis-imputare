@@ -28,7 +28,7 @@ import lombok.experimental.Accessors;
  * <h2>ResourceInformationFactory</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 09/15/2017
+ * @version 1.0.0.0, 09/15/2017
  */
 @Accessors(fluent = true, chain = true)
 public class ResourceInformationFactory implements InformationFactory<ResourceInformation> {

@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
  * <h2>IllegalAnnotationException</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 6/30/2016
+ * @version 1.0.0.0, 6/30/2016
  */
 @Slf4j
 public class IllegalAnnotationException extends RuntimeException {

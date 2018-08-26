@@ -26,7 +26,7 @@ import java.util.List;
  * <h2>FileOperationUtils</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 12/1/2016
+ * @version 1.0.0.0, 12/1/2016
  */
 public class FileOperationUtils {
 

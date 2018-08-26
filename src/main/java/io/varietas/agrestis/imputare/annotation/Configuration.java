@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
  * <h2>Configuration</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 5/7/2016
+ * @version 1.0.0.0, 5/7/2016
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  * The settings annotation is used to load one or more files to extract settings. These settings are later injectable.
  *
  * @author Michael Rhöse
- * @version 1.0.0, 07/20/2017
+ * @version 1.0.0.0, 07/20/2017
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})

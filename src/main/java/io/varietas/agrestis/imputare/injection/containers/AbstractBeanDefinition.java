@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * <h2>AbstractBeanDefinition</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 5/7/2016
+ * @version 1.0.0.0, 5/7/2016
  */
 public abstract class AbstractBeanDefinition implements BeanDefinition {
 

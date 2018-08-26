@@ -27,7 +27,7 @@ package io.varietas.agrestis.imputare.enumerations;
  * </ul>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 06/20/2017
+ * @version 1.0.0.0, 06/20/2017
  */
 public enum ResourceType {
 

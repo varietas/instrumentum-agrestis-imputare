@@ -21,7 +21,7 @@ import io.varietas.agrestis.imputare.contants.AnnotationConstants;
  * <h2>NamingUtils</h2>
  *
  * @author Michael Rhöse
- * @version 1.0.0, 7/4/2016
+ * @version 1.0.0.0, 7/4/2016
  */
 public class NamingUtils {
 
